@@ -1,7 +1,7 @@
 module.exports = {
   login: {
     show: (req, res) => {
-      res.render('login', { title: 'Login' });
+      res.render('auth/login', { title: 'Login' });
     },
     submit: (req, res) => {
       res.send('ok');
@@ -9,7 +9,7 @@ module.exports = {
   },
   register: {
     show: (req, res) => {
-      res.render('register', { title: 'Register' });
+      res.render('auth/register', { title: 'Register' });
     },
     submit: (req, res) => {
       res.send('ok');
@@ -17,7 +17,7 @@ module.exports = {
   },
   recovery: {
     show: (req, res) => {
-      res.render('recovery', { title: 'Forgot Password' });
+      res.render('auth/recovery', { title: 'Forgot Password' });
     },
     submit: (req, res) => {
       res.send('ok');
