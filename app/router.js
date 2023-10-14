@@ -12,7 +12,8 @@ router.post('/auth/register', auth.register.submit);
 router.get('/auth/recovery', auth.recovery.show);
 router.post('/auth/recovery', auth.recovery.submit);
 
+// Home / Root
 router.get('/', home.index);
-router.get('/user', user.index);
+router.get('/faq', home.faq);
 
 module.exports = router;
