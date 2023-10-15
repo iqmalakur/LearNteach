@@ -1,6 +1,7 @@
 const http = require('http');
 const createError = require('http-errors');
 const express = require('express');
+const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
@@ -69,6 +70,7 @@ const app = express();
 app.set('views', path.join(__dirname, 'app/views'));
 app.set('view engine', 'ejs');
 
+app.use(expressLayouts);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
