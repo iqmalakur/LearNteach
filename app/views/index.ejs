@@ -1,11 +1,49 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<head>
+  <title>LearNTeach - E-Learning Platform</title>
+  <style>
+    body {
+      background-color: #e9f5e3; /* Warna latar belakang hijau tua */
+    }
+
+    .jumbotron {
+      background-color: #3a5f30; /* Warna hijau tua untuk jumbotron */
+      color: #fff; /* Warna teks putih untuk jumbotron */
+      padding: 200px;
+    }
+
+    .footer {
+      background-color: #254117; /* Warna hijau tua untuk footer */
+      color: #fff; /* Warna teks putih untuk footer */
+      text-align: center;
+      padding: 10px 0;
+
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron">
+      <h1>Welcome to LearNTeach</h1>
+      <p>LearNTeach is your one-stop destination for online learning. We offer a wide range of courses on various subjects, all taught by expert instructors. Whether you're looking to expand your knowledge or acquire new skills, LearNTeach has you covered.</p>
+      <p>Explore our courses and start your learning journey today!</p>
+    </div>
+  </div>
+
+  <!-- Tombol Login dan Sign Up -->
+  <div class="container text-center">
+    <a href="/login" class="btn btn-primary btn-lg m-2">Login</a>
+    <a href="/signup" class="btn btn-success btn-lg m-2">Sign Up</a>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2023 LearNTeach. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Tambahkan link ke file JavaScript Anda jika diperlukan -->
+</body>
 </html>
