@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const auth = require('./controllers/auth');
 const home = require('./controllers/home');
+const instructor = require('./controllers/instructor');
+const course = require('./controllers/course');
 const user = require('./controllers/user');
 
 // Authentication
@@ -22,5 +24,29 @@ router.get('/user/profile', user.profile);
 router.put('/user/profile', user.update);
 router.get('/user/wishlist', user.wishlist.show);
 router.post('/user/wishlist', user.wishlist.add);
+
+// Instructor
+router.get('/instructor', instructor.index);
+router.get('/instructor/register', instructor.register.show);
+router.post('/instructor/register', instructor.register.submit);
+router.get('/instructor/courses/:courseId', instructor.course.detail);
+router.get(
+  '/instructor/courses/:courseId/content',
+  instructor.course.content.show
+);
+router.post(
+  '/instructor/courses/:courseId/content',
+  instructor.course.content.submit
+);
+router.get('/instructor/courses/:courseId/quiz', instructor.course.quiz.show);
+router.post(
+  '/instructor/courses/:courseId/quiz',
+  instructor.course.quiz.submit
+);
+
+// Course
+router.get('/course/', course.index);
+router.get('/course/:courseId', course.detail);
+router.get('/course/:courseId/instructor', course.instructor);
 
 module.exports = router;
