@@ -1,4 +1,4 @@
-module.exports = {
+export const home = {
   index: (req, res) => {
     res.render('index', { layout: 'layouts/main-layout', title: 'LearNteach' });
   },

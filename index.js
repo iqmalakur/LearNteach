@@ -1,11 +1,13 @@
-const http = require('http');
-const createError = require('http-errors');
-const express = require('express');
-const expressLayouts = require('express-ejs-layouts');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const logger = require('morgan');
-const debug = require('debug')('learnteach:server');
+import http from 'http';
+import createError from 'http-errors';
+import express from 'express';
+import expressLayouts from 'express-ejs-layouts';
+import path from 'path';
+import cookieParser from 'cookie-parser';
+import logger from 'morgan';
+import debugServer from 'debug';
+
+const debug = debugServer('learnteach:server');
 
 /**
  * Normalize a port into a number, string, or false.
@@ -63,8 +65,9 @@ const onListening = () => {
   debug('Listening on ' + bind);
 };
 
-const router = require('./app/router');
+import { router } from './app/router.js';
 const app = express();
+const __dirname = path.dirname(new URL('', import.meta.url).pathname);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'app/views'));
@@ -94,7 +97,7 @@ app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error');
 });
-  
+
 /**
  * Get port from environment and store in Express.
  */

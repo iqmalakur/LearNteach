@@ -1,4 +1,4 @@
-module.exports = {
+export const user = {
   index: (req, res) => {
     res.render('user/index', {
       layout: 'layouts/main-layout',

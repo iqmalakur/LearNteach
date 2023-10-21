@@ -1,10 +1,12 @@
-const router = require('express').Router();
+import { Router } from 'express';
 
-const auth = require('./controllers/auth');
-const home = require('./controllers/home');
-const instructor = require('./controllers/instructor');
-const course = require('./controllers/course');
-const user = require('./controllers/user');
+import { auth } from './controllers/auth.js';
+import { home } from './controllers/home.js';
+import { instructor } from './controllers/instructor.js';
+import { course } from './controllers/course.js';
+import { user } from './controllers/user.js';
+
+export const router = Router();
 
 // Authentication
 router.get('/auth/login', auth.login.show);
@@ -48,5 +50,3 @@ router.post(
 router.get('/course/', course.index);
 router.get('/course/:courseId', course.detail);
 router.get('/course/:courseId/instructor', course.instructor);
-
-module.exports = router;

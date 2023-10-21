@@ -1,4 +1,4 @@
-module.exports = {
+export const auth = {
   login: {
     show: (req, res) => {
       res.render('auth/login', {
