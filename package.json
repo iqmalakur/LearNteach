@@ -5,8 +5,9 @@
   "scripts": {
     "start": "node index",
     "dev": "nodemon index",
-    "migrate": "npx sequelize-cli db:migrate",
-    "rollback": "npx sequelize-cli db:migrate:undo"
+    "db:migrate": "npx sequelize-cli db:migrate",
+    "db:rollback": "npx sequelize-cli db:migrate:undo:all",
+    "db:refresh": "npm run db:rollback && npm run db:migrate"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
