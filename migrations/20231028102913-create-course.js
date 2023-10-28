@@ -12,6 +12,10 @@ module.exports = {
       instructor: {
         allowNull: false,
         type: Sequelize.STRING(50),
+        references: {
+          model: 'Instructors',
+          key: 'username',
+        },
       },
       title: {
         allowNull: false,
