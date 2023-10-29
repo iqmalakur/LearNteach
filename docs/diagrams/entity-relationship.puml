@@ -68,14 +68,14 @@ object cart {
 entity promotion_code {
     id : int <PK>
     --
-    code : char
+    code : varchar
 }
 
 object transaction {
     id : int <PK>
     user : varchar <FK>
     course : int <FK>
-    promotion_code : char <FK>
+    promotion_code : int <FK>
     --
     course_title : varchar
     user_name : varchar
