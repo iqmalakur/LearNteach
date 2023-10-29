@@ -19,7 +19,7 @@ entity community {
 
 object chat {
     id : int <PK>
-    user : int <FK>
+    user : varchar <FK>
     community : int <FK>
     --
     chat : varchar
