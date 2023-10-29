@@ -1,0 +1,225 @@
+@startuml LearNteach
+entity user {
+    username : varchar <PK>
+    --
+    email : varchar
+    password : varchar
+    name : varchar
+}
+
+entity community {
+    id : int <PK>
+    course : int <PK>
+    --
+    name : varchar
+    description : varchar
+    picture : varchar
+    type : enum('local', 'global')
+}
+
+object chat {
+    id : int <PK>
+    user : varchar <FK>
+    community : int <FK>
+    --
+    chat : varchar
+    chat_date : datetime
+}
+
+entity instructor {
+    username : varchar <PK>
+    --
+    document : varchar
+    approved : enum('yes', 'no')
+    bio : varchar
+    rating : int
+}
+
+entity course {
+    id : int <PK>
+    instructor : varchar <FK>
+    --
+    title : varchar
+    description : varchar
+    rating : int
+    members : int
+    tags : varchar
+    preview : varchar
+    price : int
+    created_at : datetime
+    updated_at : datetime
+    meet_link : varchar
+    meet_time : time
+    meet_day : varchar
+}
+
+object wishlist {
+    id : int <PK>
+    user : varchar <FK>
+    course : int <FK>
+}
+
+object cart {
+    id : int <PK>
+    user : varchar <FK>
+    course : int <FK>
+}
+
+entity promotion_code {
+    id : int <PK>
+    --
+    code : varchar
+}
+
+object transaction {
+    id : int <PK>
+    user : varchar <FK>
+    course : int <FK>
+    promotion_code : int <FK>
+    --
+    course_title : varchar
+    user_name : varchar
+    instructor_name : varchar
+    price : int
+    discount : int
+    tax : int
+    total : int
+    transaction_date : datetime
+}
+
+object learning {
+    id : int <PK>
+    user : varchar <FK>
+    course : int <FK>
+}
+
+entity user_content {
+    id : int <PK>
+    learning : int <FK>
+    user : varchar <FK>
+    --
+    completed : enum('yes', 'no')
+    quiz_grade : int
+    type: enum('video', 'article', 'quiz')
+}
+
+entity content {
+    id : int <PK>
+    course : int <FK>
+    --
+    label : varchar
+    approved : enum('yes', 'no')
+    type: enum('video', 'article', 'quiz')
+}
+
+entity video {
+    id : int <PK>
+    --
+    file : varchar
+}
+
+entity article {
+    id : int <PK>
+    --
+    body : text
+}
+
+entity quiz {
+    id : int <PK>
+    --
+    answer_time : time
+}
+
+object answer {
+    id : int <PK>
+    question : int <FK>
+    user_content : int <FK>
+    --
+    answer_text : varchar
+    correct : enum('true', 'false')
+}
+
+entity question {
+    id : int <PK>
+    quiz : int <FK>
+    --
+    question_text : varchar
+    answer : varchar
+}
+
+entity multiple_choise {
+    id : int <PK>
+    --
+    choises : varchar
+}
+
+user -- instructor
+note on link
+    ISA
+end note
+
+instructor }o--|| course
+note on link
+    has
+end note
+
+user }o-- wishlist
+wishlist --o{ course
+
+user }o-- learning
+learning --o{ course
+
+user }o-- cart
+cart --o{ course
+
+user }o-- transaction
+transaction --o{ course
+
+course }o--|| content
+note on link
+    has
+end note
+
+transaction |o--o{ promotion_code
+note on link
+    use
+end note
+
+content -- video
+note on link
+    ISA
+end note
+content -- quiz
+note on link
+    ISA
+end note
+content -- article
+note on link
+    ISA
+end note
+
+quiz }o--|| question
+note on link
+    has
+end note
+
+question -- multiple_choise
+note on link
+    ISA
+end note
+
+course ||--|| community
+note on link
+    has
+end note
+
+user }o-- chat
+chat --o{ community
+
+user_content }o-- answer
+answer --o{ question
+
+user }o-- user_content
+user_content --o{ content
+
+@enduml
