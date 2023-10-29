@@ -173,7 +173,7 @@ cart --o{ course
 user }o-- transaction
 transaction --o{ course
 
-learning }o--|| content
+course }o--|| content
 note on link
     has
 end note
