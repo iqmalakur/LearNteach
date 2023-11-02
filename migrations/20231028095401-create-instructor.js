@@ -17,7 +17,7 @@ module.exports = {
         type: Sequelize.ENUM(['yes', 'no']),
       },
       bio: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       rating: {
