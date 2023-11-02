@@ -17,11 +17,11 @@ module.exports = {
           key: 'id',
         },
       },
-      user_content: {
+      enrolled_content: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'UserContents',
+          model: 'EnrolledContents',
           key: 'id',
         },
       },

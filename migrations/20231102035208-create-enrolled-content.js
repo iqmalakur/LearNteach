@@ -2,31 +2,35 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('UserContents', {
+    await queryInterface.createTable('EnrolledContents', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      learning: {
+      enrolled_course: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Learnings',
+          model: 'EnrolledCourses',
           key: 'id',
         },
       },
-      user: {
+      content: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Contents',
+          key: 'id',
+        },
       },
       completed: {
         allowNull: false,
         type: Sequelize.ENUM(['yes', 'no']),
       },
       quiz_grade: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.INTEGER,
       },
       type: {
@@ -36,6 +40,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('UserContents');
+    await queryInterface.dropTable('EnrolledContents');
   },
 };

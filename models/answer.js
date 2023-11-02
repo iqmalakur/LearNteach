@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: DataTypes.INTEGER,
       question: DataTypes.INTEGER,
-      user_content: DataTypes.INTEGER,
+      enrolled_content: DataTypes.INTEGER,
       answer_text: DataTypes.STRING,
       correct: DataTypes.ENUM(['true', 'false']),
     },

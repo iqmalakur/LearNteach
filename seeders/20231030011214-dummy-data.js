@@ -20,6 +20,7 @@ module.exports = {
     const instructors = [];
     const courses = [];
     const communities = [];
+    // const chats = [];
     const wishlists = [];
     const carts = [];
 
@@ -102,6 +103,20 @@ module.exports = {
         type: 'local',
       });
     }
+
+    // Generate Chats
+    // for (let [id, community] of communities.entries()) {
+    //   const [results, metadata] = await Sequelize.query(
+    //     'SELECT Users.username'
+    //   );
+
+    //   chats.push({
+    //     user: '',
+    //     community: id,
+    //     chat: faker.lorem.sentences({ min: 1, max: 20 }),
+    //     chat_date: new Date(),
+    //   });
+    // }
 
     // Generate Wishlists and Carts
     for (let i = 0; i < 2; i++) {
