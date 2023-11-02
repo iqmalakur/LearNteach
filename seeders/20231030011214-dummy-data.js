@@ -19,6 +19,8 @@ module.exports = {
     const users = [];
     const instructors = [];
     const courses = [];
+    const wishlists = [];
+    const carts = [];
 
     // Generate 100 Users
     for (let i = 0; i < 100; i++) {
@@ -89,9 +91,43 @@ module.exports = {
       }
     }
 
+    // Generate Wishlists and Carts
+    for (let i = 0; i < 2; i++) {
+      for (let user of users) {
+        if (Math.random() >= 0.5) {
+          for (let j = 0; j < Math.round(Math.random() * 3); j++) {
+            const indexes = [];
+
+            // Generate unique index for Wishlist and Cart
+            while (true) {
+              const index = Math.ceil(Math.random() * courses.length);
+
+              if (!indexes.includes(index)) {
+                if (i === 0) {
+                  wishlists.push({
+                    user: user.username,
+                    course: index,
+                  });
+                } else {
+                  carts.push({
+                    user: user.username,
+                    course: index,
+                  });
+                }
+
+                break;
+              }
+            }
+          }
+        }
+      }
+    }
+
     await queryInterface.bulkInsert('Users', users);
     await queryInterface.bulkInsert('Instructors', instructors);
     await queryInterface.bulkInsert('Courses', courses);
+    await queryInterface.bulkInsert('Wishlists', wishlists);
+    await queryInterface.bulkInsert('Carts', carts);
   },
 
   async down(queryInterface, Sequelize) {
@@ -102,6 +138,8 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
+    await queryInterface.bulkDelete('Carts', null, {});
+    await queryInterface.bulkDelete('Wishlists', null, {});
     await queryInterface.bulkDelete('Courses', null, {});
     await queryInterface.bulkDelete('Instructors', null, {});
     await queryInterface.bulkDelete('Users', null, {});
