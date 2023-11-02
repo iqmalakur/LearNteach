@@ -9,9 +9,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      course: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Courses',
+          key: 'id',
+        },
+      },
       code: {
         allowNull: false,
         type: Sequelize.STRING(10),
+      },
+      discount: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      expired: {
+        allowNull: false,
+        type: Sequelize.DATE,
       },
     });
   },

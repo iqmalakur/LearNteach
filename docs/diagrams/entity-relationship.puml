@@ -67,20 +67,25 @@ object Carts {
 
 entity PromotionCodes {
     id : int <PK>
+    course : int <FK>
     --
     code : varchar
+    discount : int
+    expired : date
 }
 
 object Transactions {
     id : int <PK>
     user : varchar <FK>
     course : int <FK>
-    promotion_code : int <FK>
     --
+    promotion_code : varchar
     course_title : varchar
     user_name : varchar
     instructor_name : varchar
+    course_price : int
     price : int
+    discount_percentage : int
     discount : int
     tax : int
     total : int
@@ -170,7 +175,7 @@ note on link
     has
 end note
 
-Transactions |o--o{ PromotionCodes
+Courses }o--|| PromotionCodes
 note on link
     use
 end note
