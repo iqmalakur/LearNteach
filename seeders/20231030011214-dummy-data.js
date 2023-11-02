@@ -19,6 +19,7 @@ module.exports = {
     const users = [];
     const instructors = [];
     const courses = [];
+    const communities = [];
     const wishlists = [];
     const carts = [];
 
@@ -91,6 +92,17 @@ module.exports = {
       }
     }
 
+    // Generate Communities
+    for (let [id, course] of courses.entries()) {
+      communities.push({
+        course: id + 1,
+        name: `${course.title} Community`,
+        description: faker.commerce.productDescription(),
+        picture: faker.image.url(),
+        type: 'local',
+      });
+    }
+
     // Generate Wishlists and Carts
     for (let i = 0; i < 2; i++) {
       for (let user of users) {
@@ -126,6 +138,7 @@ module.exports = {
     await queryInterface.bulkInsert('Users', users);
     await queryInterface.bulkInsert('Instructors', instructors);
     await queryInterface.bulkInsert('Courses', courses);
+    await queryInterface.bulkInsert('Communities', communities);
     await queryInterface.bulkInsert('Wishlists', wishlists);
     await queryInterface.bulkInsert('Carts', carts);
   },
@@ -140,6 +153,7 @@ module.exports = {
 
     await queryInterface.bulkDelete('Carts', null, {});
     await queryInterface.bulkDelete('Wishlists', null, {});
+    await queryInterface.bulkDelete('Communities', null, {});
     await queryInterface.bulkDelete('Courses', null, {});
     await queryInterface.bulkDelete('Instructors', null, {});
     await queryInterface.bulkDelete('Users', null, {});
