@@ -19,10 +19,11 @@ module.exports = {
     const users = [];
     const instructors = [];
     const courses = [];
-    const communities = [];
-    // const chats = [];
+    const enrolledCourses = [];
     const wishlists = [];
     const carts = [];
+    const communities = [];
+    // const chats = [];
 
     // Generate 100 Users
     for (let i = 0; i < 100; i++) {
@@ -118,10 +119,10 @@ module.exports = {
     //   });
     // }
 
-    // Generate Wishlists and Carts
-    for (let i = 0; i < 2; i++) {
-      for (let user of users) {
-        if (Math.random() >= 0.5) {
+    // Generate Wishlists, Carts, and EnrolledCourses
+    for (let i = 0; i < 3; i++) {
+      for (let [count, user] of users.entries()) {
+        if (Math.random() >= 0.5 || i === 2) {
           for (let j = 0; j < Math.round(Math.random() * 3); j++) {
             const indexes = [];
 
@@ -135,8 +136,13 @@ module.exports = {
                     user: user.username,
                     course: index,
                   });
-                } else {
+                } else if (i === 1) {
                   carts.push({
+                    user: user.username,
+                    course: index,
+                  });
+                } else {
+                  enrolledCourses.push({
                     user: user.username,
                     course: index,
                   });
@@ -156,6 +162,7 @@ module.exports = {
     await queryInterface.bulkInsert('Communities', communities);
     await queryInterface.bulkInsert('Wishlists', wishlists);
     await queryInterface.bulkInsert('Carts', carts);
+    await queryInterface.bulkInsert('EnrolledCourses', enrolledCourses);
   },
 
   async down(queryInterface, Sequelize) {
@@ -166,6 +173,7 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
+    await queryInterface.bulkDelete('EnrolledCourses', null, {});
     await queryInterface.bulkDelete('Carts', null, {});
     await queryInterface.bulkDelete('Wishlists', null, {});
     await queryInterface.bulkDelete('Communities', null, {});
