@@ -46,6 +46,7 @@ module.exports = {
         instructors.push({
           username: user.username,
           document: faker.system.filePath(),
+          balance: 0,
           approved,
           bio: faker.person.bio(),
           rating: approved === 'no' ? 0 : Math.round(Math.random()) + 4,
@@ -154,7 +155,7 @@ module.exports = {
                   });
                 } else {
                   const [course, _] = await queryInterface.sequelize.query(
-                    `SELECT Courses.id, Courses.title, Courses.price, Users.name FROM Courses INNER JOIN Users ON Courses.instructor=Users.username WHERE Courses.id=${index}`
+                    `SELECT Courses.id, Courses.title, Courses.price, Users.name, Users.username FROM Courses INNER JOIN Users ON Courses.instructor=Users.username WHERE Courses.id=${index}`
                   );
 
                   let promotion_code = null;
@@ -205,6 +206,15 @@ module.exports = {
                     user: user.username,
                     course: index,
                   });
+
+                  const [instructor, __] = await queryInterface.sequelize.query(
+                    `SELECT username, balance FROM Instructors WHERE username='${course[0].username}'`
+                  );
+                  await queryInterface.sequelize.query(
+                    `UPDATE Instructors SET balance=${
+                      instructor[0].balance + transaction.price
+                    } WHERE username='${instructor[0].username}'`
+                  );
                 }
 
                 indexes.push(index);

@@ -15,6 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       username: DataTypes.STRING(50),
       document: DataTypes.STRING,
+      balance: DataTypes.INTEGER,
       approved: DataTypes.ENUM(['yes', 'no']),
       bio: DataTypes.STRING,
       rating: DataTypes.INTEGER,

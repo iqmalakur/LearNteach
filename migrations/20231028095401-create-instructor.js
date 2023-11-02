@@ -12,6 +12,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      balance: {
+        allowNull: false,
+        defaultValue: 0,
+        type: Sequelize.INTEGER,
+      },
       approved: {
         allowNull: false,
         type: Sequelize.ENUM(['yes', 'no']),

@@ -30,6 +30,7 @@ entity Instructors {
     username : varchar <PK>
     --
     document : varchar
+    balance : int
     approved : enum('yes', 'no')
     bio : varchar
     rating : int
