@@ -23,7 +23,7 @@ module.exports = {
     const wishlists = [];
     const carts = [];
     const communities = [];
-    // const chats = [];
+    const chats = [];
 
     // Generate 100 Users
     for (let i = 0; i < 100; i++) {
@@ -50,6 +50,9 @@ module.exports = {
         });
       }
     }
+
+    await queryInterface.bulkInsert('Users', users);
+    await queryInterface.bulkInsert('Instructors', instructors);
 
     // Generate Courses from existing Instructors
     for (let instructor of instructors) {
@@ -94,6 +97,8 @@ module.exports = {
       }
     }
 
+    await queryInterface.bulkInsert('Courses', courses);
+
     // Generate Communities
     for (let [id, course] of courses.entries()) {
       communities.push({
@@ -105,27 +110,16 @@ module.exports = {
       });
     }
 
-    // Generate Chats
-    // for (let [id, community] of communities.entries()) {
-    //   const [results, metadata] = await Sequelize.query(
-    //     'SELECT Users.username'
-    //   );
-
-    //   chats.push({
-    //     user: '',
-    //     community: id,
-    //     chat: faker.lorem.sentences({ min: 1, max: 20 }),
-    //     chat_date: new Date(),
-    //   });
-    // }
+    await queryInterface.bulkInsert('Communities', communities);
 
     // Generate Wishlists, Carts, and EnrolledCourses
     for (let i = 0; i < 3; i++) {
-      for (let [count, user] of users.entries()) {
+      for (let user of users) {
         if (Math.random() >= 0.5 || i === 2) {
-          for (let j = 0; j < Math.round(Math.random() * 3); j++) {
-            const indexes = [];
+          const indexes = [];
 
+          // Generate 0-3 row for Wishlists, Carts, and EnrolledCourses
+          for (let j = 0; j < Math.round(Math.random() * 3); j++) {
             // Generate unique index for Wishlist and Cart
             while (true) {
               const index = Math.ceil(Math.random() * courses.length);
@@ -148,6 +142,7 @@ module.exports = {
                   });
                 }
 
+                indexes.push(index);
                 break;
               }
             }
@@ -156,13 +151,29 @@ module.exports = {
       }
     }
 
-    await queryInterface.bulkInsert('Users', users);
-    await queryInterface.bulkInsert('Instructors', instructors);
-    await queryInterface.bulkInsert('Courses', courses);
-    await queryInterface.bulkInsert('Communities', communities);
     await queryInterface.bulkInsert('Wishlists', wishlists);
     await queryInterface.bulkInsert('Carts', carts);
     await queryInterface.bulkInsert('EnrolledCourses', enrolledCourses);
+
+    // Generate Chats
+    for (let [id, community] of communities.entries()) {
+      const [users, _] = await queryInterface.sequelize.query(
+        `SELECT username FROM EnrolledCourses INNER JOIN Users ON EnrolledCourses.user=Users.username WHERE EnrolledCourses.course=${community.course}`
+      );
+
+      for (let user of users) {
+        for (let i = 0; i < Math.round(Math.random() * 5); i++) {
+          chats.push({
+            user: user.username,
+            community: id + 1,
+            chat: faker.lorem.sentences(),
+            chat_date: new Date(),
+          });
+        }
+      }
+    }
+
+    await queryInterface.bulkInsert('Chats', chats);
   },
 
   async down(queryInterface, Sequelize) {
@@ -176,6 +187,7 @@ module.exports = {
     await queryInterface.bulkDelete('EnrolledCourses', null, {});
     await queryInterface.bulkDelete('Carts', null, {});
     await queryInterface.bulkDelete('Wishlists', null, {});
+    await queryInterface.bulkDelete('Chats', null, {});
     await queryInterface.bulkDelete('Communities', null, {});
     await queryInterface.bulkDelete('Courses', null, {});
     await queryInterface.bulkDelete('Instructors', null, {});
