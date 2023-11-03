@@ -97,16 +97,9 @@ object EnrolledCourses {
     id : int <PK>
     user : varchar <FK>
     course : int <FK>
-}
-
-object EnrolledContents {
-    id : int <PK>
-    enrolled_course : int <FK>
-    content : int <FK>
     --
-    completed : enum('yes', 'no')
-    quiz_grade : int
-    type: enum('video', 'article', 'quiz')
+    completed_contents : varchar
+    quiz_grades : varchar
 }
 
 entity Contents {
@@ -134,15 +127,6 @@ entity Quizzes {
     id : int <PK>
     --
     answer_time : time
-}
-
-object Answers {
-    id : int <PK>
-    question : int <FK>
-    enrolled_content : int <FK>
-    --
-    answer_text : varchar
-    correct : enum('true', 'false')
 }
 
 entity Questions {
@@ -221,11 +205,5 @@ end note
 
 Users }o-- Chats
 Chats --o{ Communities
-
-EnrolledContents }o-- Answers
-Answers --o{ Questions
-
-EnrolledCourses }o-- EnrolledContents
-EnrolledContents --o{ Contents
 
 @enduml

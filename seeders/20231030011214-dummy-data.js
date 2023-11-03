@@ -121,6 +121,79 @@ module.exports = {
 
     await queryInterface.bulkInsert('Communities', communities);
 
+    // Generate Contents
+    for (let [id, course] of courses.entries()) {
+      for (let i = 0; i < Math.ceil(Math.random() * 5); i++) {
+        const rand = Math.random();
+        let type = '';
+
+        if (rand >= 0.3) {
+          type = 'video';
+
+          videos.push({
+            id: contents.length + 1,
+            file: faker.system.filePath(),
+          });
+        } else if (rand >= 0.15) {
+          type = 'quiz';
+
+          quizzes.push({
+            id: contents.length + 1,
+            answer_time: Math.round(Math.random() * 5) + 5,
+          });
+        } else {
+          type = 'article';
+
+          articles.push({
+            id: contents.length + 1,
+            body: faker.lorem.sentences({ min: 10, max: 50 }),
+          });
+        }
+
+        contents.push({
+          course: id + 1,
+          label: faker.word.words({ count: { min: 5, max: 10 } }),
+          approved: 'yes',
+          type,
+        });
+      }
+    }
+
+    await queryInterface.bulkInsert('Contents', contents);
+    await queryInterface.bulkInsert('Videos', videos);
+    await queryInterface.bulkInsert('Articles', articles);
+    await queryInterface.bulkInsert('Quizzes', quizzes);
+
+    // Generate Questions
+    for (let quiz of quizzes) {
+      for (let i = 0; i < Math.ceil(Math.random() * 3) + 2; i++) {
+        const type = Math.random() > 0.3 ? 'choises' : 'essay';
+
+        questions.push({
+          quiz: quiz.id,
+          question_text: faker.word.words({ count: { min: 5, max: 10 } }),
+          answer: faker.word.sample(),
+          type,
+        });
+
+        if (type === 'choises') {
+          const choises = [];
+
+          for (let j = 0; j < 4; j++) {
+            choises[j] = faker.word.sample();
+          }
+
+          multipleChoises.push({
+            id: questions.length,
+            choises: choises.join(','),
+          });
+        }
+      }
+    }
+
+    await queryInterface.bulkInsert('Questions', questions);
+    await queryInterface.bulkInsert('MultipleChoises', multipleChoises);
+
     // Generate Promotion Codes
     for (let i = 0; i < 10; i++) {
       promotionCodes.push({
@@ -208,9 +281,34 @@ module.exports = {
 
                   transactions.push(transaction);
 
+                  const completedContents = [];
+                  const quizGrades = [];
+
+                  const [contents, ___] = await queryInterface.sequelize.query(
+                    `SELECT Contents.id, type FROM Contents INNER JOIN Courses ON Contents.course=Courses.id WHERE Courses.id=${index}`
+                  );
+
+                  for (let k = 0; k < contents.length; k++) {
+                    if (k <= Math.ceil(contents.length / 2)) {
+                      completedContents.push('yes');
+
+                      if (contents[k].type === 'quiz') {
+                        quizGrades.push(
+                          `${contents[k].id}:${
+                            Math.ceil(Math.random() * 50) + 50
+                          }`
+                        );
+                      }
+                    } else {
+                      completedContents.push('no');
+                    }
+                  }
+
                   enrolledCourses.push({
                     user: user.username,
                     course: index,
+                    completed_contents: completedContents.join(','),
+                    quiz_grades: quizGrades.join(','),
                   });
 
                   const [instructor, __] = await queryInterface.sequelize.query(
@@ -256,79 +354,6 @@ module.exports = {
     }
 
     await queryInterface.bulkInsert('Chats', chats);
-
-    // Generate Contents
-    for (let [id, course] of courses.entries()) {
-      for (let i = 0; i < Math.ceil(Math.random() * 5); i++) {
-        const rand = Math.random();
-        let type = '';
-
-        if (rand >= 0.3) {
-          type = 'video';
-
-          videos.push({
-            id: contents.length + 1,
-            file: faker.system.filePath(),
-          });
-        } else if (rand >= 0.15) {
-          type = 'quiz';
-
-          quizzes.push({
-            id: contents.length + 1,
-            answer_time: Math.round(Math.random() * 5) + 5,
-          });
-        } else {
-          type = 'article';
-
-          articles.push({
-            id: contents.length + 1,
-            body: faker.lorem.sentences({ min: 10, max: 50 }),
-          });
-        }
-
-        contents.push({
-          course: id + 1,
-          label: faker.word.words({ count: { min: 5, max: 10 } }),
-          approved: Math.random() >= 0.9 ? 'yes' : 'no',
-          type,
-        });
-      }
-    }
-
-    await queryInterface.bulkInsert('Contents', contents);
-    await queryInterface.bulkInsert('Videos', videos);
-    await queryInterface.bulkInsert('Articles', articles);
-    await queryInterface.bulkInsert('Quizzes', quizzes);
-
-    // Generate Questions
-    for (let quiz of quizzes) {
-      for (let i = 0; i < Math.ceil(Math.random() * 3) + 2; i++) {
-        const type = Math.random() > 0.3 ? 'choises' : 'essay';
-
-        questions.push({
-          quiz: quiz.id,
-          question_text: faker.word.words({ count: { min: 5, max: 10 } }),
-          answer: faker.word.sample(),
-          type,
-        });
-
-        if (type === 'choises') {
-          const choises = [];
-
-          for (let j = 0; j < 4; j++) {
-            choises[j] = faker.word.sample();
-          }
-
-          multipleChoises.push({
-            id: questions.length,
-            choises: choises.join(','),
-          });
-        }
-      }
-    }
-
-    await queryInterface.bulkInsert('Questions', questions);
-    await queryInterface.bulkInsert('MultipleChoises', multipleChoises);
   },
 
   async down(queryInterface, Sequelize) {
@@ -339,18 +364,18 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete('MultipleChoises', null, {});
-    await queryInterface.bulkDelete('Questions', null, {});
-    await queryInterface.bulkDelete('Quizzes', null, {});
-    await queryInterface.bulkDelete('Articles', null, {});
-    await queryInterface.bulkDelete('Videos', null, {});
-    await queryInterface.bulkDelete('Contents', null, {});
     await queryInterface.bulkDelete('Transactions', null, {});
     await queryInterface.bulkDelete('EnrolledCourses', null, {});
     await queryInterface.bulkDelete('PromotionCodes', null, {});
     await queryInterface.bulkDelete('Carts', null, {});
     await queryInterface.bulkDelete('Wishlists', null, {});
     await queryInterface.bulkDelete('Chats', null, {});
+    await queryInterface.bulkDelete('MultipleChoises', null, {});
+    await queryInterface.bulkDelete('Questions', null, {});
+    await queryInterface.bulkDelete('Quizzes', null, {});
+    await queryInterface.bulkDelete('Articles', null, {});
+    await queryInterface.bulkDelete('Videos', null, {});
+    await queryInterface.bulkDelete('Contents', null, {});
     await queryInterface.bulkDelete('Communities', null, {});
     await queryInterface.bulkDelete('Courses', null, {});
     await queryInterface.bulkDelete('Instructors', null, {});
