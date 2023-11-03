@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       quiz: DataTypes.INTEGER,
       question_text: DataTypes.STRING,
       answer: DataTypes.STRING,
+      type: DataTypes.ENUM('choises', 'essay'),
     },
     {
       sequelize,

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id: DataTypes.INTEGER,
       course: DataTypes.INTEGER,
-      label: DataTypes.STRING(50),
+      label: DataTypes.STRING,
       approved: DataTypes.ENUM('yes', 'no'),
       type: DataTypes.ENUM('video', 'article', 'quiz'),
     },

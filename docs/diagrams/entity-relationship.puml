@@ -1,5 +1,5 @@
 @startuml LearNteach
-entity user {
+entity Users {
     username : varchar <PK>
     --
     email : varchar
@@ -7,9 +7,9 @@ entity user {
     name : varchar
 }
 
-entity community {
+entity Communities {
     id : int <PK>
-    course : int <PK>
+    course : int <FK>
     --
     name : varchar
     description : varchar
@@ -17,7 +17,7 @@ entity community {
     type : enum('local', 'global')
 }
 
-object chat {
+object Chats {
     id : int <PK>
     user : varchar <FK>
     community : int <FK>
@@ -26,16 +26,17 @@ object chat {
     chat_date : datetime
 }
 
-entity instructor {
+entity Instructors {
     username : varchar <PK>
     --
     document : varchar
+    balance : int
     approved : enum('yes', 'no')
     bio : varchar
     rating : int
 }
 
-entity course {
+entity Courses {
     id : int <PK>
     instructor : varchar <FK>
     --
@@ -53,57 +54,55 @@ entity course {
     meet_day : varchar
 }
 
-object wishlist {
+object Wishlists {
     id : int <PK>
     user : varchar <FK>
     course : int <FK>
 }
 
-object cart {
+object Carts {
     id : int <PK>
     user : varchar <FK>
     course : int <FK>
 }
 
-entity promotion_code {
+entity PromotionCodes {
     id : int <PK>
+    course : int <FK>
     --
     code : varchar
+    discount : int
+    expired : date
 }
 
-object transaction {
+object Transactions {
     id : int <PK>
     user : varchar <FK>
     course : int <FK>
-    promotion_code : int <FK>
     --
+    promotion_code : varchar
     course_title : varchar
     user_name : varchar
     instructor_name : varchar
+    course_price : int
     price : int
+    discount_percentage : int
     discount : int
     tax : int
     total : int
     transaction_date : datetime
 }
 
-object learning {
+object EnrolledCourses {
     id : int <PK>
     user : varchar <FK>
     course : int <FK>
-}
-
-entity user_content {
-    id : int <PK>
-    learning : int <FK>
-    user : varchar <FK>
     --
-    completed : enum('yes', 'no')
-    quiz_grade : int
-    type: enum('video', 'article', 'quiz')
+    completed_contents : varchar
+    quiz_grades : varchar
 }
 
-entity content {
+entity Contents {
     id : int <PK>
     course : int <FK>
     --
@@ -112,34 +111,25 @@ entity content {
     type: enum('video', 'article', 'quiz')
 }
 
-entity video {
+entity Videos {
     id : int <PK>
     --
     file : varchar
 }
 
-entity article {
+entity Articles {
     id : int <PK>
     --
     body : text
 }
 
-entity quiz {
+entity Quizzes {
     id : int <PK>
     --
     answer_time : time
 }
 
-object answer {
-    id : int <PK>
-    question : int <FK>
-    user_content : int <FK>
-    --
-    answer_text : varchar
-    correct : enum('true', 'false')
-}
-
-entity question {
+entity Questions {
     id : int <PK>
     quiz : int <FK>
     --
@@ -147,79 +137,73 @@ entity question {
     answer : varchar
 }
 
-entity multiple_choise {
+entity MultipleChoises {
     id : int <PK>
     --
     choises : varchar
 }
 
-user -- instructor
-note on link
-    ISA
-end note
+Users }o-- Wishlists
+Wishlists --o{ Courses
 
-instructor }o--|| course
-note on link
-    has
-end note
+Users }o-- EnrolledCourses
+EnrolledCourses --o{ Courses
 
-user }o-- wishlist
-wishlist --o{ course
+Users }o-- Carts
+Carts --o{ Courses
 
-user }o-- learning
-learning --o{ course
+Users }o-- Transactions
+Transactions --o{ Courses
 
-user }o-- cart
-cart --o{ course
-
-user }o-- transaction
-transaction --o{ course
-
-course }o--|| content
+Courses }o--|| Contents
 note on link
     has
 end note
 
-transaction |o--o{ promotion_code
+Courses }o--|| PromotionCodes
 note on link
     use
 end note
 
-content -- video
-note on link
-    ISA
-end note
-content -- quiz
-note on link
-    ISA
-end note
-content -- article
+Users -- Instructors
 note on link
     ISA
 end note
 
-quiz }o--|| question
+Instructors }o--|| Courses
 note on link
     has
 end note
 
-question -- multiple_choise
+Contents -- Videos
+note on link
+    ISA
+end note
+Contents -- Quizzes
+note on link
+    ISA
+end note
+Contents -- Articles
 note on link
     ISA
 end note
 
-course ||--|| community
+Quizzes }o--|| Questions
 note on link
     has
 end note
 
-user }o-- chat
-chat --o{ community
+Questions -- MultipleChoises
+note on link
+    ISA
+end note
 
-user_content }o-- answer
-answer --o{ question
+Courses ||--|| Communities
+note on link
+    has
+end note
 
-user }o-- user_content
-user_content --o{ content
+Users }o-- Chats
+Chats --o{ Communities
 
 @enduml

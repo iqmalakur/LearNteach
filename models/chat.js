@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       id: DataTypes.INTEGER,
       user: DataTypes.STRING(50),
       community: DataTypes.INTEGER,
-      chat: DataTypes.STRING,
+      chat: DataTypes.STRING(1000),
       chat_date: DataTypes.DATE,
     },
     {

@@ -14,7 +14,10 @@ module.exports = (sequelize, DataTypes) => {
   PromotionCode.init(
     {
       id: DataTypes.INTEGER,
+      course: DataTypes.INTEGER,
       code: DataTypes.STRING(10),
+      discount: DataTypes.INTEGER,
+      expired: DataTypes.DATE,
     },
     {
       sequelize,

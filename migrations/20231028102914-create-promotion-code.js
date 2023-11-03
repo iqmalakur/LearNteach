@@ -2,40 +2,36 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('UserContents', {
+    await queryInterface.createTable('PromotionCodes', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      learning: {
+      course: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
-          model: 'Learnings',
+          model: 'Courses',
           key: 'id',
         },
       },
-      user: {
+      code: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(10),
       },
-      completed: {
-        allowNull: false,
-        type: Sequelize.ENUM(['yes', 'no']),
-      },
-      quiz_grade: {
+      discount: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      type: {
+      expired: {
         allowNull: false,
-        type: Sequelize.ENUM(['video', 'article', 'quiz']),
+        type: Sequelize.DATE,
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('UserContents');
+    await queryInterface.dropTable('PromotionCodes');
   },
 };

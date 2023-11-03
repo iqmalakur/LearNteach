@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   Quiz.init(
     {
       id: DataTypes.INTEGER,
-      answer_time: DataTypes.TIME,
+      answer_time: DataTypes.INTEGER,
     },
     {
       sequelize,
