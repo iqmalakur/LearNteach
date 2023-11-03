@@ -10,7 +10,8 @@
     "db:refresh": "npm run db:rollback && npm run db:migrate",
     "db:seed": "npx sequelize-cli db:seed:all",
     "db:clean": "npx sequelize-cli db:seed:undo:all",
-    "db:seed:refresh": "npm run db:clean && npm run db:seed"
+    "db:seed:refresh": "npm run db:clean && npm run db:seed",
+    "db:init": "npm run db:refresh && npm run db:seed"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
