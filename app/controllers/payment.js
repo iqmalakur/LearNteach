@@ -7,7 +7,7 @@ module.exports = {
   },
   cart: (req, res) => {
     res.render('payment/cart', {
-      layout: 'layouts/main-layout',
+      layout: 'layouts/raw-layout',
       title: 'Cart',
     });
   },
