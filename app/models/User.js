@@ -49,12 +49,10 @@ class User extends Model {
   async save() {
     const { username, password, email, name } = this.get();
 
-    if (await this.isExist()) {
-      this.update({ password, email, name });
-      return;
-    }
+    if (await this.isExist())
+      return await this.update({ password, email, name });
 
-    User.insert({ username, password, email, name });
+    return await User.insert({ username, password, email, name });
   }
 }
 
