@@ -4,10 +4,17 @@ const { QueryTypes } = require("sequelize");
 class Model {
   static conn = Connection.getConnection();
 
-  constructor(data) {
+  constructor(data, table, condition) {
     for (const property in data) {
       this[property] = data[property];
     }
+
+    this.table = table;
+    this.condition = Model.getCondition(condition);
+  }
+
+  async isExist() {
+    return (await Model.get(this.table, this.condition)).length > 0;
   }
 
   static getCondition(condition) {
@@ -56,7 +63,7 @@ class Model {
     return metadata > 0;
   }
 
-  static async update(table, data, condition) {
+  async update(data) {
     let updates = [];
     let columns = Object.keys(data);
 
@@ -64,17 +71,15 @@ class Model {
       updates.push(`${columns[i]}='${data[columns[i]]}'`);
 
     const [_, metadata] = await Model.conn.query(
-      `UPDATE ${table} SET ${updates.join(", ")} WHERE ${Model.getCondition(
-        condition
-      )}`
+      `UPDATE ${this.table} SET ${updates.join(", ")} WHERE ${this.condition}`
     );
 
     return metadata > 0;
   }
 
-  static async delete(table, condition) {
+  async delete() {
     const [_, metadata] = await Model.conn.query(
-      `DELETE FROM ${table} WHERE ${condition}`
+      `DELETE FROM ${this.table} WHERE ${this.condition}`
     );
 
     return metadata > 0;

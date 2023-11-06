@@ -3,6 +3,10 @@ const Model = require("./Model");
 class User extends Model {
   static table = "Users";
 
+  constructor(data) {
+    super(data, User.table, { username: data.username });
+  }
+
   setPassword(password) {
     this.password = password;
     return this;
@@ -42,34 +46,15 @@ class User extends Model {
     return await Model.insert(User.table, data);
   }
 
-  static async update(data, username) {
-    return await Model.update(User.table, data, { username });
-  }
-
-  async update(data) {
-    return await User.update(data, this.username);
-  }
-
   async save() {
     const { username, password, email, name } = this.get();
-    const exist = await User.get(username);
 
-    console.log(exist);
-
-    if (exist) {
-      User.update({ password, email, name });
+    if (await this.isExist()) {
+      this.update({ password, email, name });
       return;
     }
 
     User.insert({ username, password, email, name });
-  }
-
-  static async delete(username) {
-    return await Model.delete(User.table, { username });
-  }
-
-  async delete() {
-    return await User.delete(this.username);
   }
 }
 
