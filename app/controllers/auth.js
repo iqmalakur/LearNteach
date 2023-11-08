@@ -1,3 +1,4 @@
+const Model = require("../models/Model");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 
@@ -9,13 +10,43 @@ module.exports = {
         title: "Login",
       });
     },
-    submit: (req, res) => {
-      const body = req.body;
+    submit: async (req, res) => {
+      const { username, password } = req.body;
 
-      // decrypt password
-      // const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
+      let success = false;
+      let message = "";
+      let code = 400;
+      let data = null;
 
-      res.send("ok");
+      res.set("Content-Type", "application/json; charset=utf-8");
+
+      if (!username) message = "Username field is required!";
+      else if (!password) message = "Password field is required!";
+      else {
+        const user =
+          (await User.get(username)) ?? (await User.getEmail(username));
+        const isPasswordValid = user
+          ? bcrypt.compareSync(password, user.password)
+          : false;
+
+        if (user && isPasswordValid) {
+          if (await user.save()) {
+            code = 200;
+            success = true;
+            message = "User registration is successful";
+            data = user.get();
+          } else {
+            code = 500;
+            message = "Unexpected errors occurred";
+          }
+        } else {
+          code = 401;
+          message = "Incorrect username or password";
+        }
+      }
+
+      res.status(code);
+      res.json({ success, message, code, data });
     },
   },
   register: {

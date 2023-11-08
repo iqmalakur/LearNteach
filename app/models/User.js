@@ -37,6 +37,17 @@ class User extends Model {
     return null;
   }
 
+  static async getEmail(email) {
+    const result = await super.get(User.table, { email });
+
+    if (result.length != 0) {
+      const { username, password, email, name } = result;
+      return new User(username, password, email, name);
+    }
+
+    return null;
+  }
+
   get() {
     const { username, password, email, name } = this;
     return { username, password, email, name };
