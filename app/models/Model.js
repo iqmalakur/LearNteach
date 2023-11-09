@@ -1,9 +1,19 @@
 const Connection = require("./Connection");
 const { QueryTypes } = require("sequelize");
 
+/**
+ * Class representing a Model.
+ *
+ * @class Model.
+ */
 class Model {
   static conn = Connection.getConnection();
 
+  /**
+   * Create a Model.
+   *
+   * @param {Object} data Object with all the properties required by Model child class.
+   */
   constructor(data, table, condition) {
     for (const property in data) {
       this[property] = data[property];
@@ -13,10 +23,21 @@ class Model {
     this.condition = Model.getCondition(condition);
   }
 
+  /**
+   * Check if there is data with child of Model condition in the database.
+   *
+   * @return {Promise<Boolean>}
+   */
   async isExist() {
     return (await Model.get(this.table, this.condition)).length > 0;
   }
 
+  /**
+   * Get String of where clause.
+   *
+   * @param {String | Object} condition The condition of where clause.
+   * @return {String}
+   */
   static getCondition(condition) {
     let result = "";
 
@@ -29,6 +50,13 @@ class Model {
     return result;
   }
 
+  /**
+   * Get data from database.
+   *
+   * @param {String} table Table name.
+   * @param {String | Object} condition The condition of where clause.
+   * @return {Promise<Array>}
+   */
   static async get(table, condition) {
     let result = null;
 
@@ -48,6 +76,13 @@ class Model {
     return result;
   }
 
+  /**
+   * Insert a new data into database.
+   *
+   * @param {String} table Table name.
+   * @param {Object} data Object with all the properties required by Model child class.
+   * @return {Promise<Boolean>}
+   */
   static async insert(table, data) {
     let columns = Object.keys(data);
     let values = [];
@@ -63,6 +98,12 @@ class Model {
     return metadata > 0;
   }
 
+  /**
+   * Update data in the database.
+   *
+   * @param {Object} data Object with all the properties required by Model child class.
+   * @return {Promise<Boolean>}
+   */
   async update(data) {
     let updates = [];
     let columns = Object.keys(data);
@@ -77,6 +118,11 @@ class Model {
     return metadata > 0;
   }
 
+  /**
+   * Delete data in the database.
+   *
+   * @return {Promise<Boolean>}
+   */
   async delete() {
     const [_, metadata] = await Model.conn.query(
       `DELETE FROM ${this.table} WHERE ${this.condition}`

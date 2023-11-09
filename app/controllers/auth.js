@@ -33,7 +33,7 @@ module.exports = {
           if (await user.save()) {
             code = 200;
             success = true;
-            message = "User registration is successful";
+            message = "User login is successful";
             data = user.get();
           } else {
             code = 500;
@@ -56,66 +56,90 @@ module.exports = {
         title: "Register",
       });
     },
+
+    /**
+     * Handle the user registration process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
     submit: async (req, res) => {
-      const body = req.body;
+      // Set http header
+      res.set("Content-Type", "application/json; charset=utf-8");
+
+      // Request body validation
+      const valid = User.validate(req.body);
+      if (valid.error) {
+        return res.status(400).json({
+          success: false,
+          message: valid.error.details[0].message,
+          code: 400,
+          data: null,
+        });
+      }
+
+      // Destructuring request body
       const {
-        fullname,
+        fullname: name,
         username,
         email,
         password,
         confirmPassword,
         termsCondition,
-      } = body;
+      } = req.body;
 
-      let success = false;
-      let message = "";
-      let code = 400;
-      let data = null;
-
-      res.set("Content-Type", "application/json; charset=utf-8");
-
-      if (!fullname) message = "Full Name field is required!";
-      else if (!email) message = "Email field is required!";
-      else if (!password) message = "Password field is required!";
-      else if (!confirmPassword)
-        message = "Confirm Password field is required!";
-      else if (!termsCondition || termsCondition === "false")
-        message = "Terms and Conditions must be checked!";
-      else if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/))
-        message = "Email is not valid!";
-      else if (password.length < 8)
-        message = "Password must be at least 8 characters!";
-      else if (password !== confirmPassword)
-        message = "Password is not match with Confirm Password!";
-      else {
-        const user = new User({
-          name: fullname,
-          username,
-          email,
-          password,
+      // Password validation
+      if (password !== confirmPassword) {
+        return res.status(400).json({
+          success: false,
+          message: '"password" is not equal to "confirmPassword"',
+          code: 400,
+          data: null,
         });
-
-        if (await user.isExist()) {
-          code = 409;
-          message = "Username already exists!";
-        } else {
-          const hashedPassword = bcrypt.hashSync(password, 10);
-          user.setPassword(hashedPassword);
-
-          if (await user.save()) {
-            code = 201;
-            success = true;
-            message = "User registration is successful";
-            data = user.get();
-          } else {
-            code = 500;
-            message = "Unexpected errors occurred";
-          }
-        }
       }
 
-      res.status(code);
-      res.json({ success, message, code, data });
+      // Terms and Condition validation
+      if (termsCondition !== "true") {
+        return res.status(400).json({
+          success: false,
+          message: '"termsCondition" must be checked',
+          code: 400,
+          data: null,
+        });
+      }
+
+      // Check if the user already exists
+      const user = new User({ name, username, email, password });
+      if (await user.isExist()) {
+        return res.status(409).json({
+          success: false,
+          message: "username already exists",
+          code: 409,
+          data: null,
+        });
+      }
+
+      // Encrypt the password
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      user.setPassword(hashedPassword);
+
+      // Store new user to database
+      if (await user.save()) {
+        return res.status(201).json({
+          success: true,
+          message: "user registration is successful",
+          code: 201,
+          data: user.get(),
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: "unexpected errors occurred",
+          code: 500,
+          data: null,
+        });
+      }
     },
   },
   recovery: {
