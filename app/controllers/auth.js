@@ -1,101 +1,226 @@
+const Joi = require("joi");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   login: {
+    /**
+     * Render login page
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     */
     show: (req, res) => {
       res.render("auth/login", {
         layout: "layouts/main-layout",
         title: "Login",
       });
     },
-    submit: (req, res) => {
-      const body = req.body;
 
-      // decrypt password
-      // const isPasswordValid = bcrypt.compareSync(password, hashedPassword);
+    /**
+     * Handle the user login process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
+    submit: async (req, res) => {
+      // Set http header
+      res.set("Content-Type", "application/json; charset=utf-8");
 
-      res.send("ok");
+      // Request body validation
+      const schema = Joi.object({
+        username: Joi.string().required(),
+        password: Joi.string().required(),
+      });
+      const valid = schema.validate(req.body);
+      if (valid.error) {
+        return res.status(400).json({
+          success: false,
+          message: valid.error.details[0].message,
+        });
+      }
+
+      // Destructuring request body and
+      const { username, password } = req.body;
+
+      // Find User by username or email and decrypt the password
+      const user =
+        (await User.get(username)) ?? (await User.getEmail(username));
+      const isPasswordValid = user
+        ? bcrypt.compareSync(password, user.password)
+        : false;
+
+      // Check if the username and password are incorrect
+      if (!user || !isPasswordValid) {
+        return res.status(401).json({
+          success: false,
+          message: "incorrect username or password",
+        });
+      }
+
+      // Create JWT token
+      const token = jwt.sign(user.get(), "LearNteach-Sekodlah23", {
+        expiresIn: "7d",
+      });
+
+      // Set browser cookie
+      res.cookie("token", token, { httpOnly: true });
+
+      // Login success
+      return res.status(200).json({
+        success: true,
+        message: "user login is successful",
+      });
     },
   },
   register: {
+    /**
+     * Render register page
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     */
     show: (req, res) => {
       res.render("auth/register", {
         layout: "layouts/main-layout",
         title: "Register",
       });
     },
+
+    /**
+     * Handle the user registration process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
     submit: async (req, res) => {
-      const body = req.body;
+      // Set http header
+      res.set("Content-Type", "application/json; charset=utf-8");
+
+      // Request body validation
+      const valid = User.validate(req.body);
+      if (valid.error) {
+        return res.status(400).json({
+          success: false,
+          message: valid.error.details[0].message,
+        });
+      }
+
+      // Destructuring request body
       const {
-        fullname,
+        fullname: name,
         username,
         email,
         password,
         confirmPassword,
         termsCondition,
-      } = body;
+      } = req.body;
 
-      let success = false;
-      let message = "";
-      let code = 400;
-      let data = null;
-
-      res.set("Content-Type", "application/json; charset=utf-8");
-
-      if (!fullname) message = "Full Name field is required!";
-      else if (!email) message = "Email field is required!";
-      else if (!password) message = "Password field is required!";
-      else if (!confirmPassword)
-        message = "Confirm Password field is required!";
-      else if (!termsCondition || termsCondition === "false")
-        message = "Terms and Conditions must be checked!";
-      else if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/))
-        message = "Email is not valid!";
-      else if (password.length < 8)
-        message = "Password must be at least 8 characters!";
-      else if (password !== confirmPassword)
-        message = "Password is not match with Confirm Password!";
-      else {
-        const user = new User({
-          name: fullname,
-          username,
-          email,
-          password,
+      // Password validation
+      if (password !== confirmPassword) {
+        return res.status(400).json({
+          success: false,
+          message: '"password" is not equal to "confirmPassword"',
         });
-
-        if (await user.isExist()) {
-          code = 409;
-          message = "Username already exists!";
-        } else {
-          const hashedPassword = bcrypt.hashSync(password, 10);
-          user.setPassword(hashedPassword);
-
-          if (await user.save()) {
-            code = 201;
-            success = true;
-            message = "User registration is successful";
-            data = user.get();
-          } else {
-            code = 500;
-            message = "Unexpected errors occurred";
-          }
-        }
       }
 
-      res.status(code);
-      res.json({ success, message, code, data });
+      // Terms and Condition validation
+      if (termsCondition !== "true") {
+        return res.status(400).json({
+          success: false,
+          message: '"termsCondition" must be checked',
+        });
+      }
+
+      // Check if the user already exists
+      const user = new User({ name, username, email, password });
+      if (await user.isExist()) {
+        return res.status(409).json({
+          success: false,
+          message: "username already exists",
+        });
+      }
+
+      // Encrypt the password
+      const hashedPassword = bcrypt.hashSync(password, 10);
+      user.setPassword(hashedPassword);
+
+      // Store new user to database
+      if (await user.save()) {
+        return res.status(201).json({
+          success: true,
+          message: "user registration is successful",
+        });
+      } else {
+        return res.status(500).json({
+          success: false,
+          message: "unexpected errors occurred",
+        });
+      }
     },
   },
   recovery: {
+    /**
+     * Render forgot password page
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     */
     show: (req, res) => {
       res.render("auth/recovery", {
         layout: "layouts/main-layout",
         title: "Forgot Password",
       });
     },
-    submit: (req, res) => {
-      res.send("ok");
+
+    /**
+     * Handle the recovery password process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
+    submit: async (req, res) => {
+      // Set http header
+      res.set("Content-Type", "application/json; charset=utf-8");
+
+      // Request body validation
+      const schema = Joi.object({
+        email: Joi.string().email().required(),
+      });
+      const valid = schema.validate(req.body);
+      if (valid.error) {
+        return res.status(400).json({
+          success: false,
+          message: valid.error.details[0].message,
+        });
+      }
+
+      // Destructuring request body and
+      const { email } = req.body;
+
+      // Find User by username or email and decrypt the password
+      const user = await User.getEmail(username);
+
+      return res.status(503).json({
+        success: false,
+        message: "service unavailable",
+      });
     },
+  },
+
+  /**
+   * Handle the user logout process.
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   * @return {ServerResponse}
+   */
+  logout: (req, res) => {
+    res.clearCookie("token");
+    return res.redirect("/login");
   },
 };
