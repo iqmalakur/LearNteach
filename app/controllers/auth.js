@@ -1,6 +1,7 @@
-const Model = require("../models/Model");
+const Joi = require("joi");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   login: {
@@ -10,43 +11,68 @@ module.exports = {
         title: "Login",
       });
     },
+
+    /**
+     * Handle the user login process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
     submit: async (req, res) => {
-      const { username, password } = req.body;
-
-      let success = false;
-      let message = "";
-      let code = 400;
-      let data = null;
-
+      // Set http header
       res.set("Content-Type", "application/json; charset=utf-8");
 
-      if (!username) message = "Username field is required!";
-      else if (!password) message = "Password field is required!";
-      else {
-        const user =
-          (await User.get(username)) ?? (await User.getEmail(username));
-        const isPasswordValid = user
-          ? bcrypt.compareSync(password, user.password)
-          : false;
-
-        if (user && isPasswordValid) {
-          if (await user.save()) {
-            code = 200;
-            success = true;
-            message = "User login is successful";
-            data = user.get();
-          } else {
-            code = 500;
-            message = "Unexpected errors occurred";
-          }
-        } else {
-          code = 401;
-          message = "Incorrect username or password";
-        }
+      // Request body validation
+      const schema = Joi.object({
+        username: Joi.string().required(),
+        password: Joi.string().required(),
+      });
+      const valid = schema.validate(req.body);
+      if (valid.error) {
+        return res.status(400).json({
+          success: false,
+          message: valid.error.details[0].message,
+          code: 400,
+          data: null,
+        });
       }
 
-      res.status(code);
-      res.json({ success, message, code, data });
+      // Destructuring request body and
+      const { username, password } = req.body;
+
+      // Find User by username or email and decrypt the password
+      const user =
+        (await User.get(username)) ?? (await User.getEmail(username));
+      const isPasswordValid = user
+        ? bcrypt.compareSync(password, user.password)
+        : false;
+
+      // Check if the username and password are incorrect
+      if (!user || !isPasswordValid) {
+        return res.status(401).json({
+          success: false,
+          message: "incorrect username or password",
+          code: 401,
+          data: null,
+        });
+      }
+
+      // Create JWT token
+      const token = jwt.sign(user.get(), "LearNteach-Sekodlah23", {
+        expiresIn: "7d",
+      });
+
+      // Set browser cookie
+      res.cookie("token", token, { httpOnly: true });
+
+      // Login success
+      return res.status(200).json({
+        success: true,
+        message: "user login is successful",
+        code: 200,
+        data: null,
+      });
     },
   },
   register: {

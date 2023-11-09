@@ -106,8 +106,8 @@ class User extends Model {
     const result = await super.get(User.table, { email });
 
     if (result.length != 0) {
-      const { username, password, email, name } = result;
-      return new User(username, password, email, name);
+      const { username, password, email, name } = result[0];
+      return new User({ username, password, email, name });
     }
 
     return null;
