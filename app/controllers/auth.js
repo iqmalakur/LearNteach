@@ -183,8 +183,32 @@ module.exports = {
      * @param {Response} res The Response object.
      * @return {ServerResponse}
      */
-    submit: (req, res) => {
-      res.send("ok");
+    submit: async (req, res) => {
+      // Set http header
+      res.set("Content-Type", "application/json; charset=utf-8");
+
+      // Request body validation
+      const schema = Joi.object({
+        email: Joi.string().email().required(),
+      });
+      const valid = schema.validate(req.body);
+      if (valid.error) {
+        return res.status(400).json({
+          success: false,
+          message: valid.error.details[0].message,
+        });
+      }
+
+      // Destructuring request body and
+      const { email } = req.body;
+
+      // Find User by username or email and decrypt the password
+      const user = await User.getEmail(username);
+
+      return res.status(503).json({
+        success: false,
+        message: "service unavailable",
+      });
     },
   },
 
