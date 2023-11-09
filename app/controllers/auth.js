@@ -5,6 +5,12 @@ const jwt = require("jsonwebtoken");
 
 module.exports = {
   login: {
+    /**
+     * Render login page
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     */
     show: (req, res) => {
       res.render("auth/login", {
         layout: "layouts/main-layout",
@@ -33,8 +39,6 @@ module.exports = {
         return res.status(400).json({
           success: false,
           message: valid.error.details[0].message,
-          code: 400,
-          data: null,
         });
       }
 
@@ -53,8 +57,6 @@ module.exports = {
         return res.status(401).json({
           success: false,
           message: "incorrect username or password",
-          code: 401,
-          data: null,
         });
       }
 
@@ -70,12 +72,16 @@ module.exports = {
       return res.status(200).json({
         success: true,
         message: "user login is successful",
-        code: 200,
-        data: null,
       });
     },
   },
   register: {
+    /**
+     * Render register page
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     */
     show: (req, res) => {
       res.render("auth/register", {
         layout: "layouts/main-layout",
@@ -100,8 +106,6 @@ module.exports = {
         return res.status(400).json({
           success: false,
           message: valid.error.details[0].message,
-          code: 400,
-          data: null,
         });
       }
 
@@ -120,8 +124,6 @@ module.exports = {
         return res.status(400).json({
           success: false,
           message: '"password" is not equal to "confirmPassword"',
-          code: 400,
-          data: null,
         });
       }
 
@@ -130,8 +132,6 @@ module.exports = {
         return res.status(400).json({
           success: false,
           message: '"termsCondition" must be checked',
-          code: 400,
-          data: null,
         });
       }
 
@@ -141,8 +141,6 @@ module.exports = {
         return res.status(409).json({
           success: false,
           message: "username already exists",
-          code: 409,
-          data: null,
         });
       }
 
@@ -155,26 +153,36 @@ module.exports = {
         return res.status(201).json({
           success: true,
           message: "user registration is successful",
-          code: 201,
-          data: user.get(),
         });
       } else {
         return res.status(500).json({
           success: false,
           message: "unexpected errors occurred",
-          code: 500,
-          data: null,
         });
       }
     },
   },
   recovery: {
+    /**
+     * Render forgot password page
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     */
     show: (req, res) => {
       res.render("auth/recovery", {
         layout: "layouts/main-layout",
         title: "Forgot Password",
       });
     },
+
+    /**
+     * Handle the recovery password process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
     submit: (req, res) => {
       res.send("ok");
     },
