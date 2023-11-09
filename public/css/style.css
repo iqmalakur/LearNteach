@@ -51,3 +51,39 @@ footer select.form-select {
 footer select.form-select:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
+.text-center{
+  font-size: 50px;
+  font-weight: bolder;
+  padding-bottom: 5px;
+}
+.box{
+  padding: 60x;
+  margin-left:100px;
+  margin-right: 100px;
+}
+.ikon{
+  width:21px;
+  height:26px;
+  position: right;
+  padding: 10px;
+  margin-right: 50px;
+}
+.custom-btn {
+  background-color: #7c857e;
+  border-color: black;
+}
+.kotak{
+  margin-right: 50px;
+  margin-left: 50px;
+  padding: 6px;
+}
+.tombol{
+  margin-right: 50px;
+  margin-left: 50px;
+  padding: 6px;
+}
+.line{
+  margin-right: 35px;
+  margin-left: 35px;
+  padding: 6px;
+}
