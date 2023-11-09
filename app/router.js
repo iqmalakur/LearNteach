@@ -18,6 +18,7 @@ router.get("/register", authService.checkToken, auth.register.show); // register
 router.post("/register", auth.register.submit);
 router.get("/recovery", authService.checkToken, auth.recovery.show); // recovery password page
 router.post("/recovery", auth.recovery.submit);
+router.post("/logout", auth.logout);
 
 // Home / Root
 router.get("/", authService.checkToken, home.index); // landing page

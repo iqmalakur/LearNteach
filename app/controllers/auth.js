@@ -187,4 +187,16 @@ module.exports = {
       res.send("ok");
     },
   },
+
+  /**
+   * Handle the user logout process.
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   * @return {ServerResponse}
+   */
+  logout: (req, res) => {
+    res.clearCookie("token");
+    return res.redirect("/login");
+  },
 };
