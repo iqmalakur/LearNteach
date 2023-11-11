@@ -1,20 +1,15 @@
-const jwt = require("jsonwebtoken");
+const { isTokenValid } = require("../utils/jwt");
 
-/**
- * Authentication Service.
- *
- * @class AuthService
- */
-class AuthService {
+module.exports = {
   /**
-   * Validate JWT token
+   * Validate Login Token
    *
    * @param {Request} req The Request object.
    * @param {Response} res The Response object.
    * @param {NextFunction} next The NextFunction function.
    * @return {ServerResponse}
    */
-  checkToken(req, res, next) {
+  checkToken: (req, res, next) => {
     const token = req.cookies.token;
     let auth = false;
 
@@ -31,21 +26,18 @@ class AuthService {
       return auth ? next() : res.redirect("/login");
     }
 
-    // Validate the token
-    try {
-      jwt.verify(token, "LearNteach-Sekodlah23");
-
+    // If token is valid
+    if (isTokenValid(token)) {
       // Redirect to landing page if the url destination is auth pages
       if (auth) {
         return res.redirect("/");
       }
 
       return next();
-    } catch (err) {
-      res.clearCookie("token");
-      return res.redirect("/login");
     }
-  }
-}
 
-module.exports = AuthService;
+    // Redirect to login page if token is invalid
+    res.clearCookie("token");
+    return res.redirect("/login");
+  },
+};
