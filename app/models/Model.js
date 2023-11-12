@@ -77,6 +77,45 @@ class Model {
   }
 
   /**
+   * Get data from database with join.
+   *
+   * @param {String} table Table name.
+   * @param {String} columns Columns to be selected (separated by ,).
+   * @param {String} join Table name to be joined.
+   * @param {String} joinCondition The condition of table join
+   * @param {String | Object} whereCondition The condition of where clause.
+   * @return {Promise<Array>}
+   */
+  static async getJoin(table, columns, join, joinCondition, whereCondition) {
+    let result = null;
+
+    if (whereCondition) {
+      result = await Model.conn.query(
+        `SELECT ${columns}
+        FROM ${table}
+        INNER JOIN ${join}
+        ON ${joinCondition}
+        WHERE ${Model.getCondition(whereCondition)}`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+    } else {
+      result = await Model.conn.query(
+        `SELECT ${columns}
+        FROM ${table}
+        INNER JOIN ${join}
+        ON ${joinCondition}`,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+    }
+
+    return result;
+  }
+
+  /**
    * Insert a new data into database.
    *
    * @param {String} table Table name.
