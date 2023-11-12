@@ -175,13 +175,7 @@ class Course extends Model {
    * @return {Promise<Instructor | null>}
    */
   async getInstructor() {
-    const result = await Instructor.get({ username: this.instructor });
-
-    if (result.length != 0) {
-      return new Instructor(result[0]);
-    }
-
-    return null;
+    return await Instructor.get(this.instructor);
   }
 
   /**

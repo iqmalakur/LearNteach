@@ -40,7 +40,8 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   instructor: async (req, res) => {
-    const instructor = await Course.getInstructor(req.params.courseId);
+    const course = await Course.get(req.params.courseId);
+    const instructor = await course.getInstructor();
 
     res.render("course/instructor", {
       layout: "layouts/main-layout",
