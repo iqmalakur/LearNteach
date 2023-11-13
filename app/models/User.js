@@ -16,6 +16,7 @@ class User extends Model {
    */
   constructor(data) {
     super(data, User.table, { username: data.username });
+    this.picture = data.picture ?? "/img/profile/default.png";
   }
 
   /**
@@ -48,6 +49,17 @@ class User extends Model {
    */
   setName(name) {
     this.name = name;
+    return this;
+  }
+
+  /**
+   * Set the User picture property.
+   *
+   * @param {String} picture A new picture will be set.
+   * @return {User} User object with the new picture property.
+   */
+  setPicture(picture) {
+    this.picture = picture;
     return this;
   }
 
@@ -89,8 +101,7 @@ class User extends Model {
     const result = await super.get(User.table, { username });
 
     if (result.length != 0) {
-      const { password, email, name } = result[0];
-      return new User({ username, password, email, name });
+      return new User(result[0]);
     }
 
     return null;
@@ -106,8 +117,7 @@ class User extends Model {
     const result = await super.get(User.table, { email });
 
     if (result.length != 0) {
-      const { username, password, email, name } = result[0];
-      return new User({ username, password, email, name });
+      return new User(result[0]);
     }
 
     return null;
@@ -119,8 +129,8 @@ class User extends Model {
    * @return {Object} User properties contain username, password, email, and name.
    */
   get() {
-    const { username, password, email, name } = this;
-    return { username, password, email, name };
+    const { username, password, email, name, picture } = this;
+    return { username, password, email, name, picture };
   }
 
   /**
@@ -139,12 +149,12 @@ class User extends Model {
    * @return {Promise<Boolean>}
    */
   async save() {
-    const { username, password, email, name } = this.get();
+    const { username, password, email, name, picture } = this.get();
 
     if (await this.isExist())
-      return await this.update({ password, email, name });
+      return await this.update({ password, email, name, picture });
 
-    return await User.insert({ username, password, email, name });
+    return await User.insert({ username, password, email, name, picture });
   }
 }
 
