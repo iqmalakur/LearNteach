@@ -12,9 +12,16 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     show: (req, res) => {
+      const successMessage = req.cookies.successMessage ?? false;
+
+      if (successMessage) {
+        res.clearCookie("successMessage");
+      }
+
       res.render("auth/login", {
         layout: "layouts/main-layout",
         title: "Login",
+        successMessage,
       });
     },
 
@@ -39,6 +46,7 @@ module.exports = {
         return res.status(400).json({
           success: false,
           message: valid.error.details[0].message,
+          redirect: null,
         });
       }
 
@@ -57,6 +65,7 @@ module.exports = {
         return res.status(401).json({
           success: false,
           message: "incorrect username or password",
+          redirect: null,
         });
       }
 
@@ -68,10 +77,14 @@ module.exports = {
       // Set browser cookie
       res.cookie("token", token, { httpOnly: true });
 
+      const message = "user login is successful";
+      res.cookie("successMessage", message);
+
       // Login success
       return res.status(200).json({
         success: true,
-        message: "user login is successful",
+        message,
+        redirect: "/",
       });
     },
   },
@@ -106,6 +119,7 @@ module.exports = {
         return res.status(400).json({
           success: false,
           message: valid.error.details[0].message,
+          redirect: null,
         });
       }
 
@@ -124,14 +138,16 @@ module.exports = {
         return res.status(400).json({
           success: false,
           message: '"password" is not equal to "confirmPassword"',
+          redirect: null,
         });
       }
 
       // Terms and Condition validation
-      if (termsCondition !== "true") {
+      if (!termsCondition) {
         return res.status(400).json({
           success: false,
           message: '"termsCondition" must be checked',
+          redirect: null,
         });
       }
 
@@ -141,6 +157,7 @@ module.exports = {
         return res.status(409).json({
           success: false,
           message: "username already exists",
+          redirect: null,
         });
       }
 
@@ -150,14 +167,19 @@ module.exports = {
 
       // Store new user to database
       if (await user.save()) {
+        const message = "user registration is successful";
+        res.cookie("successMessage", message);
+
         return res.status(201).json({
           success: true,
-          message: "user registration is successful",
+          message,
+          redirect: "/login",
         });
       } else {
         return res.status(500).json({
           success: false,
           message: "unexpected errors occurred",
+          redirect: null,
         });
       }
     },
@@ -196,6 +218,7 @@ module.exports = {
         return res.status(400).json({
           success: false,
           message: valid.error.details[0].message,
+          redirect: null,
         });
       }
 
@@ -208,6 +231,7 @@ module.exports = {
       return res.status(503).json({
         success: false,
         message: "service unavailable",
+        redirect: null,
       });
     },
   },

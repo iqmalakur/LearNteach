@@ -9,11 +9,17 @@ module.exports = {
    */
   index: async (req, res) => {
     const courses = await Course.getAll();
+    const successMessage = req.cookies.successMessage ?? false;
+
+    if (successMessage) {
+      res.clearCookie("successMessage");
+    }
 
     res.render("index", {
       layout: "layouts/index-layout",
       title: "LearNteach",
       courses,
+      successMessage,
     });
   },
 
