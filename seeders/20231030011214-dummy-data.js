@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 
 /** @type {import('sequelize-cli').Migration} */
 
-const { faker } = require('@faker-js/faker');
+const { faker } = require("@faker-js/faker");
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -40,6 +40,7 @@ module.exports = {
         email: faker.internet.email(),
         password: faker.internet.password(),
         name: faker.person.fullName(),
+        picture: faker.image.url(),
       };
 
       users.push(user);
@@ -47,7 +48,7 @@ module.exports = {
       // 1% of Users will become Instructors
       if (Math.random() >= 0.9) {
         // 99% of Instructors are Approved
-        const approved = Math.random() >= 0.1 ? 'yes' : 'no';
+        const approved = Math.random() >= 0.1 ? "yes" : "no";
 
         instructors.push({
           username: user.username,
@@ -55,27 +56,27 @@ module.exports = {
           balance: 0,
           approved,
           bio: faker.person.bio(),
-          rating: approved === 'no' ? 0 : Math.round(Math.random()) + 4,
+          rating: approved === "no" ? 0 : Math.round(Math.random()) + 4,
         });
       }
     }
 
-    await queryInterface.bulkInsert('Users', users);
-    await queryInterface.bulkInsert('Instructors', instructors);
+    await queryInterface.bulkInsert("Users", users);
+    await queryInterface.bulkInsert("Instructors", instructors);
 
     // Generate Courses from existing Instructors
     for (let instructor of instructors) {
       // Generate Courses only if Instructor Approved
-      if (instructor.approved === 'yes') {
+      if (instructor.approved === "yes") {
         const days = [
-          'Sunday',
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday',
-          'Sunday',
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday",
         ];
 
         // Generate 1 or 2 Courses per Instructor
@@ -93,7 +94,7 @@ module.exports = {
             description: faker.lorem.sentence(),
             rating: Math.round(Math.random()) + 4,
             members: Math.ceil(Math.random() * (users.length / 2)) + 4,
-            tags: tags.join(','),
+            tags: tags.join(","),
             preview: faker.image.url(),
             price: Math.floor(faker.finance.amount(1, 5)) * 100000,
             createdAt: new Date(),
@@ -106,7 +107,7 @@ module.exports = {
       }
     }
 
-    await queryInterface.bulkInsert('Courses', courses);
+    await queryInterface.bulkInsert("Courses", courses);
 
     // Generate Communities
     for (let [id, course] of courses.entries()) {
@@ -115,34 +116,34 @@ module.exports = {
         name: `${course.title} Community`,
         description: faker.commerce.productDescription(),
         picture: faker.image.url(),
-        type: 'local',
+        type: "local",
       });
     }
 
-    await queryInterface.bulkInsert('Communities', communities);
+    await queryInterface.bulkInsert("Communities", communities);
 
     // Generate Contents
     for (let [id, course] of courses.entries()) {
       for (let i = 0; i < Math.ceil(Math.random() * 5); i++) {
         const rand = Math.random();
-        let type = '';
+        let type = "";
 
         if (rand >= 0.3) {
-          type = 'video';
+          type = "video";
 
           videos.push({
             id: contents.length + 1,
             file: faker.system.filePath(),
           });
         } else if (rand >= 0.15) {
-          type = 'quiz';
+          type = "quiz";
 
           quizzes.push({
             id: contents.length + 1,
             answer_time: Math.round(Math.random() * 5) + 5,
           });
         } else {
-          type = 'article';
+          type = "article";
 
           articles.push({
             id: contents.length + 1,
@@ -153,21 +154,21 @@ module.exports = {
         contents.push({
           course: id + 1,
           label: faker.word.words({ count: { min: 5, max: 10 } }),
-          approved: 'yes',
+          approved: "yes",
           type,
         });
       }
     }
 
-    await queryInterface.bulkInsert('Contents', contents);
-    await queryInterface.bulkInsert('Videos', videos);
-    await queryInterface.bulkInsert('Articles', articles);
-    await queryInterface.bulkInsert('Quizzes', quizzes);
+    await queryInterface.bulkInsert("Contents", contents);
+    await queryInterface.bulkInsert("Videos", videos);
+    await queryInterface.bulkInsert("Articles", articles);
+    await queryInterface.bulkInsert("Quizzes", quizzes);
 
     // Generate Questions
     for (let quiz of quizzes) {
       for (let i = 0; i < Math.ceil(Math.random() * 3) + 2; i++) {
-        const type = Math.random() > 0.3 ? 'choises' : 'essay';
+        const type = Math.random() > 0.3 ? "choises" : "essay";
 
         questions.push({
           quiz: quiz.id,
@@ -176,7 +177,7 @@ module.exports = {
           type,
         });
 
-        if (type === 'choises') {
+        if (type === "choises") {
           const choises = [];
 
           for (let j = 0; j < 4; j++) {
@@ -185,21 +186,21 @@ module.exports = {
 
           multipleChoises.push({
             id: questions.length,
-            choises: choises.join(','),
+            choises: choises.join(","),
           });
         }
       }
     }
 
-    await queryInterface.bulkInsert('Questions', questions);
-    await queryInterface.bulkInsert('MultipleChoises', multipleChoises);
+    await queryInterface.bulkInsert("Questions", questions);
+    await queryInterface.bulkInsert("MultipleChoises", multipleChoises);
 
     // Generate Promotion Codes
     for (let i = 0; i < 10; i++) {
       promotionCodes.push({
         course: Math.ceil(Math.random() * courses.length),
         code: faker.string.alphanumeric({
-          casing: 'upper',
+          casing: "upper",
           length: { min: 5, max: 10 },
         }),
         discount: Math.ceil(Math.random() * 5) + 5,
@@ -207,7 +208,7 @@ module.exports = {
       });
     }
 
-    await queryInterface.bulkInsert('PromotionCodes', promotionCodes);
+    await queryInterface.bulkInsert("PromotionCodes", promotionCodes);
 
     // Generate Wishlists, Carts, and EnrolledCourses
     for (let i = 0; i < 3; i++) {
@@ -290,9 +291,9 @@ module.exports = {
 
                   for (let k = 0; k < contents.length; k++) {
                     if (k <= Math.ceil(contents.length / 2)) {
-                      completedContents.push('yes');
+                      completedContents.push("yes");
 
-                      if (contents[k].type === 'quiz') {
+                      if (contents[k].type === "quiz") {
                         quizGrades.push(
                           `${contents[k].id}:${
                             Math.ceil(Math.random() * 50) + 50
@@ -300,15 +301,15 @@ module.exports = {
                         );
                       }
                     } else {
-                      completedContents.push('no');
+                      completedContents.push("no");
                     }
                   }
 
                   enrolledCourses.push({
                     user: user.username,
                     course: index,
-                    completed_contents: completedContents.join(','),
-                    quiz_grades: quizGrades.join(','),
+                    completed_contents: completedContents.join(","),
+                    quiz_grades: quizGrades.join(","),
                   });
 
                   const [instructor, __] = await queryInterface.sequelize.query(
@@ -330,10 +331,10 @@ module.exports = {
       }
     }
 
-    await queryInterface.bulkInsert('Wishlists', wishlists);
-    await queryInterface.bulkInsert('Carts', carts);
-    await queryInterface.bulkInsert('EnrolledCourses', enrolledCourses);
-    await queryInterface.bulkInsert('Transactions', transactions);
+    await queryInterface.bulkInsert("Wishlists", wishlists);
+    await queryInterface.bulkInsert("Carts", carts);
+    await queryInterface.bulkInsert("EnrolledCourses", enrolledCourses);
+    await queryInterface.bulkInsert("Transactions", transactions);
 
     // Generate Chats
     for (let [id, community] of communities.entries()) {
@@ -353,7 +354,7 @@ module.exports = {
       }
     }
 
-    await queryInterface.bulkInsert('Chats', chats);
+    await queryInterface.bulkInsert("Chats", chats);
   },
 
   async down(queryInterface, Sequelize) {
@@ -364,21 +365,21 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete('Transactions', null, {});
-    await queryInterface.bulkDelete('EnrolledCourses', null, {});
-    await queryInterface.bulkDelete('PromotionCodes', null, {});
-    await queryInterface.bulkDelete('Carts', null, {});
-    await queryInterface.bulkDelete('Wishlists', null, {});
-    await queryInterface.bulkDelete('Chats', null, {});
-    await queryInterface.bulkDelete('MultipleChoises', null, {});
-    await queryInterface.bulkDelete('Questions', null, {});
-    await queryInterface.bulkDelete('Quizzes', null, {});
-    await queryInterface.bulkDelete('Articles', null, {});
-    await queryInterface.bulkDelete('Videos', null, {});
-    await queryInterface.bulkDelete('Contents', null, {});
-    await queryInterface.bulkDelete('Communities', null, {});
-    await queryInterface.bulkDelete('Courses', null, {});
-    await queryInterface.bulkDelete('Instructors', null, {});
-    await queryInterface.bulkDelete('Users', null, {});
+    await queryInterface.bulkDelete("Transactions", null, {});
+    await queryInterface.bulkDelete("EnrolledCourses", null, {});
+    await queryInterface.bulkDelete("PromotionCodes", null, {});
+    await queryInterface.bulkDelete("Carts", null, {});
+    await queryInterface.bulkDelete("Wishlists", null, {});
+    await queryInterface.bulkDelete("Chats", null, {});
+    await queryInterface.bulkDelete("MultipleChoises", null, {});
+    await queryInterface.bulkDelete("Questions", null, {});
+    await queryInterface.bulkDelete("Quizzes", null, {});
+    await queryInterface.bulkDelete("Articles", null, {});
+    await queryInterface.bulkDelete("Videos", null, {});
+    await queryInterface.bulkDelete("Contents", null, {});
+    await queryInterface.bulkDelete("Communities", null, {});
+    await queryInterface.bulkDelete("Courses", null, {});
+    await queryInterface.bulkDelete("Instructors", null, {});
+    await queryInterface.bulkDelete("Users", null, {});
   },
 };

@@ -5,6 +5,7 @@ entity Users {
     email : varchar
     password : varchar
     name : varchar
+    picture : varchar
 }
 
 entity Communities {
