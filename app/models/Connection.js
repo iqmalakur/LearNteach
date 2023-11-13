@@ -1,4 +1,5 @@
-const { Sequelize } = require("sequelize");
+const { Sequelize, DataTypes, Model } = require("sequelize");
+const wishlist = require("../models/wishlist");
 
 /**
  * Class representing a Connection.
@@ -18,11 +19,26 @@ class Connection {
       Connection.conn = new Sequelize("LearNteach", "root", "root", {
         host: "localhost",
         dialect: "mysql",
+        define: {
+          timestamps: false,
+        },
       });
     }
 
     return Connection.conn;
   }
+
+  /**
+   * Get sequelize Model
+   *
+   * @param {String} name Model name
+   * @return {Model}
+   */
+  static getModel(name) {
+    return Connection.getConnection().model(name);
+  }
 }
 
-module.exports = Connection;
+wishlist(Connection.getConnection(), DataTypes);
+
+module.exports = { Connection, wishlist: Connection.getModel("Wishlist") };
