@@ -73,10 +73,10 @@ class Instructor extends User {
   static async get(username) {
     const result = await super.getJoin(
       Instructor.table,
-      "Instructors.*, Users.email, Users.name",
+      "Instructors.username AS username, Instructors.*, Users.email, Users.name",
       "Users",
       "Instructors.username=Users.username",
-      { username }
+      { "Instructors.username": username }
     );
 
     if (result.length != 0) {
