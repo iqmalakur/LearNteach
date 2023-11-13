@@ -65,7 +65,8 @@ router.get("/course/:courseId/instructor", course.instructor); // instructor inf
 
 // Payment
 router.get("/payment", checkToken, payment.index); // payment page
-router.get("/cart", checkToken, payment.cart); // cart page
+router.get("/cart", checkToken, payment.cart.show); // cart page
+router.post("/cart", payment.cart.add);
 
 // Admin
 router.get("/admin", admin.index); // dashboard admin

@@ -1,5 +1,6 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const wishlist = require("../models/wishlist");
+const cart = require("../models/cart");
 
 /**
  * Class representing a Connection.
@@ -40,5 +41,10 @@ class Connection {
 }
 
 wishlist(Connection.getConnection(), DataTypes);
+cart(Connection.getConnection(), DataTypes);
 
-module.exports = { Connection, wishlist: Connection.getModel("Wishlist") };
+module.exports = {
+  Connection,
+  wishlist: Connection.getModel("Wishlist"),
+  cart: Connection.getModel("Cart"),
+};
