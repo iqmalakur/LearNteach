@@ -1,4 +1,6 @@
-const { cart } = require("../models/Connection");
+const User = require("../models/User");
+const { Cart } = require("../models/Connection");
+const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
   /**
@@ -21,10 +23,19 @@ module.exports = {
      * @param {Request} req The Request object.
      * @param {Response} res The Response object.
      */
-    show: (req, res) => {
+    show: async (req, res) => {
+      const token = req.cookies.token;
+      const username = verifyToken(token)?.username;
+      const user = await User.get(username);
+
+      const carts = await Cart.findAll({
+        where: { user: user.username },
+      });
+
       res.render("payment/cart", {
         layout: "layouts/raw-layout",
         title: "Cart",
+        carts,
       });
     },
 
@@ -40,7 +51,7 @@ module.exports = {
       const { username: user, course } = req.body;
 
       // Check if cart already exists
-      if (await cart.findOne({ where: { user, course } })) {
+      if (await Cart.findOne({ where: { user, course } })) {
         return res.status(409).json({
           success: false,
           message: "course already added to cart",
@@ -49,7 +60,7 @@ module.exports = {
       }
 
       // Success add to cart
-      cart.create({ user, course });
+      Cart.create({ user, course });
       return res.status(200).json({
         success: true,
         message: "course added to cart",

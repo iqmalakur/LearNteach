@@ -1,4 +1,4 @@
-const { isTokenValid } = require("../utils/jwt");
+const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
   /**
@@ -27,7 +27,7 @@ module.exports = {
     }
 
     // If token is valid
-    if (isTokenValid(token)) {
+    if (verifyToken(token)) {
       // Redirect to landing page if the url destination is auth pages
       if (auth) {
         return res.redirect("/");

@@ -1,7 +1,8 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
-const { wishlist } = require("../models/Connection");
+const { Wishlist } = require("../models/Connection");
+const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
   /**
@@ -106,10 +107,19 @@ module.exports = {
      * @param {Request} req The Request object.
      * @param {Response} res The Response object.
      */
-    show: (req, res) => {
+    show: async (req, res) => {
+      const token = req.cookies.token;
+      const username = verifyToken(token)?.username;
+      const user = await User.get(username);
+
+      const wishlists = await Wishlist.findAll({
+        where: { user: user.username },
+      });
+
       res.render("user/wishlist", {
         layout: "layouts/main-layout",
         title: "Wishlist",
+        wishlists,
       });
     },
 
@@ -125,7 +135,7 @@ module.exports = {
       const { username: user, course } = req.body;
 
       // Check if wishlist already exists
-      if (await wishlist.findOne({ where: { user, course } })) {
+      if (await Wishlist.findOne({ where: { user, course } })) {
         return res.status(409).json({
           success: false,
           message: "course already added to wishlist",
@@ -134,7 +144,7 @@ module.exports = {
       }
 
       // Success add to wishlist
-      wishlist.create({ user, course });
+      Wishlist.create({ user, course });
       return res.status(200).json({
         success: true,
         message: "course added to wishlist",

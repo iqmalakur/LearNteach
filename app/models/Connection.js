@@ -45,6 +45,6 @@ cart(Connection.getConnection(), DataTypes);
 
 module.exports = {
   Connection,
-  wishlist: Connection.getModel("Wishlist"),
-  cart: Connection.getModel("Cart"),
+  Wishlist: Connection.getModel("Wishlist"),
+  Cart: Connection.getModel("Cart"),
 };
