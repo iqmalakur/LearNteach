@@ -41,7 +41,15 @@ class Connection {
 module.exports = { Connection };
 
 // Export all models
-const models = ["Wishlist", "Cart", "Instructor", "Course"];
+const models = [
+  "Wishlist",
+  "Cart",
+  "Instructor",
+  "Course",
+  "Content",
+  "Article",
+  "Video",
+];
 
 models.forEach((m) => {
   const model = require("../models/" + m.toLowerCase());

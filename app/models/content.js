@@ -1,5 +1,7 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
+const uuid = require("uuid");
+
 module.exports = (sequelize, DataTypes) => {
   class Content extends Model {
     /**
@@ -13,15 +15,23 @@ module.exports = (sequelize, DataTypes) => {
   }
   Content.init(
     {
-      id: DataTypes.INTEGER,
+      id: {
+        primaryKey: true,
+        type: DataTypes.UUID,
+      },
       course: DataTypes.INTEGER,
       label: DataTypes.STRING,
-      approved: DataTypes.ENUM('yes', 'no'),
-      type: DataTypes.ENUM('video', 'article', 'quiz'),
+      approved: DataTypes.ENUM("yes", "no"),
+      type: DataTypes.ENUM("video", "article", "quiz"),
     },
     {
       sequelize,
-      modelName: 'Content',
+      modelName: "Content",
+      hooks: {
+        beforeCreate(content) {
+          content.id = uuid.v4();
+        },
+      },
     }
   );
   return Content;

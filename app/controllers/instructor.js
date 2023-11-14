@@ -1,5 +1,11 @@
 const Joi = require("joi");
-const { Instructor, Course } = require("../models/Connection");
+const {
+  Instructor,
+  Course,
+  Content,
+  Video,
+  Article,
+} = require("../models/Connection");
 
 module.exports = {
   /**
@@ -103,10 +109,13 @@ module.exports = {
      * @param {Request} req The Request object.
      * @param {Response} res The Response object.
      */
-    detail: (req, res) => {
+    detail: async (req, res) => {
+      const courses = await Course.getAll();
+
       res.render("instructor/course", {
         layout: "layouts/main-layout",
         title: "Course",
+        courses,
       });
     },
 
@@ -204,8 +213,60 @@ module.exports = {
        * @param {Response} res The Response object.
        * @return {ServerResponse}
        */
-      submit: (req, res) => {
-        res.send("ok");
+      submit: async (req, res) => {
+        // Get course with spesific id
+        const { courseId } = req.params;
+        const course = await Course.findOne({
+          where: { id: courseId },
+        });
+
+        // Check if course is not found
+        if (!course) {
+          return res.status(404).json({
+            success: false,
+            message: `course with id ${courseId} is not found!`,
+            redirect: null,
+          });
+        }
+
+        // Create content
+        const content = await Content.create({
+          ...req.body,
+          approved: "no",
+          course: courseId,
+        });
+
+        // Check and create content type
+        let result = null;
+        if (content.type === "article") {
+          result = await Article.create({
+            id: content.id,
+            body: req.body.body,
+          });
+        } else {
+          result = await Video.create({
+            id: content.id,
+            body: req.body.file,
+          });
+        }
+
+        // Send response
+        if (result) {
+          const message = "success create new content";
+          res.cookie("successMessage", message);
+
+          return res.status(201).json({
+            success: true,
+            message,
+            redirect: "/instructor/courses/" + courseId,
+          });
+        } else {
+          return res.status(500).json({
+            success: false,
+            message: "unexpected errors occurred",
+            redirect: null,
+          });
+        }
       },
     },
     quiz: {
