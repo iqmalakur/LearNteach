@@ -1,4 +1,4 @@
-const Connection = require("./Connection");
+const { Connection } = require("./Connection");
 const { QueryTypes } = require("sequelize");
 
 /**
@@ -154,7 +154,7 @@ class Model {
       `UPDATE ${this.table} SET ${updates.join(", ")} WHERE ${this.condition}`
     );
 
-    return metadata > 0;
+    return metadata?.affectedRows >= 0;
   }
 
   /**

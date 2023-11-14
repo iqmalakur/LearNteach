@@ -39,6 +39,8 @@ router.get(
   checkToken,
   instructor.course.detail
 ); // class dashboard
+router.get("/instructor/courses/add", instructor.course.show); // add course page
+router.post("/instructor/courses/add", instructor.course.add);
 router.get(
   "/instructor/courses/:courseId/content",
   checkToken,
@@ -65,7 +67,8 @@ router.get("/course/:courseId/instructor", course.instructor); // instructor inf
 
 // Payment
 router.get("/payment", checkToken, payment.index); // payment page
-router.get("/cart", checkToken, payment.cart); // cart page
+router.get("/cart", checkToken, payment.cart.show); // cart page
+router.post("/cart", payment.cart.add);
 
 // Admin
 router.get("/admin", admin.index); // dashboard admin

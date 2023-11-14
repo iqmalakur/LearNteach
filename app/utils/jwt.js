@@ -5,15 +5,14 @@ module.exports = {
    * Validate JWT token
    *
    * @param {String} token Token to be validated.
-   * @return {Boolean}
+   * @return {Object} Value of token
    */
-  isTokenValid: (token) => {
+  verifyToken: (token) => {
     try {
-      jwt.verify(token, "LearNteach-Sekodlah23");
-      return true;
+      return jwt.verify(token, "LearNteach-Sekodlah23");
     } catch (err) {
       res.clearCookie("token");
-      return false;
+      return null;
     }
   },
 };

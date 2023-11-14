@@ -70,7 +70,7 @@ module.exports = {
       }
 
       // Create JWT token
-      const token = jwt.sign(user.get(), "LearNteach-Sekodlah23", {
+      const token = jwt.sign({ username }, "LearNteach-Sekodlah23", {
         expiresIn: "7d",
       });
 
