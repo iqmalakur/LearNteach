@@ -1,7 +1,7 @@
 module.exports = {
   index: (req, res) => {
     res.render('admin/index', {
-      layout: 'layouts/main-layout',
+      layout: 'layouts/raw-layout',
       title: 'Dashboard',
     });
   },

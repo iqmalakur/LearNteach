@@ -26,12 +26,8 @@ module.exports = {
         },
       },
       promotion_code: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'PromotionCodes',
-          key: 'id',
-        },
+        allowNull: true,
+        type: Sequelize.STRING(10),
       },
       course_title: {
         allowNull: false,
@@ -45,12 +41,22 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(50),
       },
+      course_price: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       price: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
+      discount_percentage: {
+        allowNull: false,
+        defaultValue: 0,
+        type: Sequelize.INTEGER,
+      },
       discount: {
         allowNull: false,
+        defaultValue: 0,
         type: Sequelize.INTEGER,
       },
       tax: {

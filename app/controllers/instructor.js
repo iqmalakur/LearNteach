@@ -1,7 +1,7 @@
 module.exports = {
   index: (req, res) => {
     res.render('instructor/index', {
-      layout: 'layouts/main-layout',
+      layout: 'layouts/raw-layout',
       title: 'Instructor - Dashboard',
     });
   },
@@ -37,7 +37,7 @@ module.exports = {
     quiz: {
       show: (req, res) => {
         res.render('instructor/quiz', {
-          layout: 'layouts/main-layout',
+          layout: 'layouts/raw-layout',
           title: 'Add Quiz',
         });
       },

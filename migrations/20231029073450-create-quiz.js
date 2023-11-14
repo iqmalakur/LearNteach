@@ -11,7 +11,7 @@ module.exports = {
       },
       answer_time: {
         allowNull: false,
-        type: Sequelize.TIME,
+        type: Sequelize.INTEGER,
       },
     });
   },
