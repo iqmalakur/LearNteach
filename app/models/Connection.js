@@ -1,6 +1,4 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
-const wishlist = require("../models/wishlist");
-const cart = require("../models/cart");
 
 /**
  * Class representing a Connection.
@@ -40,11 +38,13 @@ class Connection {
   }
 }
 
-wishlist(Connection.getConnection(), DataTypes);
-cart(Connection.getConnection(), DataTypes);
+module.exports = { Connection };
 
-module.exports = {
-  Connection,
-  Wishlist: Connection.getModel("Wishlist"),
-  Cart: Connection.getModel("Cart"),
-};
+// Export all models
+const models = ["Wishlist", "Cart", "Instructor", "Course"];
+
+models.forEach((m) => {
+  const model = require("../models/" + m.toLowerCase());
+  model(Connection.getConnection(), DataTypes);
+  module.exports[m] = Connection.getModel(m);
+});

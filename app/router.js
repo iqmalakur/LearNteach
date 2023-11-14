@@ -39,6 +39,8 @@ router.get(
   checkToken,
   instructor.course.detail
 ); // class dashboard
+router.get("/instructor/courses/add", instructor.course.show); // add content page
+router.post("/instructor/courses/add", instructor.course.add);
 router.get(
   "/instructor/courses/:courseId/content",
   checkToken,
