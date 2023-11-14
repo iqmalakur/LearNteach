@@ -3,160 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=, initial-scale=1.0">
-    <title>Document</title>
-    <style>
-        .navbarWishlist{
-            
-            
-        }
-    </style>
+    <title>Wishlist</title>
 </head>
 <body>
     <div>
-        <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-              <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-              <span class="fs-4">Sidebar</span>
-            </a>
-            <hr>
-        <div class="dropdown">
-            <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                  <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                  <strong>mdo</strong>
-            </a>
-            <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                <li><a class="dropdown-item" href="#">New project...</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Sign out</a></li>
-            </ul>
+        <div class="row justify-content-start">
+            <div class="col">
+                <div class="d-flex flex-column flex-shrink-0 p-3 bg-light" style="width: 280px;">
+                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
+                    <span class="fs-4">Sidebar</span>
+                    </a>
+                    <hr>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                        <strong>User</strong>
+                    </a>
+                    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
+                        <li><a class="dropdown-item" href="#">New project...</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>    
             <ul class="nav nav-pills flex-column mb-auto">
               <li class="nav-item">
                 <a href="#" class="nav-link active" aria-current="page">
                   <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                  Home
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link link-dark">
-                  <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
                   Dashboard
                 </a>
               </li>
               <li>
                 <a href="#" class="nav-link link-dark">
+                  <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
+                  Courses
+                </a>
+              </li>
+              <li>
+                <a href="#" class="nav-link link-dark">
                   <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                  Orders
+                  Quizzes
                 </a>
               </li>
               <li>
                 <a href="#" class="nav-link link-dark">
                   <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                  Products
-                </a>
-              </li>
-              <li>
-                <a href="#" class="nav-link link-dark">
-                  <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                  Customers
+                  Community
                 </a>
               </li>
             </ul>
             <hr>
           </div>
-    </div>
-    <div class="navbarWishlist">
-        <ul class="nav nav-underline">
-            <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Dashboard</a>
-              </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" aria-disabled="true">Courses</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Wishlist</a>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="listWishlist">
-        <div class="card mb-3" style="max-width: 1000px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
-                        <h5 class="card-title">TOEFL Test Preparation</h5>
-                        <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            </div>
+          <div class="col-4">
+            <div class="navbarWishlist">
+                <ul class="nav nav-underline">
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Courses</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Wishlist</a>
+                    </li>
+                </ul>
+            </div>
+        
+            <div class="listWishlist">
+                <div class="card mb-3" style="max-width: 1000px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
+                                <h5 class="card-title">TOEFL Test Preparation</h5>
+                                <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="card mb-3" style="max-width: 1000px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
-                        <h5 class="card-title">TOEFL Test Preparation</h5>
-                        <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                <div class="card mb-3" style="max-width: 1000px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
+                                <h5 class="card-title">TOEFL Test Preparation</h5>
+                                <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div> 
-        <div class="card mb-3" style="max-width: 1000px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
-                        <h5 class="card-title">TOEFL Test Preparation</h5>
-                        <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div> 
+                <div class="card mb-3" style="max-width: 1000px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
+                                <h5 class="card-title">TOEFL Test Preparation</h5>
+                                <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div> 
-        <div class="card mb-3" style="max-width: 1000px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
-                        <h5 class="card-title">TOEFL Test Preparation</h5>
-                        <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div> 
+                <div class="card mb-3" style="max-width: 1000px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
+                                <h5 class="card-title">TOEFL Test Preparation</h5>
+                                <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div> 
-        <div class="card mb-3" style="max-width: 1000px;">
-            <div class="row g-0">
-                <div class="col-md-4">
-                    <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
-                        <h5 class="card-title">TOEFL Test Preparation</h5>
-                        <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
-                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div> 
+                <div class="card mb-3" style="max-width: 1000px;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="img/cover kelas.jpg" class="img-fluid rounded-start" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <button style="font-size: 10px;"><i class="bi bi-x-square"></i> Remove</button><button style='font-size:10px'> <i class="bi bi-cart3"></i> Add to cart </button>
+                                <h5 class="card-title">TOEFL Test Preparation</h5>
+                                <p class="card-text"><small class="text-body-secondary">Mr. David</small></p>
+                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </div> 
             </div>
-        </div> 
+          </div>
     </div>
 </body>
 </html>
