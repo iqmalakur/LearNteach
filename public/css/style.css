@@ -61,8 +61,8 @@ body {
 }
 .signUp {
   width: 500px;
-  height: 700px;
   margin: 50px auto 50px auto;
+  padding-bottom: 30px;
   border: 20px;
   border-radius: 20px;
   background-color: #ffffff;
