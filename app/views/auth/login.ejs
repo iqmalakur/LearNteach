@@ -1,91 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <style>
-      body{
-        text-align: center;
-        background-color: #E0E0E0;
-      }
-      .signUp{
-        width: 500px;
-        height: 550px;
-        margin: 50px auto 50px auto;
-        border: 20px;
-        border-radius: 20px;
-        background-color: #FFFFFF;
-      }
-      .greeting{
-        padding-top: 50px;
-        margin: 50px;
-      }
-      .button{
-        text-align: center;
-        background-color: #7C857E;
-        color: #E0E0E0;
-        border-radius: 5px;
-        border-color: transparent;
-        width: 340px;
-        height: 35px;
-      }
-      .boxSignin{
-        text-align: left;
-        padding-left: 80px;
-        padding-right: 80px;
-      }
-      .tncCheck{
-        padding-top: 10px;
-        padding-bottom: 20px;
-      }
-      .forgetPw{
-        padding-top: 50px;
-      }
-      .line{
-        margin: 10px auto 10px auto;
-        width: 75%;
-        height: 2px;
-        background-color: #7C857E;
-      }
-    </style>
-</head>
-<body>
-    <div class="signUp">
-        <div class="greeting">
-            <h1>Sign in</h1>
-            <h6>Log in and start honing your skills here</h6>
-        </div>
+<div class="signUp text-center">
+  <div class="greeting">
+    <h1>Sign in</h1>
+    <h6>Log in and start honing your skills here</h6>
+  </div>
 
-        <form>
-          <div class="boxSignin">
-            <div class="form-floating mb-2">
-                <input type="username" class="form-control" id="floatingInput" placeholder="username">
-                <label for="floatingInput">Username or e-mail</label>
-            </div>
+  <form action="/login" method="POST" class="form-post">
+    <div class="boxSignin">
+      <div class="form-floating mb-2">
+        <input
+          type="username"
+          class="form-control"
+          id="floatingInput"
+          placeholder="username"
+        />
+        <label for="floatingInput">Username or e-mail</label>
+      </div>
 
-            <div class="form-floating mt-2"> 
-                <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                <label for="floatingPassword">Password</label>
-            </div>
+      <div class="form-floating mt-2">
+        <input
+          type="password"
+          class="form-control"
+          id="floatingPassword"
+          placeholder="Password"
+        />
+        <label for="floatingPassword">Password</label>
+      </div>
 
-            <div class="tncCheck">
-                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                <label class="form-check-label" for="exampleCheck1">Remember me </label>
-            </div>
-          </div>
-            <button class="button">Sign up</button>
-          </form>
+      <div class="tncCheck">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+        <label class="form-check-label" for="exampleCheck1">Remember me </label>
+      </div>
+    </div>
+    <button class="button">Sign up</button>
+  </form>
 
-          <div class="forgetPw">
-            <p><a class="link-opacity-50-hover" href="#">Forget your password?</a></p>
-          </div>
-          <hr class="line">
-          <div class="SignIn">
-          <p>Not have an account?
-            <a class="link-opacity-50-hover" href="#">Sign up</a>
-          </p>
-          </div>
-    </div> 
-</body>
-</html>
+  <div class="forgetPw">
+    <p><a class="link-opacity-50-hover" href="#">Forget your password?</a></p>
+  </div>
+  <hr class="line" />
+  <div class="SignIn">
+    <p>
+      Not have an account?
+      <a class="link-opacity-50-hover" href="#">Sign up</a>
+    </p>
+  </div>
+</div>
