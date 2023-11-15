@@ -1,3 +1,16 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<div class="row" style="margin-top: 150px">
+  <div class="col text-center">
+    <img
+      src="/img/errors/<%- code %>.png"
+      alt="<%- code %>"
+      style="width: 50%"
+    />
+  </div>
+</div>
+<div class="row" style="background-color: #e0e0e0">
+  <div class="col text-center p-5">
+    <h1><%- errorTitle %></h1>
+    <h4 class="text-black-50"><%- errorSubTitle %></h4>
+    <a href="/" class="btn btn-light px-5 mt-4">Home</a>
+  </div>
+</div>
