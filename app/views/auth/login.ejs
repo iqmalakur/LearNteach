@@ -1,4 +1,4 @@
-<div class="signUp text-center">
+<div class="signUp text-center" style="margin-top: 150px">
   <div class="greeting">
     <h1>Sign in</h1>
     <h6>Log in and start honing your skills here</h6>
@@ -6,42 +6,59 @@
 
   <form action="/login" method="POST" class="form-post">
     <div class="boxSignin">
+      <% if (successMessage) { %>
+      <div class="alert alert-success" role="alert"><%- successMessage %></div>
+      <% } %>
+      <div class="form-error"></div>
       <div class="form-floating mb-2">
         <input
-          type="username"
+          type="text"
           class="form-control"
-          id="floatingInput"
+          id="username"
           placeholder="username"
+          name="username"
         />
-        <label for="floatingInput">Username or e-mail</label>
+        <label for="username">Username or e-mail</label>
       </div>
 
       <div class="form-floating mt-2">
         <input
           type="password"
           class="form-control"
-          id="floatingPassword"
+          id="password"
           placeholder="Password"
+          name="password"
         />
-        <label for="floatingPassword">Password</label>
+        <label for="password">Password</label>
       </div>
 
       <div class="tncCheck">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-        <label class="form-check-label" for="exampleCheck1">Remember me </label>
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="rememberMe"
+          name="rememberMe"
+        />
+        <label class="form-check-label" for="rememberMe">Remember me </label>
       </div>
+      <button class="submit btn btn-secondary" style="width: 100%">
+        Sign up
+      </button>
     </div>
-    <button class="submit">Sign up</button>
   </form>
 
   <div class="forgetPw">
-    <p><a class="link-opacity-50-hover" href="#">Forget your password?</a></p>
+    <p>
+      <a class="link-opacity-50-hover" href="/recovery"
+        >Forget your password?</a
+      >
+    </p>
   </div>
   <hr class="line" />
   <div class="SignIn">
     <p>
       Not have an account?
-      <a class="link-opacity-50-hover" href="#">Sign up</a>
+      <a class="link-opacity-50-hover" href="/register">Sign up</a>
     </p>
   </div>
 </div>

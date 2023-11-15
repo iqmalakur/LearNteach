@@ -1,4 +1,4 @@
-<div class="signUp">
+<div class="signUp text-center" style="margin-top: 150px">
   <div class="greeting">
     <h1>Sign up</h1>
     <h6>Sign up and start honing your skills here</h6>
@@ -6,60 +6,83 @@
 
   <form action="/register" method="POST" class="form-post">
     <div class="boxSignup">
+      <div class="form-error"></div>
       <div class="form-floating mb-2">
         <input
-          type="name"
+          type="text"
           class="form-control"
-          id="floatingInput"
+          id="fullname"
           placeholder="name"
+          name="fullname"
         />
-        <label for="floatingInput">Full Name</label>
+        <label for="fullname">Full Name</label>
+      </div>
+
+      <div class="form-floating mb-2">
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          placeholder="name"
+          name="username"
+        />
+        <label for="username">Username</label>
       </div>
 
       <div class="form-floating mb-2">
         <input
           type="email"
           class="form-control"
-          id="floatingInput"
+          id="email"
           placeholder="name@example.com"
+          name="email"
         />
-        <label for="floatingInput">Email address</label>
+        <label for="email">Email address</label>
       </div>
 
       <div class="form-floating mt-2">
         <input
           type="password"
           class="form-control"
-          id="floatingPassword"
+          id="password"
           placeholder="Password"
+          name="password"
         />
-        <label for="floatingPassword">Password</label>
+        <label for="password">Password</label>
       </div>
 
       <div class="form-floating mt-2">
         <input
           type="password"
           class="form-control"
-          id="floatingPassword"
+          id="confirmPassword"
           placeholder="Password"
+          name="confirmPassword"
         />
-        <label for="floatingPassword">Confirm Password</label>
+        <label for="confirmPassword">Confirm Password</label>
       </div>
 
       <div class="tncCheck">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-        <label class="form-check-label" for="exampleCheck1"
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="termsCondition"
+          name="termsCondition"
+        />
+        <label class="form-check-label" for="termsCondition"
           >Agree with our
         </label>
         <a class="icon-link" href="#">
-          terms and cons.
+          terms and conditions.
           <svg class="bi" aria-hidden="true">
             <use xlink:href="#arrow-right"></use>
           </svg>
         </a>
       </div>
+      <button class="submit btn btn-secondary" style="width: 100%">
+        Sign up
+      </button>
     </div>
-    <button class="submit">Sign up</button>
   </form>
 
   <br />
@@ -68,7 +91,7 @@
   <div class="SignIn">
     <p>
       Already have an account?
-      <a class="link-opacity-50-hover" href="#">Sign in</a>
+      <a class="link-opacity-50-hover" href="/login">Sign in</a>
     </p>
   </div>
 </div>
