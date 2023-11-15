@@ -25,6 +25,10 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      type: {
+        allowNull: false,
+        type: Sequelize.ENUM('choises', 'essay'),
+      },
     });
   },
   async down(queryInterface, Sequelize) {

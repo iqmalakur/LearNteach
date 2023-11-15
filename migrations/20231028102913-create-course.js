@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Courses', {
+    await queryInterface.createTable("Courses", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -13,13 +13,13 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(50),
         references: {
-          model: 'Instructors',
-          key: 'username',
+          model: "Instructors",
+          key: "username",
         },
       },
       title: {
         allowNull: false,
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(80),
       },
       description: {
         allowNull: true,
@@ -66,18 +66,18 @@ module.exports = {
       meet_day: {
         allowNull: false,
         type: Sequelize.ENUM(
-          'Sunday',
-          'Monday',
-          'Tuesday',
-          'Wednesday',
-          'Thursday',
-          'Friday',
-          'Saturday'
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday"
         ),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Courses');
+    await queryInterface.dropTable("Courses");
   },
 };

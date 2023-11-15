@@ -27,7 +27,7 @@ module.exports = {
       },
       chat: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
       },
       chat_date: {
         allowNull: false,
