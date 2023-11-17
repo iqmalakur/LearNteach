@@ -76,7 +76,10 @@ module.exports = {
       });
 
       // Set browser cookie
-      res.cookie("token", token, { httpOnly: true });
+      res.cookie("token", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 60000 * 10080),
+      });
 
       const message = "user login is successful";
       res.cookie("successMessage", message);

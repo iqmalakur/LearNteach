@@ -25,7 +25,7 @@ module.exports = {
      */
     show: async (req, res) => {
       const token = req.cookies.token;
-      const username = verifyToken(token)?.username;
+      const username = (await verifyToken(token))?.username;
       const user = await User.get(username);
 
       const carts = await Cart.findAll({

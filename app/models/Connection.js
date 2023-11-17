@@ -46,9 +46,11 @@ const models = [
   "Cart",
   "Instructor",
   "Course",
+  "Community",
   "Content",
   "Article",
   "Video",
+  "Chat",
 ];
 
 models.forEach((m) => {

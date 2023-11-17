@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Questions', {
+    await queryInterface.createTable("Questions", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,10 +11,11 @@ module.exports = {
       },
       quiz: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.UUID,
         references: {
-          model: 'Quizzes',
-          key: 'id',
+          model: "Quizzes",
+          key: "id",
         },
       },
       question_text: {
@@ -27,11 +28,11 @@ module.exports = {
       },
       type: {
         allowNull: false,
-        type: Sequelize.ENUM('choises', 'essay'),
+        type: Sequelize.ENUM("choises", "essay"),
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Questions');
+    await queryInterface.dropTable("Questions");
   },
 };
