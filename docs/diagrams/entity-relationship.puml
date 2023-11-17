@@ -104,7 +104,7 @@ object EnrolledCourses {
 }
 
 entity Contents {
-    id : int <PK>
+    id : uuid <PK>
     course : int <FK>
     --
     label : varchar
@@ -113,26 +113,26 @@ entity Contents {
 }
 
 entity Videos {
-    id : int <PK>
+    id : uuid <PK>
     --
     file : varchar
 }
 
 entity Articles {
-    id : int <PK>
+    id : uuid <PK>
     --
     body : text
 }
 
 entity Quizzes {
-    id : int <PK>
+    id : uuid <PK>
     --
     answer_time : time
 }
 
 entity Questions {
     id : int <PK>
-    quiz : int <FK>
+    quiz : uuid <FK>
     --
     question_text : varchar
     answer : varchar

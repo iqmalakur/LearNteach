@@ -9,7 +9,7 @@ module.exports = {
    * @param {NextFunction} next The NextFunction function.
    * @return {ServerResponse}
    */
-  checkToken: (req, res, next) => {
+  checkToken: async (req, res, next) => {
     const token = req.cookies.token;
     let auth = false;
 
@@ -27,7 +27,7 @@ module.exports = {
     }
 
     // If token is valid
-    if (verifyToken(token)) {
+    if (await verifyToken(token)) {
       // Redirect to landing page if the url destination is auth pages
       if (auth) {
         return res.redirect("/");

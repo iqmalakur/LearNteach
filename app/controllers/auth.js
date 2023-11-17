@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const User = require("../models/User");
+const { User } = require("../models/Database");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -56,7 +56,8 @@ module.exports = {
 
       // Find User by username or email and decrypt the password
       const user =
-        (await User.get(username)) ?? (await User.getEmail(username));
+        (await User.findByPk(username)) ??
+        (await User.findOne({ where: { email: username } }));
       const isPasswordValid = user
         ? bcrypt.compareSync(password, user.password)
         : false;
@@ -76,7 +77,10 @@ module.exports = {
       });
 
       // Set browser cookie
-      res.cookie("token", token, { httpOnly: true });
+      res.cookie("token", token, {
+        httpOnly: true,
+        expires: new Date(Date.now() + 60000 * 10080),
+      });
 
       const message = "user login is successful";
       res.cookie("successMessage", message);
@@ -115,7 +119,16 @@ module.exports = {
       res.set("Content-Type", "application/json; charset=utf-8");
 
       // Request body validation
-      const valid = User.validate(req.body);
+      const schema = Joi.object({
+        fullname: Joi.string().required(),
+        username: Joi.string().required(),
+        email: Joi.string().required().email(),
+        password: Joi.string().required().min(8),
+        confirmPassword: Joi.string().required(),
+        termsCondition: Joi.boolean().required(),
+      });
+
+      const valid = schema.validate(req.body);
       if (valid.error) {
         return res.status(400).json({
           success: false,
@@ -153,8 +166,7 @@ module.exports = {
       }
 
       // Check if the user already exists
-      const user = new User({ name, username, email, password });
-      if (await user.isExist()) {
+      if (await User.findByPk(username)) {
         return res.status(409).json({
           success: false,
           message: "username already exists",
@@ -164,10 +176,17 @@ module.exports = {
 
       // Encrypt the password
       const hashedPassword = bcrypt.hashSync(password, 10);
-      user.setPassword(hashedPassword);
 
       // Store new user to database
-      if (await user.save()) {
+      const user = await User.create({
+        name,
+        username,
+        email,
+        password: hashedPassword,
+        picture: "default.png",
+      });
+
+      if (user) {
         const message = "user registration is successful";
         res.cookie("successMessage", message);
 
@@ -227,7 +246,7 @@ module.exports = {
       const { email } = req.body;
 
       // Find User by username or email and decrypt the password
-      const user = await User.getEmail(username);
+      // const user = await User.getEmail(username);
 
       return res.status(503).json({
         success: false,

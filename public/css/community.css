@@ -1,0 +1,89 @@
+nav form {
+  width: 400px;
+}
+
+nav form img {
+  left: 15px;
+  top: 5px;
+}
+
+nav form input.form-control {
+  background-color: #e0e0e0;
+  padding-left: 50px;
+}
+
+.community {
+  height: 100vh;
+  overflow: hidden;
+}
+
+.chat-container {
+  height: 90%;
+  padding: 7rem 3rem 3rem 3rem;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.chat-container .chat {
+  flex: unset;
+  width: fit-content;
+  max-width: 60%;
+  background-color: #d9f4df;
+}
+
+.receiver .chat {
+  background-color: #f6f6f6;
+}
+
+.chat-container .chat p {
+  text-align: justify;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.receiver .chat p {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.chat-container .chat::after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: -40px;
+  right: auto;
+  bottom: 0;
+  border: 22px solid;
+  border-color: transparent #f6f6f6 transparent transparent;
+}
+
+.sender .chat::after {
+  left: auto;
+  right: -40px;
+  border-color: transparent transparent transparent #d9f4df;
+}
+
+.send-container {
+  height: 10%;
+  box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+@media only screen and (max-width: 960px) {
+  .chat-container .chat {
+    max-width: 80%;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .chat-container .chat {
+    max-width: 90%;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .chat-container .chat {
+    max-width: 100%;
+  }
+}

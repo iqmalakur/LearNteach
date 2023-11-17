@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Community extends Model {
     /**
@@ -13,16 +13,16 @@ module.exports = (sequelize, DataTypes) => {
   }
   Community.init(
     {
-      id: DataTypes.INTEGER,
+      id: { primaryKey: true, type: DataTypes.INTEGER },
       course: DataTypes.INTEGER,
       name: DataTypes.STRING(50),
       description: DataTypes.STRING,
       picture: DataTypes.STRING,
-      type: DataTypes.ENUM(['local', 'global']),
+      type: DataTypes.ENUM(["local", "global"]),
     },
     {
       sequelize,
-      modelName: 'Community',
+      modelName: "Community",
     }
   );
   return Community;

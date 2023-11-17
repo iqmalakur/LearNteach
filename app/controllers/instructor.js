@@ -5,7 +5,7 @@ const {
   Content,
   Video,
   Article,
-} = require("../models/Connection");
+} = require("../models/Database");
 
 module.exports = {
   /**

@@ -1,7 +1,6 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
-const { Wishlist } = require("../models/Connection");
+const { User, Wishlist } = require("../models/Database");
 const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
@@ -64,7 +63,7 @@ module.exports = {
     const { name, username, email, password, picture } = req.body;
 
     // Check if the user does not exists
-    const user = await User.get(username);
+    const user = await User.findByPk(username);
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -76,11 +75,13 @@ module.exports = {
     // Encrypt the password
     if (!bcrypt.compareSync(password, user.password)) {
       const hashedPassword = bcrypt.hashSync(password, 10);
-      user.setPassword(hashedPassword);
+      user.password = hashedPassword;
     }
 
     // Set all data to new data
-    user.setName(name).setEmail(email).setPicture(picture);
+    user.name = name;
+    user.email = email;
+    user.picture = picture;
 
     // Store new user to database
     if (await user.save()) {
@@ -109,8 +110,8 @@ module.exports = {
      */
     show: async (req, res) => {
       const token = req.cookies.token;
-      const username = verifyToken(token)?.username;
-      const user = await User.get(username);
+      const username = (await verifyToken(token))?.username;
+      const user = await User.findByPk(username);
 
       const wishlists = await Wishlist.findAll({
         where: { user: user.username },

@@ -1,4 +1,4 @@
-const Course = require("../models/_Course");
+const { Course } = require("../models/Database");
 
 module.exports = {
   /**
@@ -8,7 +8,7 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: async (req, res) => {
-    const courses = await Course.getAll();
+    const courses = await Course.findAll();
     const successMessage = req.cookies.successMessage ?? false;
 
     if (successMessage) {

@@ -3,6 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 
 const { faker } = require("@faker-js/faker");
+const uuid = require("uuid");
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -40,7 +41,7 @@ module.exports = {
         email: faker.internet.email(),
         password: faker.internet.password(),
         name: faker.person.fullName(),
-        picture: faker.image.url(),
+        picture: "default.png",
       };
 
       users.push(user);
@@ -123,36 +124,38 @@ module.exports = {
     await queryInterface.bulkInsert("Communities", communities);
 
     // Generate Contents
-    for (let [id, course] of courses.entries()) {
+    for (let [courseId, _] of courses.entries()) {
       for (let i = 0; i < Math.ceil(Math.random() * 5); i++) {
         const rand = Math.random();
         let type = "";
+        const id = uuid.v4();
 
         if (rand >= 0.3) {
           type = "video";
 
           videos.push({
-            id: contents.length + 1,
+            id,
             file: faker.system.filePath(),
           });
         } else if (rand >= 0.15) {
           type = "quiz";
 
           quizzes.push({
-            id: contents.length + 1,
+            id,
             answer_time: Math.round(Math.random() * 5) + 5,
           });
         } else {
           type = "article";
 
           articles.push({
-            id: contents.length + 1,
+            id,
             body: faker.lorem.sentences({ min: 10, max: 50 }),
           });
         }
 
         contents.push({
-          course: id + 1,
+          id: uuid.v4(),
+          course: courseId + 1,
           label: faker.word.words({ count: { min: 5, max: 10 } }),
           approved: "yes",
           type,

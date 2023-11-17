@@ -7,6 +7,7 @@ const course = require("./controllers/course");
 const user = require("./controllers/user");
 const admin = require("./controllers/admin");
 const payment = require("./controllers/payment");
+const community = require("./controllers/community");
 
 const { checkToken } = require("./middlewares/authMiddleware");
 
@@ -64,6 +65,9 @@ router.post(
 router.get("/course", course.index); // list of classes page
 router.get("/course/:courseId", course.detail); // class info page
 router.get("/course/:courseId/instructor", course.instructor); // instructor info page
+
+// Community
+router.get("/community/:communityId", checkToken, community.show); // community page
 
 // Payment
 router.get("/payment", checkToken, payment.index); // payment page

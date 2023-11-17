@@ -6,6 +6,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const debug = require("debug")("learnteach:server");
+const socketIo = require("socket.io");
 
 /**
  * Normalize a port into a number, string, or false.
@@ -124,6 +125,23 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
+
+/**
+ * Create Socket.io server.
+ */
+
+const io = socketIo(server, {});
+const CommunityService = require("./app/services/CommunityService");
+const community = new CommunityService(io);
+
+io.on("connection", (socket) => {
+  socket.on("join", community.join);
+  socket.on("message", (chat) => {
+    community.message(chat);
+    io.emit("message", chat);
+  });
+  socket.on("disconnect", community.leave);
+});
 
 /**
  * Listen on provided port, on all network interfaces.
