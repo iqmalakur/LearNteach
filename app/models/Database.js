@@ -42,16 +42,22 @@ module.exports = { Connection: Database };
 
 // Export all models
 const models = [
-  "Wishlist",
+  "Article",
   "Cart",
-  "User",
-  "Instructor",
-  "Course",
+  "Chat",
   "Community",
   "Content",
-  "Article",
+  "Course",
+  "EnrolledCourse",
+  "Instructor",
+  "MultipleChoise",
+  "PromotionCode",
+  "Question",
+  "Quiz",
+  "Transaction",
+  "User",
   "Video",
-  "Chat",
+  "Wishlist",
 ];
 
 models.forEach((m) => {
