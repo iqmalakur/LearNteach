@@ -65,3 +65,15 @@ models.forEach((m) => {
   model(Database.getConnection(), DataTypes);
   module.exports[m] = Database.getModel(m);
 });
+
+module.exports.Chat.belongsTo(module.exports.User, {
+  foreignKey: "user",
+});
+
+module.exports.EnrolledCourse.belongsTo(module.exports.User, {
+  foreignKey: "user",
+});
+
+module.exports.EnrolledCourse.belongsTo(module.exports.Course, {
+  foreignKey: "course",
+});

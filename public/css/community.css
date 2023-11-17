@@ -12,14 +12,27 @@ nav form input.form-control {
   padding-left: 50px;
 }
 
+.sidebar {
+  padding: 7rem 1rem 1rem 1rem;
+  width: 50vw;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.sidebar .members {
+  height: 19rem;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .community {
   height: 100vh;
+  padding-top: 5rem;
   overflow: hidden;
 }
 
 .chat-container {
-  height: 90%;
-  padding: 7rem 3rem 3rem 3rem;
+  height: 85%;
+  padding: 3rem 0;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -66,7 +79,7 @@ nav form input.form-control {
 }
 
 .send-container {
-  height: 10%;
+  height: 15%;
   box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 

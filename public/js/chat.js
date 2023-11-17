@@ -37,8 +37,13 @@ const updateChat = (chat, userStatus) => {
   );
 
   newChat.innerHTML = `
-  <div class="col chat rounded shadow position-relative my-1 p-3 text-${align}">
-    <span class="text-warning fw-bold fs-5">${chat.user}</span>
+  <div class="col-1 order-2 text-start">
+    <img src="/img/profiles/${
+      chat.picture
+    }" class="rounded-circle" style="width: 32px; height: 32px;" />
+  </div>
+  <div class="col order-1 chat rounded shadow position-relative my-1 p-3 text-${align}">
+    <span class="text-warning fw-bold fs-5">${chat.name}</span>
     <p>${chat.message}</p>
     <span>${date.getDate()}-${
     date.getMonth() + 1

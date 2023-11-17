@@ -1,47 +1,95 @@
-<div class="community">
-  <div class="chat-container">
-    <% chats.forEach(chat => { const userType = chat.user === user.username ?
-    'sender' : 'receiver'; const align = userType === 'sender' ? 'end' :
-    'start'; const date = new Date(); %>
-    <div class="row text-dark justify-content-<%= `${align} ${userType}` %>">
-      <div
-        class="col chat rounded shadow position-relative my-1 p-3 text-<%= align %>"
-      >
-        <span class="text-warning fw-bold fs-5"><%= chat.user %></span>
-        <p><%= chat.chat %></p>
-        <span>
-          <%= `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} |
-          ${date.getHours()}:${date.getMinutes()}` %>
-        </span>
+<div class="d-flex">
+  <div class="community">
+    <div class="chat-container">
+      <% chats.forEach(chat => { const userType = chat.user === user.username ?
+      'sender' : 'receiver'; const align = userType === 'sender' ? 'end' :
+      'start'; const date = new Date(chat.chat_date); %>
+      <div class="row text-dark justify-content-<%= `${align} ${userType}` %>">
+        <div
+          class="col-1 <%= userType === 'receiver' ? 'order-1 text-end' : 'order-2 text-start' %>"
+        >
+          <img
+            src="/img/profiles/<%= chat.User.picture %>"
+            class="rounded-circle"
+            style="width: 32px; height: 32px"
+          />
+        </div>
+        <div
+          class="col <%= userType === 'receiver' ? 'order-2' : 'order-1' %> chat rounded shadow position-relative my-1 p-3 text-<%= align %>"
+        >
+          <span class="text-warning fw-bold fs-5"><%= chat.name %></span>
+          <p><%= chat.chat %></p>
+          <span>
+            <%= `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} |
+            ${date.getHours()}:${date.getMinutes()}` %>
+          </span>
+        </div>
       </div>
+      <% }) %>
     </div>
-    <% }) %>
-  </div>
-  <div class="send-container pt-3">
-    <form action="/community/<%= community.id%>" method="POST">
-      <div class="row justify-content-center">
-        <div class="col-9 p-0">
-          <div class="mb-3">
-            <input
-              type="text"
-              class="form-control"
-              placeholder="Write your chat here..."
-              name="chat"
-              autocomplete="off"
-              autofocus
-            />
+    <div class="send-container p-4">
+      <form action="/community/<%= community.id%>" method="POST">
+        <div class="row justify-content-center">
+          <div class="col-9 p-0">
+            <div class="mb-3">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Write your chat here..."
+                name="chat"
+                autocomplete="off"
+                autofocus
+              />
+            </div>
+          </div>
+          <div class="col-1 p-0 text-center">
+            <button type="submit" class="btn btn-primary">
+              <i class="bi bi-send"></i>
+            </button>
           </div>
         </div>
-        <div class="col-1 p-0 text-center">
-          <button type="submit" class="btn btn-primary">
-            <i class="bi bi-send"></i>
-          </button>
-        </div>
-      </div>
-      <input type="hidden" name="username" value="<%= user.username %>" />
-      <input type="hidden" name="name" value="<%= user.name %>" />
-      <input type="hidden" name="picture" value="<%= user.picture %>" />
-      <input type="hidden" name="community" value="<%= community.id %>" />
-    </form>
+        <input type="hidden" name="username" value="<%= user.username %>" />
+        <input type="hidden" name="name" value="<%= user.name %>" />
+        <input type="hidden" name="picture" value="<%= user.picture %>" />
+        <input type="hidden" name="community" value="<%= community.id %>" />
+      </form>
+    </div>
+  </div>
+  <div class="sidebar">
+    <h5 class="text-center text-uppercase"><%= community.name %></h5>
+    <hr />
+    <h6 class="text-uppercase mt-4">instructor</h6>
+    <ul class="list-group">
+      <li class="list-group-item">
+        <img
+          src="/img/profiles/<%= instructor.picture %>"
+          class="rounded-circle"
+          style="width: 30px; height: 30px"
+        />
+        <%= `${instructor.name}${isInstructor ? ' (Me)' : ''}` %>
+      </li>
+    </ul>
+    <h6 class="text-uppercase mt-4">members</h6>
+    <ul class="list-group members">
+      <% if(!isInstructor){ %>
+      <li class="list-group-item">
+        <img
+          src="/img/profiles/<%= user.picture %>"
+          class="rounded-circle"
+          style="width: 30px; height: 30px"
+        />
+        <%= user.name %> (Me)
+      </li>
+      <% } communityUsers.forEach(communityUser => { %>
+      <li class="list-group-item">
+        <img
+          src="/img/profiles/<%= communityUser.User.picture %>"
+          class="rounded-circle"
+          style="width: 30px; height: 30px"
+        />
+        <%= communityUser.User.name %>
+      </li>
+      <% }) %>
+    </ul>
   </div>
 </div>
