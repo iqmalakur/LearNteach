@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+const { User } = require("../models/Database");
 
 module.exports = {
   /**
@@ -12,7 +12,7 @@ module.exports = {
     try {
       const user = jwt.verify(token, "LearNteach-Sekodlah23");
 
-      if (await User.get(user.username)) {
+      if (await User.findByPk(user.username)) {
         return user;
       }
 

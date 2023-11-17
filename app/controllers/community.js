@@ -1,6 +1,5 @@
 const Joi = require("joi");
-const { Community, Chat } = require("../models/Connection");
-const User = require("../models/User");
+const { User, Community, Chat } = require("../models/Database");
 const { verifyToken } = require("../utils/jwt");
 const io = require("socket.io");
 
@@ -14,7 +13,7 @@ module.exports = {
   show: async (req, res) => {
     const token = req.cookies.token;
     const username = (await verifyToken(token))?.username;
-    const user = await User.get(username);
+    const user = await User.findByPk(username);
     const community = await Community.findOne({
       where: { id: req.params.communityId },
     });

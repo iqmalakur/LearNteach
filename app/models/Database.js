@@ -5,7 +5,7 @@ const { Sequelize, DataTypes, Model } = require("sequelize");
  *
  * @class Connection
  */
-class Connection {
+class Database {
   static conn = null;
 
   /**
@@ -14,8 +14,8 @@ class Connection {
    * @return {Sequelize}
    */
   static getConnection() {
-    if (Connection.conn == null) {
-      Connection.conn = new Sequelize("LearNteach", "root", "root", {
+    if (Database.conn == null) {
+      Database.conn = new Sequelize("LearNteach", "root", "root", {
         host: "localhost",
         dialect: "mysql",
         define: {
@@ -24,7 +24,7 @@ class Connection {
       });
     }
 
-    return Connection.conn;
+    return Database.conn;
   }
 
   /**
@@ -34,16 +34,17 @@ class Connection {
    * @return {Model}
    */
   static getModel(name) {
-    return Connection.getConnection().model(name);
+    return Database.getConnection().model(name);
   }
 }
 
-module.exports = { Connection };
+module.exports = { Connection: Database };
 
 // Export all models
 const models = [
   "Wishlist",
   "Cart",
+  "User",
   "Instructor",
   "Course",
   "Community",
@@ -55,6 +56,6 @@ const models = [
 
 models.forEach((m) => {
   const model = require("../models/" + m.toLowerCase());
-  model(Connection.getConnection(), DataTypes);
-  module.exports[m] = Connection.getModel(m);
+  model(Database.getConnection(), DataTypes);
+  module.exports[m] = Database.getModel(m);
 });

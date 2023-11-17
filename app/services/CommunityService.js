@@ -1,4 +1,4 @@
-const { Chat } = require("../models/Connection");
+const { Chat } = require("../models/Database");
 
 class CommunityService {
   constructor(io) {

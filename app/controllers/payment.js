@@ -1,5 +1,4 @@
-const User = require("../models/User");
-const { Cart } = require("../models/Connection");
+const { User, Cart } = require("../models/Database");
 const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
@@ -26,7 +25,7 @@ module.exports = {
     show: async (req, res) => {
       const token = req.cookies.token;
       const username = (await verifyToken(token))?.username;
-      const user = await User.get(username);
+      const user = await User.findByPk(username);
 
       const carts = await Cart.findAll({
         where: { user: user.username },
