@@ -13,52 +13,73 @@ nav form input.form-control {
 }
 
 .sidebar {
+  width: 20%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
   padding: 7rem 1rem 1rem 1rem;
-  width: 50vw;
+}
+
+.sidebar .profile img {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+}
+
+.sidebar .menu .list-group-item:hover {
+  background-color: #eaf7ed;
+}
+
+.sidebar .menu .list-group-item.active {
+  background-color: #d9f4df;
+}
+
+.member-sidebar {
+  padding: 7rem 1rem 1rem 1rem;
+  width: 20%;
   border: 1px solid rgba(0, 0, 0, 0.15);
   height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
 }
 
-.sidebar::-webkit-scrollbar,
+.member-sidebar::-webkit-scrollbar,
 .chat-container::-webkit-scrollbar {
   width: 5px;
   opacity: 0;
 }
 
-.sidebar::-webkit-scrollbar-track,
+.member-sidebar::-webkit-scrollbar-track,
 .chat-container::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px transparent;
 }
 
-.sidebar:hover::-webkit-scrollbar-track,
+.member-sidebar:hover::-webkit-scrollbar-track,
 .chat-container:hover::-webkit-scrollbar-track {
   box-shadow: inset 0 0 6px #6c757d;
 }
 
-.sidebar::-webkit-scrollbar-thumb,
+.member-sidebar::-webkit-scrollbar-thumb,
 .chat-container::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: transparent;
 }
 
-.sidebar:hover::-webkit-scrollbar-thumb,
+.member-sidebar:hover::-webkit-scrollbar-thumb,
 .chat-container:hover::-webkit-scrollbar-thumb {
   border-radius: 10px;
   background-color: #495057;
 }
 
-.sidebar .user-status {
+.member-sidebar .user-status {
   bottom: -5px;
   right: -5px;
 }
 
-.sidebar .list-group-item:hover {
+.member-sidebar .list-group-item.list-group-item-action:hover {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
 .community {
+  width: 60%;
   height: 100vh;
   padding-top: 5rem;
   overflow: hidden;
@@ -105,13 +126,13 @@ nav form input.form-control {
   box-shadow: 0 -0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
 
-/* .send-container button {
-  background-color: #d9f4df;
+.send-container .btn-send {
+  background-color: #e6f8ea;
 }
 
-.send-container button:hover {
-  background-color: #f5f7fb;
-} */
+.send-container .btn-send:hover {
+  background-color: #d9f4df;
+}
 
 @media only screen and (max-width: 960px) {
   .chat-container .chat {

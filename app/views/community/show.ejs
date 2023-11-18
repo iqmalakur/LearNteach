@@ -1,4 +1,37 @@
 <div class="d-flex">
+  <div class="sidebar">
+    <div class="profile">
+      <img src="/img/profiles/<%= user.picture %>" alt="Profile" />
+      <h6 class="fw-bold d-inline-block"><%= user.name %></h6>
+    </div>
+    <ul class="list-group menu mt-4">
+      <a href="/my" class="list-group-item list-group-item-action border-0 p-2">
+        <img src="/img/icons/dashboard.png" />
+        <h6 class="d-inline-block text-secondary">Dashboard</h6>
+      </a>
+      <a
+        href="/my/course"
+        class="list-group-item list-group-item-action border-0 p-2"
+      >
+        <img src="/img/icons/course.png" />
+        <h6 class="d-inline-block text-secondary">Course</h6>
+      </a>
+      <a
+        href="/my/quiz"
+        class="list-group-item list-group-item-action border-0 p-2"
+      >
+        <img src="/img/icons/quiz.png" />
+        <h6 class="d-inline-block text-secondary">Quiz</h6>
+      </a>
+      <a
+        href="/my/community"
+        class="list-group-item list-group-item-action border-0 p-2 active"
+      >
+        <img src="/img/icons/community.png" />
+        <h6 class="d-inline-block text-secondary">Community</h6>
+      </a>
+    </ul>
+  </div>
   <div class="community">
     <div class="chat-container">
       <% chats.forEach(chat => { const userType = chat.user === user.username ?
@@ -45,8 +78,8 @@
             </div>
           </div>
           <div class="col-1 p-0 text-center shadow button-container">
-            <button type="submit" class="btn btn-info w-100 h-100">
-              <img src="/img/icons/send.png" alt="Send" />
+            <button type="submit" class="btn btn-send w-100 h-100">
+              <img src="/img/icons/send.svg" alt="Send" />
             </button>
           </div>
         </div>
@@ -57,12 +90,17 @@
       </form>
     </div>
   </div>
-  <div class="sidebar">
+  <div class="member-sidebar">
     <h5 class="text-center text-uppercase"><%= community.name %></h5>
     <hr />
     <h6 class="text-uppercase mt-4">instructor</h6>
     <ul class="list-group">
-      <li class="list-group-item text-secondary instructor border-0">
+      <button
+        type="button"
+        class="list-group-item list-group-item-action btn-detail-profile text-secondary instructor border-0"
+        data-bs-toggle="modal"
+        data-bs-target="#detailProfile"
+      >
         <span class="position-relative d-inline-block">
           <img
             src="/img/profiles/<%= instructor.picture %>"
@@ -78,12 +116,17 @@
         <span class="name">
           <%= `${instructor.name}${isInstructor ? ' (Me)' : ''}` %>
         </span>
-      </li>
+      </button>
     </ul>
     <h6 class="text-uppercase mt-4">members (<%= course.members %>)</h6>
     <ul class="list-group members">
       <% if(!isInstructor){ %>
-      <li class="list-group-item text-secondary member border-0 me">
+      <button
+        type="button"
+        class="list-group-item list-group-item-action btn-detail-profile text-secondary member border-0 me"
+        data-bs-toggle="modal"
+        data-bs-target="#detailProfile"
+      >
         <span class="position-relative d-inline-block">
           <img
             src="/img/profiles/<%= user.picture %>"
@@ -97,9 +140,14 @@
           </span>
         </span>
         <span class="name"> <%= user.name %> (Me) </span>
-      </li>
+      </button>
       <% } communityUsers.forEach(communityUser => { %>
-      <li class="list-group-item text-secondary member border-0">
+      <button
+        type="button"
+        class="list-group-item list-group-item-action btn-detail-profile text-secondary member border-0"
+        data-bs-toggle="modal"
+        data-bs-target="#detailProfile"
+      >
         <span class="position-relative d-inline-block">
           <img
             src="/img/profiles/<%= communityUser.User.picture %>"
@@ -115,8 +163,41 @@
           </span>
         </span>
         <span class="name"> <%= communityUser.User.name %> </span>
-      </li>
+      </button>
       <% }) %>
     </ul>
+  </div>
+</div>
+
+<!-- Detail Profile -->
+<div
+  class="modal fade"
+  id="detailProfile"
+  tabindex="-1"
+  aria-labelledby="detailProfileLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="detailProfileLabel">User Detail</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body text-center">
+        <img
+          src=""
+          alt=""
+          class="detail-picture"
+          style="width: 300px; height: 300px"
+        />
+        <h3 class="detail-name mt-3"></h3>
+        <span class="fs-5 text-secondary detail-username"></span>
+      </div>
+    </div>
   </div>
 </div>

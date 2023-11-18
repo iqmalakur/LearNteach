@@ -56,7 +56,6 @@ socket.on("onlineUsers", (onlineUsers) => {
   const online = Array.from(memberList.querySelectorAll(".online")).filter(
     (el) => !el.querySelector(".name").innerText.startsWith(name.value)
   );
-  console.log(online);
   const offline = Array.from(memberList.querySelectorAll(".offline"));
 
   online.sort((a, b) =>
@@ -97,12 +96,16 @@ const updateChat = (chat, userStatus) => {
   );
 
   newChat.innerHTML = `
-  <div class="col-1 order-2 text-start">
+  <div class="col-1 ${
+    userStatus === "receiver" ? "order-1 text-end" : "order-2 text-start"
+  }">
     <img src="/img/profiles/${
       chat.picture
     }" class="rounded-circle mt-4" style="width: 32px; height: 32px;" />
   </div>
-  <div class="col order-1 chat rounded position-relative my-2 p-3 text-${align}">
+  <div class="col ${
+    userStatus === "receiver" ? "order-2" : "order-1"
+  } chat rounded position-relative my-2 p-3 text-${align}">
     <span class="fw-bold">${chat.name}</span>
     <p class="mt-2">${chat.message}</p>
     <span class="chat-date">${date.getDate()}-${
@@ -139,4 +142,21 @@ formChat.addEventListener("submit", (e) => {
     socket.emit("message", chat);
     updateChat(chat, "sender");
   }
+});
+
+const btnDetails = document.querySelectorAll("button.btn-detail-profile");
+const modalDetail = document.getElementById("detailProfile");
+
+btnDetails.forEach((btnDetail) => {
+  btnDetail.addEventListener("click", () => {
+    const name = btnDetail
+      .querySelector(".name")
+      .innerText.replace(" (Me)", "");
+    const username = btnDetail.querySelector(".visually-hidden").innerText;
+    const picture = btnDetail.querySelector("img").getAttribute("src");
+
+    modalDetail.querySelector(".detail-picture").setAttribute("src", picture);
+    modalDetail.querySelector(".detail-name").innerText = name;
+    modalDetail.querySelector(".detail-username").innerText = `@${username}`;
+  });
 });
