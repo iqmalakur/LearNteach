@@ -51,7 +51,7 @@
           class="col <%= userType === 'receiver' ? 'order-2' : 'order-1' %> chat rounded position-relative my-2 p-3 text-<%= align %>"
         >
           <span class="fw-bold"><%= chat.name %></span>
-          <p class="mt-2"><%= chat.chat %></p>
+          <p class="mt-2"><%- chat.chat %></p>
           <span class="chat-date">
             <%= `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} |
             ${(""+date.getHours()).length === 1 ? '0' + date.getHours() :
@@ -67,14 +67,13 @@
         <div class="row justify-content-center">
           <div class="col-9 p-0">
             <div class="shadow">
-              <input
-                type="text"
+              <textarea
                 class="form-control"
                 placeholder="Write your chat here..."
                 name="chat"
-                autocomplete="off"
                 autofocus
-              />
+                rows="1"
+              ></textarea>
             </div>
           </div>
           <div class="col-1 p-0 text-center shadow button-container">
