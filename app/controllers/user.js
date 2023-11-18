@@ -47,7 +47,7 @@ module.exports = {
       username: Joi.string().required(),
       email: Joi.string().required().email(),
       password: Joi.string().required().min(8),
-      picture: Joi.string().required().uri(),
+      picture: Joi.string().required(),
     });
 
     const valid = schema.validate(req.body);

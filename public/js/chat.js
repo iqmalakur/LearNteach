@@ -2,7 +2,6 @@
 import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
 const socket = io();
-socket.emit("join");
 
 socket.on("message", (chat) => {
   if (chat.user !== username.value) {
@@ -17,6 +16,66 @@ const username = formChat.querySelector("input[name=username]");
 const name = formChat.querySelector("input[name=name]");
 const picture = formChat.querySelector("input[name=picture]");
 const community = formChat.querySelector("input[name=community]");
+
+socket.emit("join", username.value);
+
+const instructor = document.querySelector(
+  ".list-group-item.instructor .user-status"
+);
+const memberList = document.querySelector(".members");
+const members = memberList.querySelectorAll(
+  ".list-group-item.member .user-status"
+);
+
+const changeStatus = (statusElement, onlineUsers) => {
+  const container = statusElement.parentElement.parentElement;
+  const username = statusElement.querySelector(".visually-hidden").innerText;
+  if (onlineUsers.includes(username)) {
+    container.classList.add("text-dark");
+    container.classList.remove("text-secondary");
+    container.classList.add("online");
+    container.classList.remove("offline");
+    statusElement.classList.remove("bg-danger");
+    statusElement.classList.add("bg-success");
+  } else {
+    container.classList.add("text-secondary");
+    container.classList.remove("text-dark");
+    container.classList.add("offline");
+    container.classList.remove("online");
+    statusElement.classList.remove("bg-success");
+    statusElement.classList.add("bg-danger");
+  }
+};
+
+socket.on("onlineUsers", (onlineUsers) => {
+  changeStatus(instructor, onlineUsers);
+
+  members.forEach((member) => {
+    changeStatus(member, onlineUsers);
+  });
+  const online = Array.from(memberList.querySelectorAll(".online")).filter(
+    (el) => !el.querySelector(".name").innerText.startsWith(name.value)
+  );
+  const offline = Array.from(memberList.querySelectorAll(".offline"));
+
+  online.sort((a, b) =>
+    a.querySelector(".name").innerText < b.querySelector(".name").innerText
+      ? -1
+      : 1
+  );
+  offline.sort((a, b) =>
+    a.querySelector(".name").innerText < b.querySelector(".name").innerText
+      ? -1
+      : 1
+  );
+
+  const me = memberList.querySelector(".me");
+  memberList.innerHTML = "";
+
+  if (me) memberList.appendChild(me);
+  online.forEach((el) => memberList.appendChild(el));
+  offline.forEach((el) => memberList.appendChild(el));
+});
 
 chatContainer.scrollTo({
   left: 0,
@@ -37,10 +96,19 @@ const updateChat = (chat, userStatus) => {
   );
 
   newChat.innerHTML = `
-  <div class="col chat rounded shadow position-relative my-1 p-3 text-${align}">
-    <span class="text-warning fw-bold fs-5">${chat.user}</span>
-    <p>${chat.message}</p>
-    <span>${date.getDate()}-${
+  <div class="col-1 ${
+    userStatus === "receiver" ? "order-1 text-end" : "order-2 text-start"
+  }">
+    <img src="/img/profiles/${
+      chat.picture
+    }" class="rounded-circle mt-4" style="width: 32px; height: 32px;" />
+  </div>
+  <div class="col ${
+    userStatus === "receiver" ? "order-2" : "order-1"
+  } chat rounded position-relative my-2 p-3 text-${align}">
+    <span class="fw-bold">${chat.name}</span>
+    <p class="mt-2">${chat.message}</p>
+    <span class="chat-date">${date.getDate()}-${
     date.getMonth() + 1
   }-${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}</span>
   </div>
@@ -74,4 +142,21 @@ formChat.addEventListener("submit", (e) => {
     socket.emit("message", chat);
     updateChat(chat, "sender");
   }
+});
+
+const btnDetails = document.querySelectorAll("button.btn-detail-profile");
+const modalDetail = document.getElementById("detailProfile");
+
+btnDetails.forEach((btnDetail) => {
+  btnDetail.addEventListener("click", () => {
+    const name = btnDetail
+      .querySelector(".name")
+      .innerText.replace(" (Me)", "");
+    const username = btnDetail.querySelector(".visually-hidden").innerText;
+    const picture = btnDetail.querySelector("img").getAttribute("src");
+
+    modalDetail.querySelector(".detail-picture").setAttribute("src", picture);
+    modalDetail.querySelector(".detail-name").innerText = name;
+    modalDetail.querySelector(".detail-username").innerText = `@${username}`;
+  });
 });
