@@ -16,12 +16,46 @@ nav form input.form-control {
   padding: 7rem 1rem 1rem 1rem;
   width: 50vw;
   border: 1px solid rgba(0, 0, 0, 0.15);
-}
-
-.sidebar .members {
-  height: 19rem;
+  height: 100vh;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.sidebar::-webkit-scrollbar,
+.chat-container::-webkit-scrollbar {
+  width: 5px;
+  opacity: 0;
+}
+
+.sidebar::-webkit-scrollbar-track,
+.chat-container::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px transparent;
+}
+
+.sidebar:hover::-webkit-scrollbar-track,
+.chat-container:hover::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px #6c757d;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.chat-container::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.sidebar:hover::-webkit-scrollbar-thumb,
+.chat-container:hover::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #495057;
+}
+
+.sidebar .user-status {
+  bottom: -5px;
+  right: -5px;
+}
+
+.sidebar .list-group-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .community {
@@ -31,8 +65,8 @@ nav form input.form-control {
 }
 
 .chat-container {
-  height: 85%;
-  padding: 3rem 0;
+  height: 87%;
+  padding: 2rem 0;
   overflow-x: hidden;
   overflow-y: scroll;
 }
@@ -42,6 +76,12 @@ nav form input.form-control {
   width: fit-content;
   max-width: 60%;
   background-color: #d9f4df;
+  box-shadow: 0 0.3rem 0.5rem rgba(0, 0, 0, 0.15);
+}
+
+.chat-container .chat .chat-date {
+  font-size: 12px;
+  color: #666668;
 }
 
 .receiver .chat {
@@ -60,28 +100,18 @@ nav form input.form-control {
   margin-right: auto;
 }
 
-.chat-container .chat::after {
-  content: " ";
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: -40px;
-  right: auto;
-  bottom: 0;
-  border: 22px solid;
-  border-color: transparent #f6f6f6 transparent transparent;
-}
-
-.sender .chat::after {
-  left: auto;
-  right: -40px;
-  border-color: transparent transparent transparent #d9f4df;
-}
-
 .send-container {
-  height: 15%;
-  box-shadow: 0 -0.5rem 1rem rgba(0, 0, 0, 0.15);
+  height: 13%;
+  box-shadow: 0 -0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
+
+/* .send-container button {
+  background-color: #d9f4df;
+}
+
+.send-container button:hover {
+  background-color: #f5f7fb;
+} */
 
 @media only screen and (max-width: 960px) {
   .chat-container .chat {

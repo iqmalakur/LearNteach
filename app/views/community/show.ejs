@@ -10,28 +10,30 @@
         >
           <img
             src="/img/profiles/<%= chat.User.picture %>"
-            class="rounded-circle"
+            class="rounded-circle mt-4"
             style="width: 32px; height: 32px"
           />
         </div>
         <div
-          class="col <%= userType === 'receiver' ? 'order-2' : 'order-1' %> chat rounded shadow position-relative my-1 p-3 text-<%= align %>"
+          class="col <%= userType === 'receiver' ? 'order-2' : 'order-1' %> chat rounded position-relative my-2 p-3 text-<%= align %>"
         >
-          <span class="text-warning fw-bold fs-5"><%= chat.name %></span>
-          <p><%= chat.chat %></p>
-          <span>
-            <%= `${date.getDate()}-${date.getMonth()+1}-${date.getFullYear()} |
-            ${date.getHours()}:${date.getMinutes()}` %>
+          <span class="fw-bold"><%= chat.name %></span>
+          <p class="mt-2"><%= chat.chat %></p>
+          <span class="chat-date">
+            <%= `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} |
+            ${(""+date.getHours()).length === 1 ? '0' + date.getHours() :
+            date.getHours()}:${(""+date.getMinutes()).length === 1 ? '0' +
+            date.getMinutes() : date.getMinutes()}` %>
           </span>
         </div>
       </div>
       <% }) %>
     </div>
-    <div class="send-container p-4">
+    <div class="send-container p-3">
       <form action="/community/<%= community.id%>" method="POST">
         <div class="row justify-content-center">
           <div class="col-9 p-0">
-            <div class="mb-3">
+            <div class="shadow">
               <input
                 type="text"
                 class="form-control"
@@ -42,9 +44,9 @@
               />
             </div>
           </div>
-          <div class="col-1 p-0 text-center">
-            <button type="submit" class="btn btn-primary">
-              <i class="bi bi-send"></i>
+          <div class="col-1 p-0 text-center shadow button-container">
+            <button type="submit" class="btn btn-info w-100 h-100">
+              <img src="/img/icons/send.png" alt="Send" />
             </button>
           </div>
         </div>
@@ -60,34 +62,59 @@
     <hr />
     <h6 class="text-uppercase mt-4">instructor</h6>
     <ul class="list-group">
-      <li class="list-group-item">
-        <img
-          src="/img/profiles/<%= instructor.picture %>"
-          class="rounded-circle"
-          style="width: 30px; height: 30px"
-        />
-        <%= `${instructor.name}${isInstructor ? ' (Me)' : ''}` %>
+      <li class="list-group-item text-secondary instructor border-0">
+        <span class="position-relative d-inline-block">
+          <img
+            src="/img/profiles/<%= instructor.picture %>"
+            class="rounded-circle"
+            style="width: 30px; height: 30px"
+          />
+          <span
+            class="user-status position-absolute p-2 bg-danger border border-light rounded-circle"
+          >
+            <span class="visually-hidden"><%= instructor.username %></span>
+          </span>
+        </span>
+        <span class="name">
+          <%= `${instructor.name}${isInstructor ? ' (Me)' : ''}` %>
+        </span>
       </li>
     </ul>
-    <h6 class="text-uppercase mt-4">members</h6>
+    <h6 class="text-uppercase mt-4">members (<%= course.members %>)</h6>
     <ul class="list-group members">
       <% if(!isInstructor){ %>
-      <li class="list-group-item">
-        <img
-          src="/img/profiles/<%= user.picture %>"
-          class="rounded-circle"
-          style="width: 30px; height: 30px"
-        />
-        <%= user.name %> (Me)
+      <li class="list-group-item text-secondary member border-0 me">
+        <span class="position-relative d-inline-block">
+          <img
+            src="/img/profiles/<%= user.picture %>"
+            class="rounded-circle"
+            style="width: 30px; height: 30px"
+          />
+          <span
+            class="user-status position-absolute p-2 bg-danger border border-light rounded-circle"
+          >
+            <span class="visually-hidden"><%= user.username %></span>
+          </span>
+        </span>
+        <span class="name"> <%= user.name %> (Me) </span>
       </li>
       <% } communityUsers.forEach(communityUser => { %>
-      <li class="list-group-item">
-        <img
-          src="/img/profiles/<%= communityUser.User.picture %>"
-          class="rounded-circle"
-          style="width: 30px; height: 30px"
-        />
-        <%= communityUser.User.name %>
+      <li class="list-group-item text-secondary member border-0">
+        <span class="position-relative d-inline-block">
+          <img
+            src="/img/profiles/<%= communityUser.User.picture %>"
+            class="rounded-circle"
+            style="width: 30px; height: 30px"
+          />
+          <span
+            class="user-status position-absolute p-2 bg-danger border border-light rounded-circle"
+          >
+            <span class="visually-hidden"
+              ><%= communityUser.User.username %></span
+            >
+          </span>
+        </span>
+        <span class="name"> <%= communityUser.User.name %> </span>
       </li>
       <% }) %>
     </ul>

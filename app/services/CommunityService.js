@@ -1,12 +1,16 @@
 const { Chat } = require("../models/Database");
 
 class CommunityService {
+  static onlineUsers = [];
+
   constructor(io) {
     this.io = io;
   }
 
-  join() {
-    console.log("JOIN NIH YEE");
+  join(username) {
+    if (!CommunityService.onlineUsers.includes(username)) {
+      CommunityService.onlineUsers.push(username);
+    }
   }
 
   message(chat) {
@@ -18,8 +22,12 @@ class CommunityService {
     });
   }
 
-  leave() {
-    console.log("BYE BRO");
+  leave(username) {
+    if (CommunityService.onlineUsers.includes(username)) {
+      CommunityService.onlineUsers = CommunityService.onlineUsers.filter(
+        (user) => user !== username
+      );
+    }
   }
 }
 

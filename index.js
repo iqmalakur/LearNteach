@@ -135,12 +135,21 @@ const CommunityService = require("./app/services/CommunityService");
 const community = new CommunityService(io);
 
 io.on("connection", (socket) => {
-  socket.on("join", community.join);
+  socket.on("join", (username) => {
+    socket.username = username;
+    community.join(username);
+    io.emit("onlineUsers", CommunityService.onlineUsers);
+  });
+
   socket.on("message", (chat) => {
     community.message(chat);
     io.emit("message", chat);
   });
-  socket.on("disconnect", community.leave);
+
+  socket.on("disconnect", () => {
+    community.leave(socket.username);
+    io.emit("onlineUsers", CommunityService.onlineUsers);
+  });
 });
 
 /**

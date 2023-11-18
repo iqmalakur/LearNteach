@@ -37,7 +37,7 @@ module.exports = {
 
     const course = await Course.findOne({
       where: { id: community.course },
-      attributes: ["id", "instructor"],
+      attributes: ["id", "instructor", "members"],
     });
 
     const isInstructor = course.instructor === username;
@@ -65,7 +65,7 @@ module.exports = {
 
     const instructor = await User.findOne({
       where: { username: course.instructor },
-      attributes: ["name", "picture"],
+      attributes: ["username", "name", "picture"],
     });
 
     const chats = await Chat.findAll({
@@ -124,6 +124,7 @@ module.exports = {
       user,
       instructor,
       community,
+      course,
       communityUsers,
       isInstructor,
     });
