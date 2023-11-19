@@ -94,9 +94,11 @@ app.use((err, req, res, next) => {
   // render the error page
   res.status(err.status || 500);
 
+  console.log(err);
+
   if (err.status === 404) {
     return res.render("error", {
-      layout: "layouts/main-layout",
+      layout: "layouts/error-layout",
       title: "Page Not Found!",
       code: 404,
       errorTitle: "Sorry, page not found",
@@ -105,7 +107,7 @@ app.use((err, req, res, next) => {
   }
 
   return res.render("error", {
-    layout: "layouts/main-layout",
+    layout: "layouts/error-layout",
     title: "Internal Server Error!",
     code: 500,
     errorTitle: "Sorry, your request cannot be processed",

@@ -16,11 +16,13 @@
     <!-- LearNteach CSS -->
     <link rel="stylesheet" href="/css/layouts/nav.css" />
     <link rel="stylesheet" href="/css/layouts/footer.css" />
-    <link rel="stylesheet" href="/css/raw.css" />
   </head>
   <body>
-    <%- include('components/nav') %> <%- body %> <%-
-    include('components/footer') %>
+    <%- include('components/nav') %>
+
+    <main class="container-fluid"><%- body %></main>
+
+    <%- include('components/footer') %>
 
     <!-- Bootstrap 5 JavaScript -->
     <script
@@ -28,8 +30,5 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-
-    <!-- LearNteach JavaScript -->
-    <script src="/js/script.js"></script>
   </body>
 </html>

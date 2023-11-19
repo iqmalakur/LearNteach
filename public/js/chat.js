@@ -3,21 +3,21 @@ import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
 const socket = io();
 
-socket.on("message", (chat) => {
-  if (chat.user !== username.value) {
-    updateChat(chat, "receiver");
-  }
-});
-
 const chatContainer = document.querySelector(".chat-container");
 const formChat = document.querySelector(".send-container form");
-const chatField = formChat.querySelector("input[name=chat]");
+const chatField = formChat.querySelector("textarea[name=chat]");
 const username = formChat.querySelector("input[name=username]");
 const name = formChat.querySelector("input[name=name]");
 const picture = formChat.querySelector("input[name=picture]");
 const community = formChat.querySelector("input[name=community]");
 
 socket.emit("join", username.value);
+
+socket.on("message", (chat) => {
+  if (chat.user !== username.value && chat.community == community.value) {
+    updateChat(chat, "receiver");
+  }
+});
 
 const instructor = document.querySelector(
   ".list-group-item.instructor .user-status"
@@ -123,12 +123,40 @@ const updateChat = (chat, userStatus) => {
   });
 };
 
+chatField.addEventListener("keydown", (e) => {
+  if (!e.shiftKey && e.key === "Enter") {
+    e.preventDefault();
+    formChat.querySelector("button[type=submit]").click();
+  }
+});
+
 formChat.addEventListener("submit", (e) => {
   e.preventDefault();
 
   if (chatField.value !== "") {
+    const message = chatField.value
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&apos;")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll("/", "&sol;")
+      .replaceAll("\\*", "&ast;")
+      .replaceAll("\\_", "&lowbar;")
+      .replaceAll("\\~", "&tilde;")
+      .replaceAll("\n", "<br/>")
+      .replace(
+        /\*[^*]*\*/gim,
+        (subStr) => `<strong>${subStr.replace(/\*/g, "")}</strong>`
+      )
+      .replace(/_[^_]*_/gim, (subStr) => `<em>${subStr.replace(/_/g, "")}</em>`)
+      .replace(
+        /~[^~]*~/gim,
+        (subStr) => `<del>${subStr.replace(/~/g, "")}</del>`
+      );
+
     const chat = {
-      message: chatField.value,
+      message,
       user: username.value,
       community: community.value,
       name: name.value,

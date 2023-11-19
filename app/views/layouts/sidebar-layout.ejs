@@ -16,11 +16,18 @@
     <!-- LearNteach CSS -->
     <link rel="stylesheet" href="/css/layouts/nav.css" />
     <link rel="stylesheet" href="/css/layouts/footer.css" />
-    <link rel="stylesheet" href="/css/raw.css" />
+    <link rel="stylesheet" href="/css/layouts/sidebar.css" />
+    <link rel="stylesheet" href="/css/sidebar.css" />
   </head>
   <body>
-    <%- include('components/nav') %> <%- body %> <%-
-    include('components/footer') %>
+    <%- include('components/nav') %>
+
+    <main class="d-flex">
+      <%- include('components/sidebar') %>
+      <section class="content"><%- body %></section>
+    </main>
+
+    <%- include('components/footer') %>
 
     <!-- Bootstrap 5 JavaScript -->
     <script
@@ -30,6 +37,6 @@
     ></script>
 
     <!-- LearNteach JavaScript -->
-    <script src="/js/script.js"></script>
+    <script type="module" src="/js/script.js"></script>
   </body>
 </html>

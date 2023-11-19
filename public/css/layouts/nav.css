@@ -1,0 +1,17 @@
+nav form {
+  width: 400px;
+}
+
+nav form img {
+  left: 15px;
+  top: 5px;
+}
+
+nav form input.form-control {
+  background-color: #e0e0e0;
+  padding-left: 50px;
+}
+
+nav form#logout {
+  width: fit-content;
+}
