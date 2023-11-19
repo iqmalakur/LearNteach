@@ -15,7 +15,29 @@ module.exports = {
    * @param {Request} req The Request object.
    * @param {Response} res The Response object.
    */
-  show: async (req, res) => {
+  index: async (req, res) => {
+    const token = req.cookies.token;
+    const username = (await verifyToken(token))?.username;
+
+    const user = await User.findOne({
+      where: { username },
+      attributes: ["username", "name", "picture"],
+    });
+
+    res.render("community/index", {
+      layout: "layouts/sidebar-layout",
+      title: "My Communities",
+      user,
+    });
+  },
+
+  /**
+   * Render community chat page
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   */
+  chat: async (req, res) => {
     const communityId = req.params.communityId;
     const token = req.cookies.token;
     const username = (await verifyToken(token))?.username;
@@ -27,7 +49,7 @@ module.exports = {
 
     if (!community) {
       return res.render("error", {
-        layout: "layouts/main-layout",
+        layout: "layouts/error-layout",
         title: "Page Not Found!",
         code: 404,
         errorTitle: "Sorry, page not found",
@@ -49,7 +71,7 @@ module.exports = {
 
       if (!validUser) {
         return res.render("error", {
-          layout: "layouts/main-layout",
+          layout: "layouts/error-layout",
           title: "Forbidden",
           code: 403,
           errorTitle: "You do not have access to this page",
@@ -117,9 +139,9 @@ module.exports = {
       }
     }
 
-    res.render("community/show", {
+    res.render("community/chat", {
       layout: "layouts/community-layout",
-      title: "Community",
+      title: community.name,
       chats,
       user,
       instructor,

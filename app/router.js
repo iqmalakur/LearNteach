@@ -67,7 +67,8 @@ router.get("/course/:courseId", course.detail); // class info page
 router.get("/course/:courseId/instructor", course.instructor); // instructor info page
 
 // Community
-router.get("/community/:communityId", checkToken, community.show); // community page
+router.get("/my/community", checkToken, community.index); // community page
+router.get("/community/:communityId", checkToken, community.chat); // community chat page
 
 // Payment
 router.get("/payment", checkToken, payment.index); // payment page

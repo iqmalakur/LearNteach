@@ -16,20 +16,13 @@
     <!-- LearNteach CSS -->
     <link rel="stylesheet" href="/css/layouts/nav.css" />
     <link rel="stylesheet" href="/css/layouts/footer.css" />
-    <link rel="stylesheet" href="/css/index.css" />
   </head>
   <body>
-    <nav class="navbar navbar-expand-lg shadow fixed-top">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-          <img src="/img/logo/logo2.png" alt="LearNteach" width="200" />
-        </a>
+    <%- include('components/nav') %>
 
-        <%- include('components/nav-menu') %>
-      </div>
-    </nav>
+    <main class="container-fluid"><%- body %></main>
 
-    <%- body %> <%- include('components/footer') %>
+    <%- include('components/footer') %>
 
     <!-- Bootstrap 5 JavaScript -->
     <script
@@ -37,8 +30,5 @@
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
       crossorigin="anonymous"
     ></script>
-
-    <!-- LearNteach JavaScript -->
-    <script src="/js/script.js"></script>
   </body>
 </html>

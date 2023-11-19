@@ -1,0 +1,59 @@
+body {
+  background-color: #e0e0e0;
+}
+
+main.container-fluid {
+  margin-top: 8rem;
+}
+
+.signUp {
+  width: 500px;
+  margin: 50px auto 50px auto;
+  padding-bottom: 30px;
+  border: 20px;
+  border-radius: 20px;
+  background-color: #ffffff;
+}
+.greeting {
+  padding-top: 50px;
+  margin: 50px;
+}
+.button {
+  text-align: center;
+  background-color: #7c857e;
+  color: #e0e0e0;
+  border-radius: 5px;
+  border-color: transparent;
+  width: 340px;
+  height: 35px;
+}
+
+.boxSignin,
+.boxSignup {
+  text-align: left;
+  padding-left: 80px;
+  padding-right: 80px;
+}
+.tncCheck {
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+.forgetPw {
+  padding-top: 50px;
+}
+.line {
+  margin: 10px auto 10px auto;
+  width: 75%;
+  height: 2px;
+  background-color: #7c857e;
+}
+.kotak {
+  margin-right: 50px;
+  margin-left: 50px;
+  padding: 6px;
+}
+.tombol {
+  margin-right: 50px;
+  margin-left: 50px;
+  padding: 6px;
+}
