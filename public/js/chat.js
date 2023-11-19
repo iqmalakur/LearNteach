@@ -3,12 +3,6 @@ import { io } from "https://cdn.socket.io/4.4.1/socket.io.esm.min.js";
 
 const socket = io();
 
-socket.on("message", (chat) => {
-  if (chat.user !== username.value) {
-    updateChat(chat, "receiver");
-  }
-});
-
 const chatContainer = document.querySelector(".chat-container");
 const formChat = document.querySelector(".send-container form");
 const chatField = formChat.querySelector("textarea[name=chat]");
@@ -18,6 +12,12 @@ const picture = formChat.querySelector("input[name=picture]");
 const community = formChat.querySelector("input[name=community]");
 
 socket.emit("join", username.value);
+
+socket.on("message", (chat) => {
+  if (chat.user !== username.value && chat.community == community.value) {
+    updateChat(chat, "receiver");
+  }
+});
 
 const instructor = document.querySelector(
   ".list-group-item.instructor .user-status"

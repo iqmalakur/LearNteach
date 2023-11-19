@@ -24,7 +24,11 @@
   </head>
   <body>
     <%- include('nav') %>
-    <div class="d-flex"><%- include('sidebar') %><%- body %></div>
+
+    <div class="d-flex">
+      <%- include('sidebar') %>
+      <div class="content"><%- body %></div>
+    </div>
 
     <!-- Bootstrap 5 JavaScript -->
     <script
