@@ -25,18 +25,31 @@
     />
   </form>
 
-  <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-    <li class="nav-item">
-      <a class="nav-link" href="/">Home</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/my/profile">Profile</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/faq">FAQ</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/course">Categories</a>
-    </li>
-  </ul>
+  <div class="ms-auto d-flex">
+    <ul class="navbar-nav mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link" href="/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/my/profile">Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/faq">FAQ</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/course">Categories</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/cart"
+          ><img
+            src="/img/icons/cart.png"
+            alt="Cart"
+            style="width: 26.26px; height: 30px"
+        /></a>
+      </li>
+    </ul>
+    <form action="/logout" method="POST" id="logout" class="d-inline">
+      <button type="submit" class="nav-link">Logout</button>
+    </form>
+  </div>
 </div>
