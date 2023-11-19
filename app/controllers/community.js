@@ -24,10 +24,45 @@ module.exports = {
       attributes: ["username", "name", "picture"],
     });
 
+    const enrolledCourses = await EnrolledCourse.findAll({
+      include: [
+        {
+          model: Course,
+          attributes: ["id", "instructor", "members"],
+        },
+      ],
+      attributes: [],
+      where: {
+        "$EnrolledCourse.user$": username,
+      },
+    });
+
+    const communities = [];
+
+    for (const enrolledCourse of enrolledCourses) {
+      const community = await Community.findOne({
+        where: { course: enrolledCourse.Course.id },
+        attributes: ["id", "name"],
+      });
+
+      const instructor = await User.findOne({
+        where: { username: enrolledCourse.Course.instructor },
+        attributes: ["name"],
+      });
+
+      communities.push({
+        id: community.id,
+        name: community.name,
+        instructor: instructor.name,
+        members: enrolledCourse.Course.members,
+      });
+    }
+
     res.render("community/index", {
       layout: "layouts/sidebar-layout",
       title: "My Communities",
       user,
+      communities,
     });
   },
 
