@@ -58,6 +58,25 @@ module.exports = {
       });
     }
 
+    const courses = await Course.findAll({
+      where: { instructor: username },
+      attributes: ["id", "members"],
+    });
+
+    for (const course of courses) {
+      const community = await Community.findOne({
+        where: { course: course.id },
+        attributes: ["id", "name"],
+      });
+
+      communities.push({
+        id: community.id,
+        name: community.name,
+        instructor: user.name,
+        members: course.members,
+      });
+    }
+
     res.render("community/index", {
       layout: "layouts/sidebar-layout",
       title: "My Communities",
