@@ -138,9 +138,9 @@ formChat.addEventListener("submit", (e) => {
       .replaceAll('"', "&quot;")
       .replaceAll("'", "&apos;")
       .replaceAll("&", "&amp;")
+      .replace(/<[^>]*>;/gim, (subStr) => subStr.replaceAll("/", "&sol;"))
       .replaceAll("<", "&lt;")
       .replaceAll(">", "&gt;")
-      .replaceAll("/", "&sol;")
       .replaceAll("\\*", "&ast;")
       .replaceAll("\\_", "&lowbar;")
       .replaceAll("\\~", "&tilde;")
@@ -153,6 +153,10 @@ formChat.addEventListener("submit", (e) => {
       .replace(
         /~[^~]*~/gim,
         (subStr) => `<del>${subStr.replace(/~/g, "")}</del>`
+      )
+      .replace(
+        /https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)/gim,
+        (subStr) => `<a href="${subStr}">${subStr}</a>`
       );
 
     const chat = {
