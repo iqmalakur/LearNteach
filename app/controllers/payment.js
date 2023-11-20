@@ -47,7 +47,7 @@ module.exports = {
      */
     add: async (req, res) => {
       // Destructuring request body
-      const { username: user, course } = req.body;
+      const { user, course } = req.body;
 
       // Check if cart already exists
       if (await Cart.findOne({ where: { user, course } })) {

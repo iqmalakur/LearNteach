@@ -133,7 +133,7 @@ module.exports = {
      */
     add: async (req, res) => {
       // Destructuring request body
-      const { username: user, course } = req.body;
+      const { user, course } = req.body;
 
       // Check if wishlist already exists
       if (await Wishlist.findOne({ where: { user, course } })) {

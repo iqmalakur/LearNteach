@@ -1,4 +1,6 @@
-const { Instructor, Course } = require("../models/Database");
+const { User, Instructor, Course } = require("../models/Database");
+const { priceFormat } = require("../utils/format");
+const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
   /**
@@ -8,12 +10,26 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: async (req, res) => {
-    const courses = await Course.findAll();
+    const token = req.cookies.token;
+    const username = (await verifyToken(token))?.username;
+
+    const user = await User.findByPk(username);
+
+    const courses = await Course.findAll({
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
 
     res.render("course/index", {
       layout: "layouts/main-layout",
       title: "Course List",
+      user,
       courses,
+      priceFormat,
     });
   },
 

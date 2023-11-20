@@ -3,7 +3,46 @@ body {
 }
 
 main.container-fluid {
-  margin-top: 8rem;
+  padding: 8rem 2rem 3rem 2rem;
+  min-height: 100vh;
+}
+
+#course #sort-by,
+#course #sort-by option {
+  border: 1px solid #6c757d;
+  background-color: #e0e0e0;
+}
+
+#course .course .card {
+  transition: 0.3s;
+  background-color: #e0e0e0;
+}
+
+#course .course .card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+#course .course > a {
+  text-decoration: none;
+}
+
+#course .course-preview {
+  width: 100%;
+  height: 15rem;
+  background-position: center;
+  background-size: cover;
+}
+
+#course .rating {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 20px;
+}
+
+#course .rating img {
+  width: 30px;
 }
 
 .signUp {

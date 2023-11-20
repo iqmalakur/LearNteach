@@ -28,28 +28,31 @@
   <div class="ms-auto d-flex">
     <ul class="navbar-nav mb-2 mb-lg-0">
       <li class="nav-item">
-        <a class="nav-link" href="/">Home</a>
+        <a class="nav-link" href="/my">Dashboard</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/my/profile">Profile</a>
+        <a class="nav-link" href="/course">Courses</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/my/community">Community</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/faq">FAQ</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/course">Categories</a>
+        <a class="nav-link" href="/wishlist">Wishlist</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/cart"
-          ><img
-            src="/img/icons/cart.png"
-            alt="Cart"
-            style="width: 26.26px; height: 30px"
-        /></a>
+        <a class="nav-link" href="/cart">Cart</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/my/profile">Profile</a>
+      </li>
+      <li class="nav-item">
+        <form action="/logout" method="POST" id="logout" class="d-inline">
+          <button type="submit" class="nav-link">Logout</button>
+        </form>
       </li>
     </ul>
-    <form action="/logout" method="POST" id="logout" class="d-inline">
-      <button type="submit" class="nav-link">Logout</button>
-    </form>
   </div>
 </div>
