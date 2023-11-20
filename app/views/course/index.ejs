@@ -1,86 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses</title>
-</head>
-<body>
-    <div>
-      <div class="container text-left">
-        <div class="row">
-          <div class="col">
-            <nav class="navbar bg-body-tertiary" style="max-width: 300px;">
-          <form class="container-fluid justify-content-start">
-            <button class="btn btn-outline-success me-2" type="button">All</button>
-            <button class="btn btn-outline-success me-2" type="button">My Courses</button>
-            <button class="btn btn-outline-success me-2" type="button">Wishlist</button>
-          </div>
-          <div class="col" style="margin-left: 650px;">
-            <form class="d-flex" role="search" >
-              <input class="form-control me-2" type="search" placeholder="Sort by" aria-label="Sort by" style="max-width: 200px;">
-            </form>
-          </form>
-          </div>
-        </div>
-            
+<section id="course">
+  <div class="row justify-content-between">
+    <div class="col-3">
+      <a href="/course?filter=all" class="btn btn-outline-secondary">All</a>
+      <a href="/course?filter=my" class="btn btn-outline-secondary"
+        >My Course</a
+      >
+      <a href="/course?filter=wishlist" class="btn btn-outline-secondary"
+        >Wishlist</a
+      >
     </div>
-      </nav>
-      <br>
-    <div>
-      <div class="card-group">
-        <div class="card mb-3 ms-3">
-          <img src="img/1.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Course name 1 <i class="bi bi-star-fill" style="margin-left: 250px;">4.5</i></h5> 
-            <p class="card-text">Instructor name</p>
-            <p class="card-text"><small class="text-body-secondary">Rp. 100.000</small></p>
-          </div>
-        </div>
-        <div class="card mb-3 ms-3">
-          <img src="img/2.jpg" class="card-img-top" style="max-height: 317px;">
-          <div class="card-body">
-            <h5 class="card-title">Course name 2 <i class="bi bi-star-fill" style="margin-left: 250px;">4.5</i></h5>
-            <p class="card-text">Instructor name</p>
-            <p class="card-text"><small class="text-body-secondary">Rp. 100.000</small></p>
-          </div>
-        </div>
-        <div class="card mb-3 me-3 ms-3">
-          <img src="img/3.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Course name 3 <i class="bi bi-star-fill" style="margin-left: 250px;">4.5</i></h5>
-            <p class="card-text">Instructor name</p>
-            <p class="card-text"><small class="text-body-secondary">Rp. 100.000</small></p>
-          </div>
-        </div>
-      </div>
-      <div class="card-group">
-        <div class="card mb-3 ms-3">
-          <img src="img/1.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Course name 4 <i class="bi bi-star-fill" style="margin-left: 250px;">4.5</i></h5>
-            <p class="card-text">Instructor name</p>
-            <p class="card-text"><small class="text-body-secondary">Rp. 100.000</small></p>
-          </div>
-        </div>
-        <div class="card mb-3 ms-3">
-          <img src="img/2.jpg" class="card-img-top" style="max-height: 317px;">
-          <div class="card-body">
-            <h5 class="card-title">Course name 5 <i class="bi bi-star-fill" style="margin-left: 250px;">4.5</i></h5>
-            <p class="card-text">Instructor name</p>
-            <p class="card-text"><small class="text-body-secondary">Rp. 100.000</small></p>
-          </div>
-        </div>
-        <div class="card ms-3 mb-3 me-3">
-          <img src="img/3.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Course name 6 <i class="bi bi-star-fill" style="margin-left: 250px;">4.5</i></h5>
-            <p class="card-text">Instructor name</p>
-            <p class="card-text"><small class="text-body-secondary">Rp. 100.000</small></p>
-          </div>
-        </div>
-      </div>
+    <div class="col-3">
+      <form>
+        <select class="form-select bg-transparent" id="sort-by">
+          <option selected>Sort by</option>
+          <option value="title">Title</option>
+          <option value="instructor">Instructor</option>
+          <option value="price">Price</option>
+          <option value="rating">Rating</option>
+        </select>
+      </form>
     </div>
+  </div>
+  <div class="row mt-4">
+    <% courses.forEach(course => { %>
+    <div class="col-4 my-3 course">
+      <a href="/course/<%- course.id %>">
+        <div class="card">
+          <div
+            class="course-preview"
+            style="background-image: url(/img/courses/<%- course.preview %>)"
+          ></div>
+          <div class="card-body position-relative">
+            <h4><%- course.title %></h4>
+            <h5 class="fw-normal"><%- course.User.name %></h5>
+            <h5><%- priceFormat(course.price) %></h5>
+            <div class="d-flex justify-content-end">
+              <form action="/wishlist" method="post" class="wishlist mx-1">
+                <button type="submit" class="btn btn-outline-secondary">
+                  <i class="bi bi-heart fs-5"></i>
+                </button>
+                <input type="hidden" name="user" value="<%- user.username %>" />
+                <input type="hidden" name="course" value="<%- course.id %>" />
+              </form>
+              <form action="/cart" method="post" class="cart mx-1">
+                <button type="submit" class="btn btn-outline-secondary">
+                  <i class="bi bi-cart fs-5"></i>
+                </button>
+                <input type="hidden" name="user" value="<%- user.username %>" />
+                <input type="hidden" name="course" value="<%- course.id %>" />
+              </form>
+            </div>
+            <span
+              class="rating d-flex justify-content-center align-items-center"
+            >
+              <img src="/img/icons/star.png" alt="rating" class="me-2" />
+              <%- course.rating %>
+            </span>
+          </div>
+        </div>
+      </a>
     </div>
-</body>
-</html>
+    <% }) %>
+  </div>
+</section>

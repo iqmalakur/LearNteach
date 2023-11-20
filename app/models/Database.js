@@ -77,3 +77,7 @@ module.exports.EnrolledCourse.belongsTo(module.exports.User, {
 module.exports.EnrolledCourse.belongsTo(module.exports.Course, {
   foreignKey: "course",
 });
+
+module.exports.Course.belongsTo(module.exports.User, {
+  foreignKey: "instructor",
+});

@@ -39,3 +39,24 @@ if (form) {
     }
   });
 }
+
+const wishlistCart = document.querySelectorAll("form.wishlist, form.cart");
+wishlistCart.forEach((wc) => {
+  wc.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const user = wc.querySelector("input[name=user]").value;
+    const course = wc.querySelector("input[name=course]").value;
+
+    const send = await fetch(wc.getAttribute("action"), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ user, course }),
+    });
+    const result = await send.json();
+
+    alert(result.message);
+  });
+});
