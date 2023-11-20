@@ -40,7 +40,7 @@ module.exports = {
       const schema = Joi.object({
         username: Joi.string().required(),
         password: Joi.string().required(),
-        rememberMe: Joi.any(),
+        remember: Joi.boolean().required(),
       });
       const valid = schema.validate(req.body);
       if (valid.error) {
@@ -52,7 +52,7 @@ module.exports = {
       }
 
       // Destructuring request body and
-      const { username, password } = req.body;
+      const { username, password, remember } = req.body;
 
       // Find User by username or email and decrypt the password
       const user =
@@ -77,10 +77,14 @@ module.exports = {
       });
 
       // Set browser cookie
-      res.cookie("token", token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 60000 * 10080),
-      });
+      if (remember) {
+        res.cookie("token", token, {
+          httpOnly: true,
+          expires: new Date(Date.now() + 60000 * 10080),
+        });
+      } else {
+        res.cookie("token", token, { httpOnly: true });
+      }
 
       const message = "user login is successful";
       res.cookie("successMessage", message);

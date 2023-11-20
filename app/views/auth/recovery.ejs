@@ -4,9 +4,9 @@
       class="col-md-6 offset-md-3 p-5"
       style="background-color: rgb(255, 255, 255); border-radius: 30px"
     >
-      <form action="/recovery" method="POST">
+      <h1 class="text-center p-4">Forgot Password</h1>
+      <form action="/recovery" method="POST" class="form-post mt-3">
         <div class="mb-3">
-          <p class="text-center fs-3 p-4">Forgot Password</p>
           <div class="kotak">
             <input
               type="email"
@@ -19,18 +19,19 @@
         </div>
         <div class="mb-3"></div>
         <div class="tombol">
-          <a
-            href="#"
-            class="btn btn-primary w-100 btn-rounded"
+          <button
+            type="submit"
+            class="btn btn-primary w-100 btn-rounded my-3"
             style="
               background-color: #7c857e;
               border-color: black;
               box-shadow: inset;
             "
-            >Reset password</a
           >
+            Reset password
+          </button>
         </div>
-        <div class="SignIn">
+        <div class="SignIn text-center">
           <p>
             Not have an account?
             <a class="link-opacity-50-hover" href="/register">Sign up</a>
@@ -39,7 +40,7 @@
         <div class="line">
           <div class="border-top border-dark border-2"></div>
         </div>
-        <div class="SignIn">
+        <div class="SignIn text-center">
           <p>
             Already have an account?
             <a class="link-opacity-50-hover" href="/login">Sign in</a>
