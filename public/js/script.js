@@ -31,6 +31,9 @@ if (form) {
       alert.innerHTML = `
         <strong>${result.message}</strong>
         `;
+      document.querySelectorAll("input[type=password]").forEach((password) => {
+        password.value = "";
+      });
     } else {
       alert.setAttribute("class", "form-error");
       alert.setAttribute("role", "");
