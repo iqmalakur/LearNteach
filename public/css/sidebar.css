@@ -2,4 +2,45 @@
   width: 80%;
   padding: 8rem 3rem 3rem 3rem;
   min-height: 100vh;
+  background-color: #e0e0e0;
+}
+
+#wishlist .user-menu {
+  background-color: #fff;
+}
+
+#wishlist .user-menu .menu {
+  text-decoration: none;
+  color: #1d2026;
+  width: 30%;
+}
+
+#wishlist .user-menu .menu:hover,
+#wishlist .user-menu .menu.active {
+  border-bottom: 3px solid #545454;
+}
+
+#wishlist > .row {
+  background-color: #fff;
+  margin: 25px 0;
+}
+
+#wishlist > .row .course-preview {
+  width: 20rem;
+  background-position: center;
+  background-size: cover;
+}
+
+#wishlist .wishlist-menu {
+  top: 10px;
+  right: 10px;
+}
+
+#wishlist .wishlist-menu button {
+  background-color: transparent;
+  border: none;
+}
+
+#wishlist .wishlist-menu button:hover {
+  text-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
 }
