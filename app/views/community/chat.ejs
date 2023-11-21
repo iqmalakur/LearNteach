@@ -1,8 +1,12 @@
 <div class="community">
   <div class="chat-container small-scrollbar">
-    <% chats.forEach(chat => { const userType = chat.user === user.username ?
-    'sender' : 'receiver'; const align = userType === 'sender' ? 'end' :
-    'start'; const date = new Date(chat.chat_date); %>
+    <% if (next) { %>
+    <div id="load-chat" class="text-center mb-4">
+      <button type="button">More chat</button>
+    </div>
+    <% } %> <% chats.forEach(chat => { const userType = chat.user ===
+    user.username ? 'sender' : 'receiver'; const align = userType === 'sender' ?
+    'end' : 'start'; const date = new Date(chat.chat_date); %>
     <div class="row text-dark justify-content-<%= `${align} ${userType}` %>">
       <div
         class="col-1 <%= userType === 'receiver' ? 'order-1 text-end' : 'order-2 text-start' %>"
@@ -24,6 +28,7 @@
           date.getHours()}:${(""+date.getMinutes()).length === 1 ? '0' +
           date.getMinutes() : date.getMinutes()}` %>
         </span>
+        <input type="hidden" name="id" value="<%= chat.id %>" />
       </div>
     </div>
     <% }) %>

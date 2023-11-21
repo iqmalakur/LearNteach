@@ -93,6 +93,7 @@ module.exports = {
    */
   chat: async (req, res) => {
     const communityId = req.params.communityId;
+    const beforeId = req.query.before;
     const token = req.cookies.token;
     const username = (await verifyToken(token))?.username;
 
@@ -108,6 +109,27 @@ module.exports = {
         code: 404,
         errorTitle: "Sorry, page not found",
         errorSubTitle: "The page you requested could not be found",
+      });
+    }
+
+    if (beforeId) {
+      const chats = await Chat.findAll({
+        where: { community: community.id, id: { [Op.lt]: beforeId } },
+        attributes: ["id", "chat", "chat_date", "user"],
+        order: [["id", "DESC"]],
+        limit: 11,
+        include: [{ model: User, attributes: ["username", "name", "picture"] }],
+      });
+
+      const next = chats.length > 10;
+      if (chats.next) {
+        chats.pop();
+      }
+
+      return res.status(200).json({
+        success: true,
+        next,
+        chats,
       });
     }
 
@@ -146,11 +168,16 @@ module.exports = {
 
     const chats = await Chat.findAll({
       where: { community: community.id },
-      attributes: ["chat", "chat_date", "user"],
+      attributes: ["id", "chat", "chat_date", "user"],
       order: [["id", "DESC"]],
-      limit: 10,
+      limit: 11,
       include: [{ model: User, attributes: ["username", "name", "picture"] }],
     });
+
+    const next = chats.length > 10;
+    if (next) {
+      chats.pop();
+    }
 
     const communityUsers = await EnrolledCourse.findAll({
       attributes: [],
@@ -202,6 +229,7 @@ module.exports = {
       community,
       course,
       communityUsers,
+      next,
       isInstructor,
     });
   },

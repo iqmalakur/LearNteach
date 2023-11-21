@@ -78,6 +78,16 @@
   margin-right: 0;
 }
 
+.chat-container #load-chat button {
+  border: none;
+  background-color: transparent;
+  color: #6c757d;
+}
+
+.chat-container #load-chat button:hover {
+  color: #5c636a;
+}
+
 .receiver .chat p {
   margin-left: 0;
   margin-right: auto;
