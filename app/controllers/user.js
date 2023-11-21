@@ -1,7 +1,8 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
-const { User, Wishlist } = require("../models/Database");
+const { User, Course, Wishlist } = require("../models/Database");
 const { verifyToken } = require("../utils/jwt");
+const { priceFormat } = require("../utils/format");
 
 module.exports = {
   /**
@@ -115,12 +116,30 @@ module.exports = {
 
       const wishlists = await Wishlist.findAll({
         where: { user: user.username },
+        include: [
+          {
+            model: Course,
+            attributes: [
+              "id",
+              "title",
+              "description",
+              "preview",
+              "rating",
+              "members",
+              "price",
+            ],
+            include: [{ model: User, attributes: ["name"] }],
+          },
+        ],
+        attributes: ["id"],
       });
 
       res.render("user/wishlist", {
-        layout: "layouts/main-layout",
+        layout: "layouts/sidebar-layout",
         title: "Wishlist",
+        user,
         wishlists,
+        priceFormat,
       });
     },
 
