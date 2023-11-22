@@ -72,6 +72,7 @@ router.get("/community/:communityId", checkToken, community.chat); // community 
 
 // Payment
 router.get("/payment", checkToken, payment.index); // payment page
+router.post("/payment", payment.transaction);
 router.get("/cart", checkToken, payment.cart.show); // cart page
 router.post("/cart", payment.cart.add);
 
