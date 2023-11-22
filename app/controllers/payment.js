@@ -58,6 +58,14 @@ module.exports = {
           ],
         });
 
+        if (
+          await EnrolledCourse.findOne({
+            where: { user: username, course: course.id },
+          })
+        ) {
+          throw new Error(`enrolled;${course.title}`);
+        }
+
         // if (promotion_codes.length != 0) {
         //   const promo =
         //     promotion_codes[
@@ -105,6 +113,14 @@ module.exports = {
       await t.commit();
     } catch (error) {
       await t.rollback();
+
+      if (error.message.startsWith("enrolled")) {
+        return res.status(409).json({
+          success: false,
+          message: `${error.message.split(";")[1]} has been enrolled`,
+          redirect: null,
+        });
+      }
 
       return res.status(500).json({
         success: false,
