@@ -27,25 +27,29 @@
 
   <div class="ms-auto d-flex">
     <ul class="navbar-nav mb-2 mb-lg-0">
+      <% if (user) { %>
       <li class="nav-item">
         <a class="nav-link" href="/my">Dashboard</a>
       </li>
+      <% } %>
       <li class="nav-item">
         <a class="nav-link" href="/course">Courses</a>
       </li>
+      <% if (user) { %>
       <li class="nav-item">
         <a class="nav-link" href="/my/community">Community</a>
       </li>
+      <% } %>
       <li class="nav-item">
         <a class="nav-link" href="/faq">FAQ</a>
       </li>
+      <% if (user) { %>
       <li class="nav-item">
         <a class="nav-link" href="/wishlist"><i class="bi bi-heart"></i></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/cart"><i class="bi bi-cart"></i></a>
       </li>
-      <% if (user) { %>
       <li class="nav-item">
         <button type="button" class="nav-link" id="profile-button">
           <img
@@ -55,6 +59,10 @@
             style="width: 30px; height: 30px"
           />
         </button>
+      </li>
+      <% } else{ %>
+      <li class="nav-item">
+        <a class="nav-link" href="/login"> Login </a>
       </li>
       <% } %>
     </ul>
