@@ -7,6 +7,7 @@ const {
   Transaction,
   EnrolledCourse,
 } = require("../models/Database");
+const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
   /**
@@ -33,8 +34,8 @@ module.exports = {
    * @return {ServerResponse}
    */
   transaction: async (req, res) => {
-    const user = res.locals.user;
-    const carts = await Cart.findAll({ where: { user: username } });
+    const user = await verifyToken(req.cookies.token);
+    const carts = await Cart.findAll({ where: { user: user.username } });
 
     if (carts.length === 0) {
       return res.status(400).json({
@@ -61,7 +62,7 @@ module.exports = {
 
         if (
           await EnrolledCourse.findOne({
-            where: { user: username, course: course.id },
+            where: { user: user.username, course: course.id },
             transaction: t,
           })
         ) {
@@ -98,7 +99,7 @@ module.exports = {
         transaction.total = transaction.price + transaction.tax;
 
         const enrolledcourse = {
-          user: username,
+          user: user.username,
           course: course.id,
           completed_contents: "",
           quiz_grades: "",
@@ -107,7 +108,7 @@ module.exports = {
         await Transaction.create(transaction, { transaction: t });
         await EnrolledCourse.create(enrolledcourse, { transaction: t });
         await Cart.destroy({
-          where: { user: username, course: course.id },
+          where: { user: user.username, course: course.id },
           transaction: t,
         });
 
