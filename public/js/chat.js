@@ -194,53 +194,56 @@ btnDetails.forEach((btnDetail) => {
 });
 
 const loadChatBtn = document.querySelector("#load-chat button");
-loadChatBtn.addEventListener("click", async () => {
-  let firstChat = document.querySelector(".chat-container > .row");
-  const id = firstChat.querySelector("input[name=id]");
+if(loadChatBtn){
 
-  const send = await fetch(`/community/${community.value}?before=${id.value}`);
-  const result = await send.json();
-  const chats = result.chats;
-
-  chats.forEach((chat) => {
-    const newChat = document.createElement("div");
-    const userStatus =
-      chat.User.username === username.value ? "sender" : "receiver";
-    const align = userStatus === "sender" ? "end" : "start";
-    const date = new Date(chat.chat_date);
-
-    newChat.classList.add(
-      "row",
-      "text-dark",
-      "justify-content-" + align,
-      userStatus
-    );
-
-    newChat.innerHTML = `
-    <div class="col-1 ${
-      userStatus === "receiver" ? "order-1 text-end" : "order-2 text-start"
-    }">
-      <img src="/img/profiles/${
-        chat.User.picture
-      }" class="rounded-circle mt-4" style="width: 32px; height: 32px;" />
-    </div>
-    <div class="col ${
-      userStatus === "receiver" ? "order-2" : "order-1"
-    } chat rounded position-relative my-2 p-3 text-${align}">
-      <span class="fw-bold">${chat.User.name}</span>
-      <p class="mt-2">${chat.chat}</p>
-      <span class="chat-date">${date.getDate()}-${
-      date.getMonth() + 1
-    }-${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}</span>
-      <input type="hidden" name="id" value="${chat.id}" />
-    </div>
-    `;
-
-    chatContainer.insertBefore(newChat, firstChat);
-    firstChat = newChat;
+  loadChatBtn.addEventListener("click", async () => {
+    let firstChat = document.querySelector(".chat-container > .row");
+    const id = firstChat.querySelector("input[name=id]");
+  
+    const send = await fetch(`/community/${community.value}?before=${id.value}`);
+    const result = await send.json();
+    const chats = result.chats;
+  
+    chats.forEach((chat) => {
+      const newChat = document.createElement("div");
+      const userStatus =
+        chat.User.username === username.value ? "sender" : "receiver";
+      const align = userStatus === "sender" ? "end" : "start";
+      const date = new Date(chat.chat_date);
+  
+      newChat.classList.add(
+        "row",
+        "text-dark",
+        "justify-content-" + align,
+        userStatus
+      );
+  
+      newChat.innerHTML = `
+      <div class="col-1 ${
+        userStatus === "receiver" ? "order-1 text-end" : "order-2 text-start"
+      }">
+        <img src="/img/profiles/${
+          chat.User.picture
+        }" class="rounded-circle mt-4" style="width: 32px; height: 32px;" />
+      </div>
+      <div class="col ${
+        userStatus === "receiver" ? "order-2" : "order-1"
+      } chat rounded position-relative my-2 p-3 text-${align}">
+        <span class="fw-bold">${chat.User.name}</span>
+        <p class="mt-2">${chat.chat}</p>
+        <span class="chat-date">${date.getDate()}-${
+        date.getMonth() + 1
+      }-${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}</span>
+        <input type="hidden" name="id" value="${chat.id}" />
+      </div>
+      `;
+  
+      chatContainer.insertBefore(newChat, firstChat);
+      firstChat = newChat;
+    });
+  
+    if (!result.next) {
+      loadChatBtn.remove();
+    }
   });
-
-  if (!result.next) {
-    loadChatBtn.remove();
-  }
-});
+}

@@ -21,6 +21,7 @@ module.exports = {
       res.render("auth/login", {
         layout: "layouts/main-layout",
         title: "Login",
+        user: null,
         successMessage,
       });
     },
@@ -108,6 +109,7 @@ module.exports = {
       res.render("auth/register", {
         layout: "layouts/main-layout",
         title: "Register",
+        user: null,
       });
     },
 
@@ -219,6 +221,7 @@ module.exports = {
       res.render("auth/recovery", {
         layout: "layouts/main-layout",
         title: "Forgot Password",
+        user: null,
       });
     },
 

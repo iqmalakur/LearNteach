@@ -12,6 +12,9 @@ module.exports = {
   checkToken: async (req, res, next) => {
     const token = req.cookies.token;
     let auth = false;
+    let public = false;
+
+    res.locals.user = null;
 
     // Check if the url destination is auth pages
     switch (req.originalUrl) {
@@ -21,17 +24,28 @@ module.exports = {
         auth = true;
     }
 
+    // Check if the url destination is public pages
+    switch (req.originalUrl) {
+      case "/":
+      case "/faq":
+      case "/course":
+        public = true;
+    }
+
     // Check if there is no cookie named token
     if (!token) {
-      return auth ? next() : res.redirect("/login");
+      return auth || public ? next() : res.redirect("/login");
     }
 
     // If token is valid
-    if (await verifyToken(token)) {
+    let user = null;
+    if ((user = await verifyToken(token))) {
       // Redirect to landing page if the url destination is auth pages
       if (auth) {
         return res.redirect("/");
       }
+
+      res.locals.user = user;
 
       return next();
     }
