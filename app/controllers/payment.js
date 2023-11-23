@@ -56,11 +56,13 @@ module.exports = {
               attributes: ["name"],
             },
           ],
+          transaction: t,
         });
 
         if (
           await EnrolledCourse.findOne({
             where: { user: username, course: course.id },
+            transaction: t,
           })
         ) {
           throw new Error(`enrolled;${course.title}`);
@@ -108,6 +110,16 @@ module.exports = {
           where: { user: username, course: course.id },
           transaction: t,
         });
+
+        await Course.update(
+          { members: course.members + 1 },
+          {
+            where: {
+              id: course.id,
+            },
+            transaction: t,
+          }
+        );
       }
 
       await t.commit();
