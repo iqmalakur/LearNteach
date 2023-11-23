@@ -1,4 +1,5 @@
-const { Course } = require("../models/Database");
+const { User, Course } = require("../models/Database");
+const { priceFormat } = require("../utils/format");
 
 module.exports = {
   /**
@@ -8,7 +9,22 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: async (req, res) => {
-    const courses = await Course.findAll();
+    const lastCourses = await Course.findAll({
+      attributes: ["id", "title", "description", "preview"],
+      order: [["updatedAt", "DESC"]],
+      limit: 3,
+    });
+    const courses = await Course.findAll({
+      attributes: ["id", "title", "price", "rating", "preview"],
+      order: [["rating", "DESC"]],
+      limit: 4,
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
     const successMessage = req.cookies.successMessage ?? false;
     const user = res.locals.user;
 
@@ -20,7 +36,9 @@ module.exports = {
       layout: "layouts/index-layout",
       title: "LearNteach",
       user,
+      lastCourses,
       courses,
+      priceFormat,
       successMessage,
     });
   },

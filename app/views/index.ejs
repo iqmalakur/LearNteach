@@ -1,200 +1,154 @@
-
-<div class="landing-page">
-  <div class="landing-page-child"></div>
-  <div class="landing-page-item"></div>
-  <img
-    class="landing-page-inner"
-    alt="LearNTeach"
-    src="/img/learn.jpg"
-  />
-
-  <div class="group-parent">
-    <a href="/auth/login" class="btn btn-success btn-lg m-2">Login</a>
+<main>
+  <div class="position-relative">
+    <div
+      class="position-absolute landing-bg"
+      style="background-image: url(/img/background/learn.jpg)"
+    ></div>
+    <header class="container-fluid pb-2 text-light position-relative">
+      <div class="row pt-5 px-4 justify-content-between align-items-center">
+        <div class="col-5">
+          <h3 class="fw-light">Helo, Welcome to Our Company</h3>
+          <h1>Find your English Skills Here</h1>
+          <h2 class="fw-light pt-5 pb-4 pe-5">
+            Lorem ipsum dolor sit amet consectetur. Sed arcu malesuada nulla
+            vivamus. Lobortis magna.
+          </h2>
+          <h3 class="fw-light text-decoration-underline">
+            LearNTeach Community
+          </h3>
+        </div>
+        <div class="col-5">
+          <div class="bg-light text-dark text-end p-5 rounded shadow-lg">
+            <h3 class="text-start fw-normal">
+              We provide premium features for a more engaging experience
+            </h3>
+            <h4 class="fw-normal mt-3">Rp250.000</h4>
+            <a href="#" class="btn btn-secondary" style="width: 8rem"
+              >Buy Now</a
+            >
+          </div>
+        </div>
+      </div>
+      <% if (!user) { %>
+      <div class="row auth px-5 mt-5">
+        <div class="col-4">
+          <div class="d-flex justify-content-between">
+            <a href="/login" class="btn text-light">Sign in</a>
+            <a href="/register" class="btn text-light">Sign up</a>
+          </div>
+        </div>
+      </div>
+      <% } %>
+      <div class="row px-4 mt-5">
+        <div class="sosmed my-1">
+          <img src="/img/logo/instagram.png" alt="Instagram" class="me-2" />
+          @LearNTeach
+        </div>
+        <div class="sosmed my-1">
+          <img
+            src="/img/logo/twitter.png"
+            alt="Twitter"
+            class="me-2"
+            style="width: 35px; height: 35px; margin-left: -2px"
+          />
+          @LearNTeach
+        </div>
+        <div class="sosmed my-1">
+          <img src="/img/logo/facebook.png" alt="Facebook" class="me-2" />
+          @LearNTeach
+        </div>
+      </div>
+    </header>
   </div>
-  <div class="lorem-ipsum-dolor">
-    Lorem ipsum dolor sit amet 
-    consectetur. Sed arcu malesuada nulla
-    vivamus. Lobortis magna.
-  </div>
-  <b class="find-your-english">Find your English Skills Here</b>
-  <div class="helo-welcome-to">Hello, Welcome to Our Company</div>
-  <img class="instagram-icon" alt="LearNTeach" src="/img/ig.png" />
-
-  <img class="twitter-icon" alt="LearNTeach" src="/img/twt.png" />
-
-  <div class="learnteach">@LearNTeach</div>
-  <div class="learnteach1">@LearNTeach</div>
-  <div class="learnteach2">@LearNTeach</div>
-  <img class="facebook-icon" alt="LearNTeach" src="/img/fc.png" />
-
-  <div class="get-starter-parent">
-    <a href="/auth/register" class="btn btn-success btn-lg m-2">Sign Up</a>
-  </div>
-  <div class="rectangle-div"></div>
-  <div class="lorem-ipsum-dolor-container">
-          Lorem ipsum dolor sit amet consectetur. Pellentesque neque 
-          nec risus quam. Arcu odio augue egestas ut nisl. Facilisis 
-          semper luctus nulla arcu vitae velit diam. Imperdiet justo 
-          mauris adipiscing FITUR PREMIUM commodo massa.
-          Urna velit integer dui in nibh risus scelerisque tristique. 
-          Tristique quis tellus justo suscipit ultrices ac. Nunc tempor 
-          venenatis aliquet pretium parturient commodo arcu. Diam 
-          auctor odio sollicitudin elit cras luctus viverra nunc eu. Vitae.
-  </div>
-  <div class="learnteach-community-parent">
-    <a href="/" class="learnteach-community">LearNTeach Community</a>
-    <div class="group-child"></div>
-  </div>
-  <b class="latest-updates">Latest Updates</b>
-  <b class="our-courses">Our Courses</b>
-  <b class="course-statistics">Course Statistics</b>
-  <div class="rectangle-parent">
-    <div class="group-item"></div>
-    <div class="toefl-test">TOEFL Test</div>
-    <div class="lorem-ipsum-dolor2">
-      Lorem ipsum dolor sit amet malesuada
+  <section class="new-course container-fluid text-light">
+    <div class="row">
+      <div class="col-3 d-flex justify-content-center align-items-center">
+        <div class="new-course-title">
+          <h2>Latest Updates</h2>
+          <h5 class="fw-light">Stay connect with us</h5>
+        </div>
+      </div>
+      <div class="col-9">
+        <div class="row px-4" style="padding-top: 5rem; padding-bottom: 5rem">
+          <% lastCourses.forEach(course => { %>
+          <div class="col-4">
+            <div class="card" style="min-height: 25rem">
+              <img
+                src="/img/courses/<%- course.preview %>"
+                class="card-img-top"
+                alt="<%- course.title %>"
+              />
+              <div class="card-body text-center position-relative">
+                <h5 class="card-title"><%- course.title %></h5>
+                <p class="card-text" style="margin-bottom: 4rem">
+                  <%- course.description %>
+                </p>
+                <div
+                  class="text-center position-absolute"
+                  style="left: 30px; bottom: 25px; right: 30px"
+                >
+                  <a
+                    href="/course/<%- course.id %>"
+                    class="btn btn-secondary w-100"
+                    >Learn More</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+      </div>
     </div>
-    <div class="rectangle-group">
-      <div class="group-inner"></div>
-      <a href="/" class="learn-more">Learn More</a>
+  </section>
+  <section class="course container-fluid text-light py-5">
+    <div class="row">
+      <div class="col text-center">
+        <h2>Our Courses</h2>
+        <h5 class="fw-light">Explore our wide range of English courses</h5>
+      </div>
     </div>
-  </div>
-  <div class="rectangle-container">
-    <div class="group-item"></div>
-    <div class="nouns">Nouns</div>
-    <div class="lorem-ipsum-dolor2">Lorem ipsum dolor sit imperdiet</div>
-    <div class="rectangle-group">
-      <div class="group-inner"></div>
-      <a href="/" class="learn-more">Learn More</a>
+    <div class="row p-5">
+      <% courses.forEach(course => { %>
+      <div class="col-3">
+        <div class="card" style="min-height: 25rem">
+          <img
+            src="/img/courses/<%- course.preview %>"
+            class="card-img-top"
+            alt="<%- course.title %>"
+          />
+          <div class="card-body text-center position-relative">
+            <h5 class="card-title"><%- course.title %></h5>
+            <h6 class="fw-normal"><%- course.User.name %></h6>
+            <div
+              class="row justify-content-between align-items-center"
+              style="margin-bottom: 4rem"
+            >
+              <div class="col-6 fw-bold"><%- priceFormat(course.price) %></div>
+              <div
+                class="col-6 d-flex justify-content-center align-items-center"
+              >
+                <img
+                  src="/img/icons/star.png"
+                  alt="rating"
+                  class="me-2"
+                  style="width: 30px"
+                />
+                <%- course.rating %>
+              </div>
+            </div>
+            <div
+              class="text-center position-absolute"
+              style="left: 30px; bottom: 25px; right: 30px"
+            >
+              <a href="/course/<%- course.id %>" class="btn btn-secondary w-100"
+                >Learn More</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }) %>
     </div>
-  </div>
-  <div class="rectangle-parent1">
-    <div class="group-child3"></div>
-    <img class="rectangle-icon" alt="LearNTeach" src="/img/comu.jpg" />
-
-    <div class="english-communication">English Communication</div>
-    <div class="lorem-ipsum-dolor4">
-      Lorem ipsum dolor sit amet tristique
-    </div>
-    <div class="rectangle-parent2">
-      <div class="group-child4"></div>
-      <a href="/" class="learn-more">Learn More</a>
-    </div>
-  </div>
-  <div class="rectangle-parent3">
-    <div class="group-item"></div>
-    <div class="name-of-class">Name of Class</div>
-  </div>
-  <div class="rectangle-parent4">
-    <div class="group-item"></div>
-    <div class="name-of-class1">Name of Class</div>
-  </div>
-  <div class="rectangle-parent5">
-    <div class="group-item"></div>
-    <div class="name-of-class2">Name of Class</div>
-    <div class="rectangle-parent6">
-      <div class="group-child4"></div>
-      <a href="/" class="learn-more">Learn More</a>
-    </div>
-    <div class="intructure">Intructure</div>
-  </div>
-  <div class="rectangle-parent7">
-    <div class="group-item"></div>
-    <div class="name-of-class2">Name of Class</div>
-  </div>
-  <div class="stay-connect-with">Stay connect with us</div>
-  <div class="explore-our-wide">
-    Explore our wide range of English courses
-  </div>
-  <div class="landing-page-child1"></div>
-  <div class="landing-page-child2"></div>
-  <div class="landing-page-child3"></div>
-  <div class="number-of-students">Number of Students</div>
-  <div class="course-completion-rate">Course Completion Rate</div>
-  <div class="average-rating">Average Rating</div>
-  <div class="div">10,000+</div>
-  <div class="div1">90%</div>
-  <div class="div2">4.8</div>
-  <div class="compared-to-last">+5% compared to last month</div>
-  <div class="compared-to-last1">+10% compared to last month</div>
-  <div class="compared-to-last2">+0.2 compared to last month</div>
-  <img
-    class="landing-page-child4"
-    alt="LearNTeach"
-    src="/img/Nouns.jpg"
-  />
-
-  <img
-    class="landing-page-child5"
-    alt="LearNTeach"
-    src="/img/toefl.jpg"
-  />
-
-  <img
-    class="landing-page-child6"
-    alt="LearNTeach"
-    src="/img/1.jpg"
-  />
-
-  <img
-    class="landing-page-child7"
-    alt="LearNTeach"
-    src="/img/2.jpg"
-  />
-
-  <img
-    class="landing-page-child8"
-    alt="LearNTeach"
-    src="/img/3.jpg"
-  />
-
-  <img
-    class="landing-page-child9"
-    alt="L"
-    src="/img/4.jpg"
-  />
-
-  <div class="rp-200000">Rp. 200.000</div>
-  <div class="rp-170000">Rp. 170.000</div>
-  <div class="star-parent">
-    <img class="star-icon" alt="LearNTeach" src="/img/star.png" />
-
-    <div class="div3">4.5</div>
-  </div>
-  <div class="star-group">
-    <img class="star-icon" alt="LearNTeach" src="/img/star.png" />
-
-    <div class="div3">4.6</div>
-  </div>
-  <div class="intructure1">Intructure</div>
-  <div class="intructure2">Intructure</div>
-  <div class="intructure3">Intructure</div>
-  <div class="rectangle-parent8">
-    <div class="group-child4"></div>
-    <a href="/" class="learn-more">Learn More</a>
-  </div>
-  <div class="rectangle-parent9">
-    <div class="group-child4"></div>
-    <a href="/" class="learn-more">Learn More</a>
-  </div>
-  <div class="rectangle-parent10">
-    <div class="group-child4"></div>
-    <a href="/" class="learn-more">Learn More</a>
-  </div>
-  <div class="rp-150000-parent">
-    <div class="rp-150000">Rp. 150.000</div>
-    <div class="star-container">
-      <img class="star-icon" alt="LearNTeach" src="/img/star.png" />
-
-      <div class="div3">4.3</div>
-    </div>
-  </div>
-  <div class="rp-250000-parent">
-    <div class="rp-150000">Rp. 250.000</div>
-    <div class="star-container">
-      <img class="star-icon" alt="LearNTeach" src="/img/star.png" />
-
-      <div class="div3">4.8</div>
-    </div>
-  </div>
-</div>
+  </section>
+</main>
