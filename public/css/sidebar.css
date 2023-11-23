@@ -5,6 +5,20 @@
   background-color: #e0e0e0;
 }
 
+#community a {
+  text-decoration: none;
+}
+
+#community .card {
+  min-height: 200px;
+  transition: 0.3s;
+}
+
+#community .card:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
 #wishlist .user-menu {
   background-color: #fff;
 }
