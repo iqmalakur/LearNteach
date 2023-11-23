@@ -34,6 +34,7 @@
             <h4><%- course.title %></h4>
             <h5 class="fw-normal"><%- course.User.name %></h5>
             <h5><%- priceFormat(course.price) %></h5>
+            <% if (user) { %>
             <div class="d-flex justify-content-end">
               <form action="/wishlist" method="post" class="wishlist mx-1">
                 <button type="submit" class="btn btn-outline-secondary">
@@ -50,6 +51,7 @@
                 <input type="hidden" name="course" value="<%- course.id %>" />
               </form>
             </div>
+            <% } %>
             <span
               class="rating d-flex justify-content-center align-items-center"
             >
