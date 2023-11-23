@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const { User } = require("../models/Database");
 
 module.exports = {
   /**
@@ -7,11 +8,17 @@ module.exports = {
    * @param {String} token Token to be validated.
    * @return {Object} Value of token
    */
-  verifyToken: (token) => {
+  verifyToken: async (token) => {
     try {
-      return jwt.verify(token, "LearNteach-Sekodlah23");
+      const userToken = jwt.verify(token, "LearNteach-Sekodlah23");
+
+      let user = null;
+      if ((user = await User.findByPk(userToken.username))) {
+        return user;
+      }
+
+      throw new Error();
     } catch (err) {
-      res.clearCookie("token");
       return null;
     }
   },

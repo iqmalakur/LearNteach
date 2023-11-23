@@ -7,6 +7,7 @@ const course = require("./controllers/course");
 const user = require("./controllers/user");
 const admin = require("./controllers/admin");
 const payment = require("./controllers/payment");
+const community = require("./controllers/community");
 
 const { checkToken } = require("./middlewares/authMiddleware");
 
@@ -20,8 +21,8 @@ router.post("/recovery", auth.recovery.submit);
 router.post("/logout", auth.logout);
 
 // Home / Root
-router.get("/", home.index); // landing page
-router.get("/faq", home.faq); // FAQ page
+router.get("/", checkToken, home.index); // landing page
+router.get("/faq", checkToken, home.faq); // FAQ page
 
 // User
 router.get("/my", checkToken, user.index); // user dashboard
@@ -39,7 +40,7 @@ router.get(
   checkToken,
   instructor.course.detail
 ); // class dashboard
-router.get("/instructor/courses/add", instructor.course.show); // add course page
+router.get("/instructor/courses/add", checkToken, instructor.course.show); // add course page
 router.post("/instructor/courses/add", instructor.course.add);
 router.get(
   "/instructor/courses/:courseId/content",
@@ -61,12 +62,17 @@ router.post(
 );
 
 // Course
-router.get("/course", course.index); // list of classes page
-router.get("/course/:courseId", course.detail); // class info page
-router.get("/course/:courseId/instructor", course.instructor); // instructor info page
+router.get("/course", checkToken, course.index); // list of classes page
+router.get("/course/:courseId", checkToken, course.detail); // class info page
+router.get("/course/:courseId/instructor", checkToken, course.instructor); // instructor info page
+
+// Community
+router.get("/my/community", checkToken, community.index); // community page
+router.get("/community/:communityId", checkToken, community.chat); // community chat page
 
 // Payment
 router.get("/payment", checkToken, payment.index); // payment page
+router.post("/payment", payment.transaction);
 router.get("/cart", checkToken, payment.cart.show); // cart page
 router.post("/cart", payment.cart.add);
 

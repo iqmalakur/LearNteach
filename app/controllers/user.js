@@ -1,8 +1,14 @@
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
-const User = require("../models/User");
-const { Wishlist } = require("../models/Connection");
-const { verifyToken } = require("../utils/jwt");
+const {
+  Connection,
+  User,
+  Course,
+  EnrolledCourse,
+  Wishlist,
+  Cart,
+} = require("../models/Database");
+const { priceFormat } = require("../utils/format");
 
 module.exports = {
   /**
@@ -12,9 +18,12 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: (req, res) => {
+    const user = res.locals.user;
+
     res.render("user/index", {
       layout: "layouts/raw-layout",
       title: "Dashboard",
+      user,
     });
   },
 
@@ -25,9 +34,12 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   profile: (req, res) => {
+    const user = res.locals.user;
+
     res.render("user/profile", {
       layout: "layouts/main-layout",
       title: "My Profile",
+      user,
     });
   },
 
@@ -48,7 +60,7 @@ module.exports = {
       username: Joi.string().required(),
       email: Joi.string().required().email(),
       password: Joi.string().required().min(8),
-      picture: Joi.string().required().uri(),
+      picture: Joi.string().required(),
     });
 
     const valid = schema.validate(req.body);
@@ -64,7 +76,7 @@ module.exports = {
     const { name, username, email, password, picture } = req.body;
 
     // Check if the user does not exists
-    const user = await User.get(username);
+    const user = await User.findByPk(username);
     if (!user) {
       return res.status(400).json({
         success: false,
@@ -76,11 +88,13 @@ module.exports = {
     // Encrypt the password
     if (!bcrypt.compareSync(password, user.password)) {
       const hashedPassword = bcrypt.hashSync(password, 10);
-      user.setPassword(hashedPassword);
+      user.password = hashedPassword;
     }
 
     // Set all data to new data
-    user.setName(name).setEmail(email).setPicture(picture);
+    user.name = name;
+    user.email = email;
+    user.picture = picture;
 
     // Store new user to database
     if (await user.save()) {
@@ -108,18 +122,34 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     show: async (req, res) => {
-      const token = req.cookies.token;
-      const username = verifyToken(token)?.username;
-      const user = await User.get(username);
+      const user = res.locals.user;
 
       const wishlists = await Wishlist.findAll({
         where: { user: user.username },
+        include: [
+          {
+            model: Course,
+            attributes: [
+              "id",
+              "title",
+              "description",
+              "preview",
+              "rating",
+              "members",
+              "price",
+            ],
+            include: [{ model: User, attributes: ["name"] }],
+          },
+        ],
+        attributes: ["id"],
       });
 
       res.render("user/wishlist", {
-        layout: "layouts/main-layout",
+        layout: "layouts/sidebar-layout",
         title: "Wishlist",
+        user,
         wishlists,
+        priceFormat,
       });
     },
 
@@ -132,7 +162,16 @@ module.exports = {
      */
     add: async (req, res) => {
       // Destructuring request body
-      const { username: user, course } = req.body;
+      const { user, course } = req.body;
+
+      // Check if course already enrolled
+      if (await EnrolledCourse.findOne({ where: { user, course } })) {
+        return res.status(409).json({
+          success: false,
+          message: "course has been enrolled",
+          redirect: null,
+        });
+      }
 
       // Check if wishlist already exists
       if (await Wishlist.findOne({ where: { user, course } })) {
@@ -143,8 +182,33 @@ module.exports = {
         });
       }
 
+      // Check if the course is on the cart
+      const t = await Connection.getConnection().transaction();
+      if (await Cart.findOne({ where: { user, course } })) {
+        try {
+          await Cart.destroy({ where: { user, course }, transaction: t });
+          await Wishlist.create({ user, course }, { transaction: t });
+
+          await t.commit();
+
+          return res.status(200).json({
+            success: true,
+            message: "course moved from cart to wishlist",
+            redirect: null,
+          });
+        } catch (error) {
+          await t.rollback();
+
+          return res.status(500).json({
+            success: false,
+            message: "unexpected errors occurred",
+            redirect: null,
+          });
+        }
+      }
+
       // Success add to wishlist
-      Wishlist.create({ user, course });
+      await Wishlist.create({ user, course });
       return res.status(200).json({
         success: true,
         message: "course added to wishlist",

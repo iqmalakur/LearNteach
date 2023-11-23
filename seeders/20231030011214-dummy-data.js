@@ -3,6 +3,8 @@
 /** @type {import('sequelize-cli').Migration} */
 
 const { faker } = require("@faker-js/faker");
+const bcrypt = require("bcrypt");
+const uuid = require("uuid");
 
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -38,9 +40,9 @@ module.exports = {
       const user = {
         username: faker.internet.userName(),
         email: faker.internet.email(),
-        password: faker.internet.password(),
+        password: bcrypt.hashSync("user12345", 10),
         name: faker.person.fullName(),
-        picture: faker.image.url(),
+        picture: "default.png",
       };
 
       users.push(user);
@@ -60,6 +62,88 @@ module.exports = {
         });
       }
     }
+
+    users.push(
+      {
+        username: "luffy",
+        email: "luffy@mugiwara.com",
+        password: bcrypt.hashSync("luffy12345", 10),
+        name: "Monkey D Luffy",
+        picture: "luffy.jpg",
+      },
+      {
+        username: "zoro",
+        email: "zoro@mugiwara.com",
+        password: bcrypt.hashSync("zoro12345", 10),
+        name: "Roronoa Zoro",
+        picture: "zoro.jpg",
+      },
+      {
+        username: "usopp",
+        email: "usopp@mugiwara.com",
+        password: bcrypt.hashSync("usopp12345", 10),
+        name: "Usopp",
+        picture: "usopp.jpg",
+      },
+      {
+        username: "sanji",
+        email: "sanji@mugiwara.com",
+        password: bcrypt.hashSync("sanji12345", 10),
+        name: "Vismoke Sanji",
+        picture: "sanji.jpg",
+      },
+      {
+        username: "nami",
+        email: "nami@mugiwara.com",
+        password: bcrypt.hashSync("nami12345", 10),
+        name: "Nami",
+        picture: "nami.jpg",
+      },
+      {
+        username: "chopper",
+        email: "chopper@mugiwara.com",
+        password: bcrypt.hashSync("chopper12345", 10),
+        name: "Tony Tony Chopper",
+        picture: "chopper.jpg",
+      },
+      {
+        username: "robin",
+        email: "robin@mugiwara.com",
+        password: bcrypt.hashSync("robin12345", 10),
+        name: "Nico Robin",
+        picture: "robin.jpg",
+      },
+      {
+        username: "franky",
+        email: "franky@mugiwara.com",
+        password: bcrypt.hashSync("franky12345", 10),
+        name: "Franky",
+        picture: "franky.jpg",
+      },
+      {
+        username: "brook",
+        email: "brook@mugiwara.com",
+        password: bcrypt.hashSync("brook12345", 10),
+        name: "Brook",
+        picture: "brook.jpg",
+      },
+      {
+        username: "jinbe",
+        email: "jinbe@mugiwara.com",
+        password: bcrypt.hashSync("jinbe12345", 10),
+        name: "Jinbe",
+        picture: "jinbe.jpg",
+      }
+    );
+
+    instructors.push({
+      username: "luffy",
+      document: faker.system.filePath(),
+      balance: 0,
+      approved: "yes",
+      bio: "I gonna be king of the pirate",
+      rating: 5,
+    });
 
     await queryInterface.bulkInsert("Users", users);
     await queryInterface.bulkInsert("Instructors", instructors);
@@ -95,7 +179,7 @@ module.exports = {
             rating: Math.round(Math.random()) + 4,
             members: Math.ceil(Math.random() * (users.length / 2)) + 4,
             tags: tags.join(","),
-            preview: faker.image.url(),
+            preview: "default.jpg",
             price: Math.floor(faker.finance.amount(1, 5)) * 100000,
             createdAt: new Date(),
             updatedAt: new Date(),
@@ -106,6 +190,22 @@ module.exports = {
         }
       }
     }
+
+    courses.push({
+      instructor: "luffy",
+      title: "Straw Hat",
+      description: "The Straw Hat Course",
+      rating: 5,
+      members: 10,
+      tags: "pirate,advanture,action",
+      preview: "default.jpg",
+      price: 500000,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      meet_link: faker.internet.url(),
+      meet_time: faker.date.future(),
+      meet_day: "Sunday",
+    });
 
     await queryInterface.bulkInsert("Courses", courses);
 
@@ -120,39 +220,49 @@ module.exports = {
       });
     }
 
+    communities.push({
+      course: courses.length,
+      name: "Straw Hat Community",
+      description: "The Straw Hat Community",
+      picture: faker.image.url(),
+      type: "local",
+    });
+
     await queryInterface.bulkInsert("Communities", communities);
 
     // Generate Contents
-    for (let [id, course] of courses.entries()) {
+    for (let [courseId, _] of courses.entries()) {
       for (let i = 0; i < Math.ceil(Math.random() * 5); i++) {
         const rand = Math.random();
         let type = "";
+        const id = uuid.v4();
 
         if (rand >= 0.3) {
           type = "video";
 
           videos.push({
-            id: contents.length + 1,
+            id,
             file: faker.system.filePath(),
           });
         } else if (rand >= 0.15) {
           type = "quiz";
 
           quizzes.push({
-            id: contents.length + 1,
+            id,
             answer_time: Math.round(Math.random() * 5) + 5,
           });
         } else {
           type = "article";
 
           articles.push({
-            id: contents.length + 1,
+            id,
             body: faker.lorem.sentences({ min: 10, max: 50 }),
           });
         }
 
         contents.push({
-          course: id + 1,
+          id: uuid.v4(),
+          course: courseId + 1,
           label: faker.word.words({ count: { min: 5, max: 10 } }),
           approved: "yes",
           type,
@@ -330,6 +440,63 @@ module.exports = {
         }
       }
     }
+
+    enrolledCourses.push(
+      {
+        user: "zoro",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      },
+      {
+        user: "usopp",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      },
+      {
+        user: "sanji",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      },
+      {
+        user: "nami",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      },
+      {
+        user: "chopper",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      },
+      {
+        user: "robin",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      },
+      {
+        user: "franky",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      },
+      {
+        user: "brook",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      },
+      {
+        user: "jinbe",
+        course: courses.length,
+        completed_contents: "",
+        quiz_grades: 0,
+      }
+    );
 
     await queryInterface.bulkInsert("Wishlists", wishlists);
     await queryInterface.bulkInsert("Carts", carts);

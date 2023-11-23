@@ -1,0 +1,70 @@
+<button
+  class="navbar-toggler"
+  type="button"
+  data-bs-toggle="collapse"
+  data-bs-target="#navbarSupportedContent"
+  aria-controls="navbarSupportedContent"
+  aria-expanded="false"
+  aria-label="Toggle navigation"
+>
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarSupportedContent">
+  <form class="d-flex mx-auto position-relative" role="search">
+    <img
+      src="/img/icons/search.png"
+      width="21"
+      height="26"
+      class="position-absolute"
+    />
+    <input
+      class="form-control rounded-pill me-2"
+      type="search"
+      placeholder="Search anything to learn"
+      aria-label="Search"
+    />
+  </form>
+
+  <div class="ms-auto d-flex">
+    <ul class="navbar-nav mb-2 mb-lg-0">
+      <% if (user) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/my">Dashboard</a>
+      </li>
+      <% } %>
+      <li class="nav-item">
+        <a class="nav-link" href="/course">Courses</a>
+      </li>
+      <% if (user) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/my/community">Community</a>
+      </li>
+      <% } %>
+      <li class="nav-item">
+        <a class="nav-link" href="/faq">FAQ</a>
+      </li>
+      <% if (user) { %>
+      <li class="nav-item">
+        <a class="nav-link" href="/wishlist"><i class="bi bi-heart"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/cart"><i class="bi bi-cart"></i></a>
+      </li>
+      <li class="nav-item">
+        <button type="button" class="nav-link" id="profile-button">
+          <img
+            src="/img/profiles/<%- user.picture %>"
+            alt="User"
+            class="rounded-circle"
+            style="width: 30px; height: 30px"
+          />
+        </button>
+      </li>
+      <% } else{ %>
+      <li class="nav-item">
+        <a class="nav-link" href="/login"> Login </a>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+</div>

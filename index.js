@@ -6,6 +6,8 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const debug = require("debug")("learnteach:server");
+const socketIo = require("socket.io");
+const { verifyToken } = require("./app/utils/jwt");
 
 /**
  * Normalize a port into a number, string, or false.
@@ -85,7 +87,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -93,10 +95,16 @@ app.use((err, req, res, next) => {
   // render the error page
   res.status(err.status || 500);
 
+  console.log(err);
+
+  const token = req.cookies.token;
+  const user = await verifyToken(token);
+
   if (err.status === 404) {
     return res.render("error", {
-      layout: "layouts/main-layout",
+      layout: "layouts/error-layout",
       title: "Page Not Found!",
+      user,
       code: 404,
       errorTitle: "Sorry, page not found",
       errorSubTitle: "The page you requested could not be found",
@@ -104,8 +112,9 @@ app.use((err, req, res, next) => {
   }
 
   return res.render("error", {
-    layout: "layouts/main-layout",
+    layout: "layouts/error-layout",
     title: "Internal Server Error!",
+    user,
     code: 500,
     errorTitle: "Sorry, your request cannot be processed",
     errorSubTitle: "It seems there was an error on our side",
@@ -124,6 +133,32 @@ app.set("port", port);
  */
 
 const server = http.createServer(app);
+
+/**
+ * Create Socket.io server.
+ */
+
+const io = socketIo(server, {});
+const CommunityService = require("./app/services/CommunityService");
+const community = new CommunityService(io);
+
+io.on("connection", (socket) => {
+  socket.on("join", (username) => {
+    socket.username = username;
+    community.join(username);
+    io.emit("onlineUsers", CommunityService.onlineUsers);
+  });
+
+  socket.on("message", (chat) => {
+    community.message(chat);
+    io.emit("message", chat);
+  });
+
+  socket.on("disconnect", () => {
+    community.leave(socket.username);
+    io.emit("onlineUsers", CommunityService.onlineUsers);
+  });
+});
 
 /**
  * Listen on provided port, on all network interfaces.
