@@ -1,115 +1,87 @@
-<div class="container" style="background-color: #0f1c12; height: 300px">
-  <div class="row">
-    <div class="col col-12">
-      <div class="text-center" style="color: white">FAQ</div>
-
-      <div class="box">
-        <form class="form-inline mx-5 my-2">
-          <div class="input-group rounded-pill">
+<section id="faq">
+  <header>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <h1 class="text-light text-center display-1 fw-bold">FAQ</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <form class="d-flex mx-auto position-relative search" role="search">
+            <img
+              src="/img/icons/search.png"
+              width="21"
+              height="26"
+              class="position-absolute"
+            />
             <input
-              class="form-control rounded-pill shadow-none"
+              class="form-control rounded-pill ps-5"
               type="search"
               placeholder="Type your question"
               aria-label="Search"
             />
-            <div class="ikon"><img src="/img/search.png" /></div>
-          </div>
-          <div
-            class="container"
-            style="
-              background-color: #d8d8d8;
-              padding-top: 40px;
-              padding-bottom: 40px;
-            "
-          >
-            <div class="row">
-              <div class="col-3">
-                <div class="card rounded-0">
-                  <img
-                    src="/img/Warna abu.jpeg"
-                    class="card-img-top rounded-0"
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title text-center fs-4">Account</h5>
-                    <p class="card-text text-center fs-6 text fw-normal">
-                      Learn more about how to manage your account
-                    </p>
-                    <button
-                      type="button"
-                      class="btn btn-primary custom-btn rounded-0 mx-5"
-                    >
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="card rounded-0">
-                  <img
-                    src="/img/guide.jpeg"
-                    class="card-img-top rounded-0"
-                    alt="..."
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title text-center fs-4">Guide</h5>
-                    <p class="card-text text-center fs-6 text fw-normal">
-                      Browse our guides to help you get started
-                    </p>
-                    <button
-                      type="button"
-                      class="btn btn-primary custom-btn rounded-0 mx-5"
-                    >
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="card rounded-0">
-                  <img
-                    src="/img/class.jpeg"
-                    class="card-img-top rounded-0"
-                    alt="..."
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title text-center fs-4">Class</h5>
-                    <p class="card-text text-center fs-6 text fw-normal">
-                      Explore more about our classes &nbsp;
-                    </p>
-                    <button
-                      type="button"
-                      class="btn btn-primary custom-btn rounded-0 mx-5"
-                    >
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </div>
-              <div class="col-3">
-                <div class="card rounded-0">
-                  <img
-                    src="/img/payment.jpeg"
-                    class="card-img-top rounded-0"
-                    alt="..."
-                  />
-                  <div class="card-body">
-                    <h5 class="card-title text-center fs-4">Payment</h5>
-                    <p class="card-text text-center fs-6 text fw-normal">
-                      Find answer to frequently asked payment question &nbsp;
-                    </p>
-                    <button
-                      type="button"
-                      class="btn btn-primary custom-btn rounded-0 mx-5"
-                    >
-                      Learn More
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  </header>
+  <main class="container-fluid">
+    <div class="row p-5">
+      <div class="col-3">
+        <div class="card text-center">
+          <div
+            class="card-img-top"
+            style="background-image: url(/img/faq/account.jpg)"
+          ></div>
+          <div class="card-body px-5">
+            <h5 class="card-title">Account</h5>
+            <p class="card-text">Learn more about how to manage your account</p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card text-center">
+          <div
+            class="card-img-top"
+            style="background-image: url(/img/faq/guide.jpeg)"
+          ></div>
+          <div class="card-body px-5">
+            <h5 class="card-title">Guide</h5>
+            <p class="card-text">Browse our guides to help you get started</p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card text-center">
+          <div
+            class="card-img-top"
+            style="background-image: url(/img/faq/class.jpeg)"
+          ></div>
+          <div class="card-body px-5">
+            <h5 class="card-title">Class</h5>
+            <p class="card-text">Explore more about our classes</p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="card text-center">
+          <div
+            class="card-img-top"
+            style="background-image: url(/img/faq/payment.jpeg)"
+          ></div>
+          <div class="card-body px-5">
+            <h5 class="card-title">Payment</h5>
+            <p class="card-text">
+              Find Answer to frequently asked payment questions
+            </p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</section>

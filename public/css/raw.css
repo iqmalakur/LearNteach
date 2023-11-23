@@ -1,0 +1,32 @@
+#faq {
+  min-height: 100vh;
+}
+
+#faq header {
+  padding-top: 7rem;
+  padding-bottom: 5rem;
+  background-color: #0f1c12;
+}
+
+#faq .search {
+  width: 80%;
+}
+
+#faq .search input {
+  background-color: #e0e0e0;
+}
+
+#faq .search img {
+  left: 15px;
+  top: 5px;
+}
+
+#faq main {
+  background-color: #e0e0e0;
+}
+
+#faq .card .card-img-top {
+  height: 200px;
+  background-position: center;
+  background-size: cover;
+}
