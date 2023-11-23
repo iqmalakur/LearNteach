@@ -7,7 +7,6 @@ const {
   Transaction,
   EnrolledCourse,
 } = require("../models/Database");
-const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
   /**
@@ -17,9 +16,12 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: (req, res) => {
+    const user = res.locals.user;
+
     res.render("payment/index", {
       layout: "layouts/main-layout",
       title: "Payment Page",
+      user,
     });
   },
 
@@ -31,9 +33,7 @@ module.exports = {
    * @return {ServerResponse}
    */
   transaction: async (req, res) => {
-    const token = req.cookies.token;
-    const username = (await verifyToken(token))?.username;
-    const user = await User.findByPk(username);
+    const user = res.locals.user;
     const carts = await Cart.findAll({ where: { user: username } });
 
     if (carts.length === 0) {
@@ -156,9 +156,7 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     show: async (req, res) => {
-      const token = req.cookies.token;
-      const username = (await verifyToken(token))?.username;
-      const user = await User.findByPk(username);
+      const user = res.locals.user;
 
       const carts = await Cart.findAll({
         where: { user: user.username },
@@ -168,6 +166,7 @@ module.exports = {
         layout: "layouts/raw-layout",
         title: "Cart",
         carts,
+        user,
       });
     },
 

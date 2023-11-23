@@ -5,7 +5,6 @@ const {
   Chat,
   EnrolledCourse,
 } = require("../models/Database");
-const { verifyToken } = require("../utils/jwt");
 const { Op } = require("sequelize");
 
 module.exports = {
@@ -16,13 +15,7 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: async (req, res) => {
-    const token = req.cookies.token;
-    const username = (await verifyToken(token))?.username;
-
-    const user = await User.findOne({
-      where: { username },
-      attributes: ["username", "name", "picture"],
-    });
+    const user = res.locals.user;
 
     const enrolledCourses = await EnrolledCourse.findAll({
       include: [
@@ -33,7 +26,7 @@ module.exports = {
       ],
       attributes: [],
       where: {
-        "$EnrolledCourse.user$": username,
+        "$EnrolledCourse.user$": user.username,
       },
     });
 
@@ -59,7 +52,7 @@ module.exports = {
     }
 
     const courses = await Course.findAll({
-      where: { instructor: username },
+      where: { instructor: user.username },
       attributes: ["id", "members"],
     });
 
@@ -94,18 +87,19 @@ module.exports = {
   chat: async (req, res) => {
     const communityId = req.params.communityId;
     const beforeId = req.query.before;
-    const token = req.cookies.token;
-    const username = (await verifyToken(token))?.username;
 
     const community = await Community.findOne({
       where: { id: communityId },
       attributes: ["id", "course", "name"],
     });
 
+    const user = res.locals.user;
+
     if (!community) {
       return res.render("error", {
         layout: "layouts/error-layout",
         title: "Page Not Found!",
+        user,
         code: 404,
         errorTitle: "Sorry, page not found",
         errorSubTitle: "The page you requested could not be found",
@@ -138,28 +132,24 @@ module.exports = {
       attributes: ["id", "instructor", "members"],
     });
 
-    const isInstructor = course.instructor === username;
+    const isInstructor = course.instructor === user.username;
 
     if (!isInstructor) {
       const validUser = await EnrolledCourse.findOne({
-        where: { user: username, course: course.id },
+        where: { user: user.username, course: course.id },
       });
 
       if (!validUser) {
         return res.render("error", {
           layout: "layouts/error-layout",
           title: "Forbidden",
+          user,
           code: 403,
           errorTitle: "You do not have access to this page",
           errorSubTitle: "Make sure you go to a page that is allowed to you",
         });
       }
     }
-
-    const user = await User.findOne({
-      where: { username },
-      attributes: ["username", "name", "picture"],
-    });
 
     const instructor = await User.findOne({
       where: { username: course.instructor },
@@ -194,7 +184,7 @@ module.exports = {
       where: {
         "$Course.id$": communityId,
         "$User.username$": {
-          [Op.ne]: username,
+          [Op.ne]: user.username,
         },
       },
     });

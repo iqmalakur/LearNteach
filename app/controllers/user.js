@@ -8,7 +8,6 @@ const {
   Wishlist,
   Cart,
 } = require("../models/Database");
-const { verifyToken } = require("../utils/jwt");
 const { priceFormat } = require("../utils/format");
 
 module.exports = {
@@ -19,9 +18,12 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: (req, res) => {
+    const user = res.locals.user;
+
     res.render("user/index", {
       layout: "layouts/raw-layout",
       title: "Dashboard",
+      user,
     });
   },
 
@@ -32,9 +34,12 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   profile: (req, res) => {
+    const user = res.locals.user;
+
     res.render("user/profile", {
       layout: "layouts/main-layout",
       title: "My Profile",
+      user,
     });
   },
 
@@ -117,9 +122,7 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     show: async (req, res) => {
-      const token = req.cookies.token;
-      const username = (await verifyToken(token))?.username;
-      const user = await User.findByPk(username);
+      const user = res.locals.user;
 
       const wishlists = await Wishlist.findAll({
         where: { user: user.username },

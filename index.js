@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const debug = require("debug")("learnteach:server");
 const socketIo = require("socket.io");
+const { verifyToken } = require("./app/utils/jwt");
 
 /**
  * Normalize a port into a number, string, or false.
@@ -86,7 +87,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
@@ -96,10 +97,14 @@ app.use((err, req, res, next) => {
 
   console.log(err);
 
+  const token = req.cookies.token;
+  const user = await verifyToken(token);
+
   if (err.status === 404) {
     return res.render("error", {
       layout: "layouts/error-layout",
       title: "Page Not Found!",
+      user,
       code: 404,
       errorTitle: "Sorry, page not found",
       errorSubTitle: "The page you requested could not be found",
@@ -109,6 +114,7 @@ app.use((err, req, res, next) => {
   return res.render("error", {
     layout: "layouts/error-layout",
     title: "Internal Server Error!",
+    user,
     code: 500,
     errorTitle: "Sorry, your request cannot be processed",
     errorSubTitle: "It seems there was an error on our side",

@@ -10,9 +10,10 @@ module.exports = {
    */
   verifyToken: async (token) => {
     try {
-      const user = jwt.verify(token, "LearNteach-Sekodlah23");
+      const userToken = jwt.verify(token, "LearNteach-Sekodlah23");
 
-      if (await User.findByPk(user.username)) {
+      let user = null;
+      if ((user = await User.findByPk(userToken.username))) {
         return user;
       }
 

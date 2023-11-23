@@ -15,9 +15,12 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: (req, res) => {
+    const user = res.locals.user;
+
     res.render("instructor/index", {
       layout: "layouts/raw-layout",
       title: "Instructor - Dashboard",
+      user,
     });
   },
 
@@ -29,9 +32,11 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     show: (req, res) => {
+      const user = res.locals.user;
       res.render("instructor/register", {
         layout: "layouts/main-layout",
         title: "Register",
+        user,
       });
     },
 
@@ -110,12 +115,14 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     detail: async (req, res) => {
+      const user = res.locals.user;
       const courses = await Course.getAll();
 
       res.render("instructor/course", {
         layout: "layouts/main-layout",
         title: "Course",
         courses,
+        user,
       });
     },
 
@@ -126,9 +133,12 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     show: (req, res) => {
+      const user = res.locals.user;
+
       res.render("instructor/add-course", {
         layout: "layouts/main-layout",
         title: "Course",
+        user,
       });
     },
 
@@ -200,9 +210,11 @@ module.exports = {
        * @param {Response} res The Response object.
        */
       show: (req, res) => {
+        const user = res.locals.user;
         res.render("instructor/content", {
           layout: "layouts/main-layout",
           title: "Add Content",
+          user,
         });
       },
 
@@ -277,9 +289,12 @@ module.exports = {
        * @param {Response} res The Response object.
        */
       show: (req, res) => {
+        const user = res.locals.user;
+
         res.render("instructor/quiz", {
           layout: "layouts/raw-layout",
           title: "Add Quiz",
+          user,
         });
       },
 

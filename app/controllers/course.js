@@ -1,6 +1,5 @@
 const { User, Instructor, Course } = require("../models/Database");
 const { priceFormat } = require("../utils/format");
-const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
   /**
@@ -10,10 +9,7 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   index: async (req, res) => {
-    const token = req.cookies.token;
-    const username = (await verifyToken(token))?.username;
-
-    const user = await User.findByPk(username);
+    const user = res.locals.user;
 
     const courses = await Course.findAll({
       include: [
@@ -41,11 +37,13 @@ module.exports = {
    */
   detail: async (req, res) => {
     const course = await Course.findByPk(req.params.courseId);
+    const user = res.locals.user;
 
     res.render("course/detail", {
       layout: "layouts/main-layout",
       title: "Course Detail",
       course,
+      user,
     });
   },
 
@@ -58,11 +56,13 @@ module.exports = {
   instructor: async (req, res) => {
     const course = await Course.findByPk(req.params.courseId);
     const instructor = await Instructor.findByPk(course.instructor);
+    const user = res.locals.user;
 
     res.render("course/instructor", {
       layout: "layouts/main-layout",
       title: "Instructor Info",
       instructor,
+      user,
     });
   },
 };
