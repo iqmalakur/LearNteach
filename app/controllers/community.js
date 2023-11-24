@@ -140,14 +140,7 @@ module.exports = {
       });
 
       if (!validUser) {
-        return res.render("error", {
-          layout: "layouts/error-layout",
-          title: "Forbidden",
-          user,
-          code: 403,
-          errorTitle: "You do not have access to this page",
-          errorSubTitle: "Make sure you go to a page that is allowed to you",
-        });
+        return res.redirect("/my/community");
       }
     }
 
