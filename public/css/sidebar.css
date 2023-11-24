@@ -19,18 +19,18 @@
   transform: scale(1.02);
 }
 
-#wishlist .user-menu {
+:is(#wishlist, #dashboard, #course) .user-menu {
   background-color: #fff;
 }
 
-#wishlist .user-menu .menu {
+:is(#wishlist, #dashboard, #course) .user-menu .menu {
   text-decoration: none;
   color: #1d2026;
   width: 30%;
 }
 
-#wishlist .user-menu .menu:hover,
-#wishlist .user-menu .menu.active {
+:is(#wishlist, #dashboard, #course) .user-menu .menu:hover,
+:is(#wishlist, #dashboard, #course) .user-menu .menu.active {
   border-bottom: 3px solid #545454;
 }
 
