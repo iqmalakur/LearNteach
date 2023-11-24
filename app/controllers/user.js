@@ -21,9 +21,65 @@ module.exports = {
     const user = res.locals.user;
 
     res.render("user/index", {
-      layout: "layouts/raw-layout",
+      layout: "layouts/sidebar-layout",
       title: "Dashboard",
       user,
+      url: req.originalUrl,
+    });
+  },
+
+  /**
+   * Render user course page
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   */
+  course: async (req, res) => {
+    const user = res.locals.user;
+    const enrolledCourses = await EnrolledCourse.findAll({
+      where: { user: user.username },
+      include: [
+        {
+          model: Course,
+          include: [
+            {
+              model: User,
+              attributes: ["username", "name"],
+            },
+          ],
+        },
+      ],
+      attributes: [],
+    });
+    const courses = [];
+
+    enrolledCourses.forEach((enrolledCourse) =>
+      courses.push(enrolledCourse.Course)
+    );
+
+    res.render("user/course", {
+      layout: "layouts/sidebar-layout",
+      title: "My Course",
+      user,
+      courses,
+      url: req.originalUrl,
+    });
+  },
+
+  /**
+   * Render user quiz page
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   */
+  quiz: (req, res) => {
+    const user = res.locals.user;
+
+    res.render("user/quiz", {
+      layout: "layouts/sidebar-layout",
+      title: "My Quiz",
+      user,
+      url: req.originalUrl,
     });
   },
 
@@ -150,6 +206,7 @@ module.exports = {
         user,
         wishlists,
         priceFormat,
+        url: req.originalUrl,
       });
     },
 

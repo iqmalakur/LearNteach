@@ -28,6 +28,8 @@ router.get("/faq", checkToken, home.faq); // FAQ page
 router.get("/my", checkToken, user.index); // user dashboard
 router.get("/my/profile", checkToken, user.profile); // user profile page
 router.put("/my/profile", user.update);
+router.get("/my/course", checkToken, user.course); // user course page
+router.get("/my/quiz", checkToken, user.quiz); // user quiz page
 router.get("/wishlist", checkToken, user.wishlist.show); // user wishlist page
 router.post("/wishlist", user.wishlist.add);
 
