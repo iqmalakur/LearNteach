@@ -8,6 +8,7 @@ const {
   EnrolledCourse,
 } = require("../models/Database");
 const { verifyToken } = require("../utils/jwt");
+const { priceFormat } = require("../utils/format");
 
 module.exports = {
   /**
@@ -161,13 +162,34 @@ module.exports = {
 
       const carts = await Cart.findAll({
         where: { user: user.username },
+        include: [
+          {
+            model: Course,
+            attributes: [
+              "id",
+              "title",
+              "description",
+              "preview",
+              "rating",
+              "members",
+              "price",
+            ],
+            include: [{ model: User, attributes: ["name"] }],
+          },
+        ],
+        attributes: ["id"],
       });
+
+      let total = 0;
+      carts.forEach((cart) => (total += cart.Course.price));
 
       res.render("payment/cart", {
         layout: "layouts/raw-layout",
         title: "Cart",
         carts,
+        priceFormat,
         user,
+        total,
       });
     },
 
@@ -230,6 +252,28 @@ module.exports = {
       return res.status(200).json({
         success: true,
         message: "course added to cart",
+        redirect: null,
+      });
+    },
+
+    /**
+     * Handle remove course from cart process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
+    remove: async (req, res) => {
+      // Destructuring request body
+      const { id } = req.body;
+
+      // Remove course from cart
+      await Cart.destroy({ where: { id } });
+
+      // Success remove course from cart
+      return res.status(200).json({
+        success: true,
+        message: "course removed from cart",
         redirect: null,
       });
     },

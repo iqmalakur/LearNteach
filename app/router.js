@@ -32,6 +32,7 @@ router.get("/my/course", checkToken, user.course); // user course page
 router.get("/my/quiz", checkToken, user.quiz); // user quiz page
 router.get("/wishlist", checkToken, user.wishlist.show); // user wishlist page
 router.post("/wishlist", user.wishlist.add);
+router.delete("/wishlist", user.wishlist.remove);
 
 // Instructor
 router.get("/instructor", checkToken, instructor.index); // instructor dashboard page
@@ -77,6 +78,7 @@ router.get("/payment", checkToken, payment.index); // payment page
 router.post("/payment", payment.transaction);
 router.get("/cart", checkToken, payment.cart.show); // cart page
 router.post("/cart", payment.cart.add);
+router.delete("/cart", payment.cart.remove);
 
 // Admin
 router.get("/admin", admin.index); // dashboard admin
