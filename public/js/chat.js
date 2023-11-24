@@ -135,8 +135,6 @@ formChat.addEventListener("submit", (e) => {
 
   if (chatField.value !== "") {
     const message = chatField.value
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&apos;")
       .replaceAll("&", "&amp;")
       .replace(/<[^>]*>;/gim, (subStr) => subStr.replaceAll("/", "&sol;"))
       .replaceAll("<", "&lt;")
@@ -194,30 +192,31 @@ btnDetails.forEach((btnDetail) => {
 });
 
 const loadChatBtn = document.querySelector("#load-chat button");
-if(loadChatBtn){
-
+if (loadChatBtn) {
   loadChatBtn.addEventListener("click", async () => {
     let firstChat = document.querySelector(".chat-container > .row");
     const id = firstChat.querySelector("input[name=id]");
-  
-    const send = await fetch(`/community/${community.value}?before=${id.value}`);
+
+    const send = await fetch(
+      `/community/${community.value}?before=${id.value}`
+    );
     const result = await send.json();
     const chats = result.chats;
-  
+
     chats.forEach((chat) => {
       const newChat = document.createElement("div");
       const userStatus =
         chat.User.username === username.value ? "sender" : "receiver";
       const align = userStatus === "sender" ? "end" : "start";
       const date = new Date(chat.chat_date);
-  
+
       newChat.classList.add(
         "row",
         "text-dark",
         "justify-content-" + align,
         userStatus
       );
-  
+
       newChat.innerHTML = `
       <div class="col-1 ${
         userStatus === "receiver" ? "order-1 text-end" : "order-2 text-start"
@@ -237,11 +236,11 @@ if(loadChatBtn){
         <input type="hidden" name="id" value="${chat.id}" />
       </div>
       `;
-  
+
       chatContainer.insertBefore(newChat, firstChat);
       firstChat = newChat;
     });
-  
+
     if (!result.next) {
       loadChatBtn.remove();
     }
