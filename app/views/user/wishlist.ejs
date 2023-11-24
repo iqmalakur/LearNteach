@@ -4,7 +4,9 @@
     <a href="/my/course" class="menu py-3 text-center">Courses </a>
     <a href="/wishlist" class="menu py-3 active text-center">Wishlist </a>
   </div>
-  <% wishlists.forEach(wishlist => { %>
+  <% if (wishlists.length === 0) { %>
+  <h3 class="text-center text-secondary mt-5">Wishlist is Empty</h3>
+  <% } wishlists.forEach(wishlist => { %>
   <div class="row shadow">
     <div
       class="col-4 course-preview"
@@ -40,7 +42,7 @@
         </div>
       </div>
       <div class="wishlist-menu position-absolute d-flex">
-        <form action="/wishlist" method="delete" class="mx-1">
+        <form action="/wishlist" method="delete" class="mx-1 wishlist">
           <button type="submit" class="text-secondary">
             <img src="/img/icons/remove.png" alt="remove" style="width: 25px" />
             Remove

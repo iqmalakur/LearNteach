@@ -1,0 +1,73 @@
+<section id="cart">
+  <header class="container-fluid">
+    <div class="row">
+      <div class="col">
+        <h1 class="text-light text-center display-3 fw-bold">YOUR CART</h1>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h3 class="text-light text-center fw-normal">
+          <%- `(${carts.length} items)` %>
+        </h3>
+      </div>
+    </div>
+  </header>
+  <main class="container-fluid p-5">
+    <div class="cart-list">
+      <% if (carts.length === 0) { %>
+      <h3 class="text-center text-secondary">Cart is Empty</h3>
+      <% } carts.forEach(cart => { %>
+      <div class="row shadow">
+        <div
+          class="col-4 course-preview"
+          style="background-image: url(/img/courses/<%- cart.Course.preview %>)"
+        ></div>
+        <div class="col p-3 position-relative">
+          <div class="row">
+            <div class="col-4">
+              <h4><%- cart.Course.title %></h4>
+              <h5 class="text-secondary fw-normal">
+                <%- cart.Course.User.name %>
+              </h5>
+            </div>
+            <div class="col-4 text-end cart-action">
+              <form action="/cart" method="delete" class="cart mx-1">
+                <button type="submit" class="bg-transparent border-0">
+                  Remove
+                </button>
+                <input type="hidden" name="id" value="<%- cart.id %>" />
+              </form>
+              <form action="/wishlist" method="post" class="wishlist mx-1">
+                <button type="submit" class="bg-transparent border-0">
+                  Add to Wishlist
+                </button>
+                <input type="hidden" name="user" value="<%- user.username %>" />
+                <input
+                  type="hidden"
+                  name="course"
+                  value="<%- cart.Course.id %>"
+                />
+              </form>
+            </div>
+            <div class="col-4 text-end">
+              <h5><%- priceFormat(cart.Course.price) %></h5>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <div class="price-total row justify-content-end">
+      <div class="col-4">
+        <h6 class="fw-normal">Subtotal:</h6>
+        <h2><%- priceFormat(total) %></h2>
+        <a
+          href="/payment"
+          class="btn checkout-btn text-light fw-bold w-100 py-2 <%- carts.length === 0 ? 'disabled' : '' %>"
+          >Checkout</a
+        >
+      </div>
+    </div>
+  </main>
+</section>

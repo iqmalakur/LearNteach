@@ -272,5 +272,27 @@ module.exports = {
         redirect: null,
       });
     },
+
+    /**
+     * Handle remove course from wishlist process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
+    remove: async (req, res) => {
+      // Destructuring request body
+      const { id } = req.body;
+
+      // Remove course from wishlist
+      await Wishlist.destroy({ where: { id } });
+
+      // Success remove course from wishlist
+      return res.status(200).json({
+        success: true,
+        message: "course removed from wishlist",
+        redirect: null,
+      });
+    },
   },
 };

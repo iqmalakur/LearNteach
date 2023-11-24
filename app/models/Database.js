@@ -82,6 +82,10 @@ module.exports.Wishlist.belongsTo(module.exports.Course, {
   foreignKey: "course",
 });
 
+module.exports.Cart.belongsTo(module.exports.Course, {
+  foreignKey: "course",
+});
+
 module.exports.Course.belongsTo(module.exports.User, {
   foreignKey: "instructor",
 });
