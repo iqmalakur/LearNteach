@@ -64,80 +64,115 @@ module.exports = {
     }
 
     users.push(
+      // {
+      //   username: "luffy",
+      //   email: "luffy@mugiwara.com",
+      //   password: bcrypt.hashSync("luffy12345", 10),
+      //   name: "Monkey D Luffy",
+      //   picture: "luffy.jpg",
+      // },
+      // {
+      //   username: "zoro",
+      //   email: "zoro@mugiwara.com",
+      //   password: bcrypt.hashSync("zoro12345", 10),
+      //   name: "Roronoa Zoro",
+      //   picture: "zoro.jpg",
+      // },
+      // {
+      //   username: "usopp",
+      //   email: "usopp@mugiwara.com",
+      //   password: bcrypt.hashSync("usopp12345", 10),
+      //   name: "Usopp",
+      //   picture: "usopp.jpg",
+      // },
+      // {
+      //   username: "sanji",
+      //   email: "sanji@mugiwara.com",
+      //   password: bcrypt.hashSync("sanji12345", 10),
+      //   name: "Vismoke Sanji",
+      //   picture: "sanji.jpg",
+      // },
+      // {
+      //   username: "nami",
+      //   email: "nami@mugiwara.com",
+      //   password: bcrypt.hashSync("nami12345", 10),
+      //   name: "Nami",
+      //   picture: "nami.jpg",
+      // },
+      // {
+      //   username: "chopper",
+      //   email: "chopper@mugiwara.com",
+      //   password: bcrypt.hashSync("chopper12345", 10),
+      //   name: "Tony Tony Chopper",
+      //   picture: "chopper.jpg",
+      // },
+      // {
+      //   username: "robin",
+      //   email: "robin@mugiwara.com",
+      //   password: bcrypt.hashSync("robin12345", 10),
+      //   name: "Nico Robin",
+      //   picture: "robin.jpg",
+      // },
+      // {
+      //   username: "franky",
+      //   email: "franky@mugiwara.com",
+      //   password: bcrypt.hashSync("franky12345", 10),
+      //   name: "Franky",
+      //   picture: "franky.jpg",
+      // },
+      // {
+      //   username: "brook",
+      //   email: "brook@mugiwara.com",
+      //   password: bcrypt.hashSync("brook12345", 10),
+      //   name: "Brook",
+      //   picture: "brook.jpg",
+      // },
+      // {
+      //   username: "jinbe",
+      //   email: "jinbe@mugiwara.com",
+      //   password: bcrypt.hashSync("jinbe12345", 10),
+      //   name: "Jinbe",
+      //   picture: "jinbe.jpg",
+      // }
       {
-        username: "luffy",
-        email: "luffy@mugiwara.com",
-        password: bcrypt.hashSync("luffy12345", 10),
-        name: "Monkey D Luffy",
-        picture: "luffy.jpg",
+        username: "ucupsurucup",
+        email: "ucup@example.com",
+        password: bcrypt.hashSync("ucupsurucup", 10),
+        name: "Ucup Surucup",
+        picture: "ucup.jpg",
       },
       {
-        username: "zoro",
-        email: "zoro@mugiwara.com",
-        password: bcrypt.hashSync("zoro12345", 10),
-        name: "Roronoa Zoro",
-        picture: "zoro.jpg",
+        username: "budinugraha",
+        email: "budi@example.com",
+        password: bcrypt.hashSync("budinugraha", 10),
+        name: "Budi Nugraha",
+        picture: "budi.jpg",
       },
       {
-        username: "usopp",
-        email: "usopp@mugiwara.com",
-        password: bcrypt.hashSync("usopp12345", 10),
-        name: "Usopp",
-        picture: "usopp.jpg",
+        username: "jokomorro",
+        email: "joko@example.com",
+        password: bcrypt.hashSync("jokomorro", 10),
+        name: "Joko Morro",
+        picture: "joko.jpg",
       },
       {
-        username: "sanji",
-        email: "sanji@mugiwara.com",
-        password: bcrypt.hashSync("sanji12345", 10),
-        name: "Vismoke Sanji",
-        picture: "sanji.jpg",
+        username: "sophiaharper",
+        email: "sophia@example.com",
+        password: bcrypt.hashSync("sophiaharper", 10),
+        name: "Sophia Harper",
+        picture: "sophia.png",
       },
       {
-        username: "nami",
-        email: "nami@mugiwara.com",
-        password: bcrypt.hashSync("nami12345", 10),
-        name: "Nami",
-        picture: "nami.jpg",
-      },
-      {
-        username: "chopper",
-        email: "chopper@mugiwara.com",
-        password: bcrypt.hashSync("chopper12345", 10),
-        name: "Tony Tony Chopper",
-        picture: "chopper.jpg",
-      },
-      {
-        username: "robin",
-        email: "robin@mugiwara.com",
-        password: bcrypt.hashSync("robin12345", 10),
-        name: "Nico Robin",
-        picture: "robin.jpg",
-      },
-      {
-        username: "franky",
-        email: "franky@mugiwara.com",
-        password: bcrypt.hashSync("franky12345", 10),
-        name: "Franky",
-        picture: "franky.jpg",
-      },
-      {
-        username: "brook",
-        email: "brook@mugiwara.com",
-        password: bcrypt.hashSync("brook12345", 10),
-        name: "Brook",
-        picture: "brook.jpg",
-      },
-      {
-        username: "jinbe",
-        email: "jinbe@mugiwara.com",
-        password: bcrypt.hashSync("jinbe12345", 10),
-        name: "Jinbe",
-        picture: "jinbe.jpg",
+        username: "aliceataraxia",
+        email: "alice@example.com",
+        password: bcrypt.hashSync("aliceataraxia", 10),
+        name: "Alice Von Ataraxia",
+        picture: "alice.jpg",
       }
     );
 
     instructors.push({
-      username: "luffy",
+      username: "ucupsurucup",
       document: faker.system.filePath(),
       balance: 0,
       approved: "yes",
@@ -191,21 +226,21 @@ module.exports = {
       }
     }
 
-    courses.push({
-      instructor: "luffy",
-      title: "Straw Hat",
-      description: "The Straw Hat Course",
-      rating: 5,
-      members: 10,
-      tags: "pirate,advanture,action",
-      preview: "default.jpg",
-      price: 500000,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      meet_link: faker.internet.url(),
-      meet_time: faker.date.future(),
-      meet_day: "Sunday",
-    });
+    // courses.push({
+    //   instructor: "luffy",
+    //   title: "Straw Hat",
+    //   description: "The Straw Hat Course",
+    //   rating: 5,
+    //   members: 10,
+    //   tags: "pirate,advanture,action",
+    //   preview: "default.jpg",
+    //   price: 500000,
+    //   createdAt: new Date(),
+    //   updatedAt: new Date(),
+    //   meet_link: faker.internet.url(),
+    //   meet_time: faker.date.future(),
+    //   meet_day: "Sunday",
+    // });
 
     await queryInterface.bulkInsert("Courses", courses);
 
@@ -220,13 +255,13 @@ module.exports = {
       });
     }
 
-    communities.push({
-      course: courses.length,
-      name: "Straw Hat Community",
-      description: "The Straw Hat Community",
-      picture: faker.image.url(),
-      type: "local",
-    });
+    // communities.push({
+    //   course: courses.length,
+    //   name: "Straw Hat Community",
+    //   description: "The Straw Hat Community",
+    //   picture: faker.image.url(),
+    //   type: "local",
+    // });
 
     await queryInterface.bulkInsert("Communities", communities);
 
@@ -441,62 +476,63 @@ module.exports = {
       }
     }
 
-    enrolledCourses.push(
-      {
-        user: "zoro",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      },
-      {
-        user: "usopp",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      },
-      {
-        user: "sanji",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      },
-      {
-        user: "nami",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      },
-      {
-        user: "chopper",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      },
-      {
-        user: "robin",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      },
-      {
-        user: "franky",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      },
-      {
-        user: "brook",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      },
-      {
-        user: "jinbe",
-        course: courses.length,
-        completed_contents: "",
-        quiz_grades: 0,
-      }
-    );
+    enrolledCourses
+      .push
+      // {
+      //   user: "zoro",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // },
+      // {
+      //   user: "usopp",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // },
+      // {
+      //   user: "sanji",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // },
+      // {
+      //   user: "nami",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // },
+      // {
+      //   user: "chopper",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // },
+      // {
+      //   user: "robin",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // },
+      // {
+      //   user: "franky",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // },
+      // {
+      //   user: "brook",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // },
+      // {
+      //   user: "jinbe",
+      //   course: courses.length,
+      //   completed_contents: "",
+      //   quiz_grades: 0,
+      // }
+      ();
 
     await queryInterface.bulkInsert("Wishlists", wishlists);
     await queryInterface.bulkInsert("Carts", carts);
