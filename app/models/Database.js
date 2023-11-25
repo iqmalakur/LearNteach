@@ -89,3 +89,7 @@ module.exports.Cart.belongsTo(module.exports.Course, {
 module.exports.Course.belongsTo(module.exports.User, {
   foreignKey: "instructor",
 });
+
+module.exports.User.belongsTo(module.exports.Instructor, {
+  foreignKey: "username",
+});
