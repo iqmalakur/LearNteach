@@ -105,14 +105,37 @@ module.exports = {
    */
   instructor: async (req, res) => {
     const course = await Course.findByPk(req.params.courseId);
-    const instructor = await Instructor.findByPk(course.instructor);
     const user = res.locals.user;
+
+    const instructor = await User.findOne({
+      where: { username: course.instructor },
+      include: [
+        {
+          model: Instructor,
+          attributes: ["rating", "bio"],
+        },
+      ],
+    });
+
+    const courses = await Course.findAll({
+      where: { instructor: course.instructor },
+    });
+
+    const totalStudent = await Course.findOne({
+      where: { instructor: course.instructor },
+      attributes: [
+        [sequelize.fn("SUM", sequelize.col("members")), "total_student"],
+      ],
+    });
 
     res.render("course/instructor", {
       layout: "layouts/main-layout",
       title: "Instructor Info",
       instructor,
       user,
+      courses,
+      priceFormat,
+      totalStudent: totalStudent.dataValues.total_student,
     });
   },
 };

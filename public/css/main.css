@@ -19,7 +19,8 @@ main.container-fluid {
 }
 
 #course .course .card:hover,
-#course-detail .instructor-course:hover {
+#course-detail .instructor-course:hover,
+#course-instructor .instructor-course:hover {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   transform: scale(1.02);
 }
@@ -29,7 +30,8 @@ main.container-fluid {
 }
 
 #course .course-preview,
-#course-detail .course-preview {
+#course-detail .course-preview,
+#course-instructor .course-preview {
   width: 100%;
   height: 15rem;
   background-position: center;
@@ -47,12 +49,14 @@ main.container-fluid {
   width: 30px;
 }
 
-#course-detail .course-rating {
+#course-detail .course-rating,
+#course-instructor .course-rating {
   bottom: 1.4rem;
   right: 1.6rem;
 }
 
-#course-detail .instructor-course {
+#course-detail .instructor-course,
+#course-instructor .instructor-course {
   transition: 0.3s;
 }
 
