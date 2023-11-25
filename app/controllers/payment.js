@@ -17,13 +17,33 @@ module.exports = {
    * @param {Request} req The Request object.
    * @param {Response} res The Response object.
    */
-  index: (req, res) => {
+  index: async (req, res) => {
     const user = res.locals.user;
+    const carts = await Cart.findAll({
+      where: { user: user.username },
+      include: [
+        {
+          model: Course,
+          attributes: ["title", "preview", "price"],
+        },
+      ],
+      attributes: [],
+    });
+
+    let totalPrice = 0;
+    const courses = [];
+    carts.forEach((cart) => {
+      totalPrice += cart.Course.price;
+      courses.push(cart.Course);
+    });
 
     res.render("payment/index", {
-      layout: "layouts/main-layout",
+      layout: "layouts/raw-layout",
       title: "Payment Page",
       user,
+      courses,
+      priceFormat,
+      totalPrice,
     });
   },
 
@@ -146,7 +166,7 @@ module.exports = {
     return res.status(200).json({
       success: true,
       message: "transaction successful",
-      redirect: null,
+      redirect: "/my/course",
     });
   },
 

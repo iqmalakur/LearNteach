@@ -26,18 +26,22 @@ if (form) {
     const result = await send.json();
 
     if (!result.success) {
-      alert.setAttribute("class", "form-error alert alert-danger");
-      alert.setAttribute("role", "alert");
-      alert.innerHTML = `
-        <strong>${result.message}</strong>
-        `;
-      document.querySelectorAll("input[type=password]").forEach((password) => {
+      if (alert) {
+        alert.setAttribute("class", "form-error alert alert-danger");
+        alert.setAttribute("role", "alert");
+        alert.innerHTML = `
+          <strong>${result.message}</strong>
+          `;
+      }
+      document.querySelectorAll("input[type=password]")?.forEach((password) => {
         password.value = "";
       });
     } else {
-      alert.setAttribute("class", "form-error");
-      alert.setAttribute("role", "");
-      alert.innerHTML = "";
+      if (alert) {
+        alert.setAttribute("class", "form-error");
+        alert.setAttribute("role", "");
+        alert.innerHTML = "";
+      }
       location.href = result.redirect;
     }
   });
@@ -80,3 +84,13 @@ wishlistCart.forEach((wc) => {
     if (!location.href.endsWith("/course")) location.reload();
   });
 });
+
+const accordionButtons = document.querySelectorAll(".accordion-button");
+if (accordionButtons) {
+  accordionButtons.forEach((accordionButton) => {
+    accordionButton.addEventListener("click", () => {
+      const radio = accordionButton.querySelector("input[type=radio]");
+      radio.checked = true;
+    });
+  });
+}

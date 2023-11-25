@@ -73,20 +73,64 @@
   color: #354338;
 }
 
-#cart .checkout-btn {
+#cart .checkout-btn,
+#payment .pay-btn {
   background-color: #354338;
   box-shadow: 0 0.125rem 0.25rem #1e1e1e;
   width: 8rem;
   font-size: 24px;
 }
 
-#cart .checkout-btn:hover {
+#cart .checkout-btn:hover,
+#payment .pay-btn:hover {
   background-color: #2c382f;
   box-shadow: 0 0.125rem 0.25rem #141414;
 }
 
-#cart .checkout-btn:active {
+#cart .checkout-btn:active,
+#payment .pay-btn:active {
   background-color: #232c25 !important;
   box-shadow: 0 0.125rem 0.25rem #0e0e0e !important;
   border: 1px solid #1e1e1e !important;
+}
+
+#payment {
+  background-color: #e0e0e0;
+}
+
+#payment .payment {
+  padding-top: 7rem;
+}
+
+#payment .pay-btn:disabled {
+  background-color: var(--bs-secondary-color) !important;
+  border: none !important;
+  cursor: not-allowed;
+}
+
+#payment .summary {
+  padding-top: 7rem;
+  background-color: #d9d9d9;
+  min-height: 100vh;
+}
+
+#payment .accordion {
+  border: 1px solid #b2bcca;
+}
+
+#payment .accordion-button::after {
+  content: none;
+}
+
+#payment .accordion-body {
+  background: #e0e0e0;
+}
+
+#payment .course-list > .row {
+  min-height: 5rem;
+}
+
+#payment .course-preview {
+  background-position: center;
+  background-size: cover;
 }
