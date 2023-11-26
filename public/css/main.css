@@ -60,6 +60,22 @@ main.container-fluid {
   transition: 0.3s;
 }
 
+#user-profile h4[contenteditable]:focus {
+  border: none;
+  outline: none;
+}
+
+#user-profile .picture-btn {
+  cursor: pointer;
+  font-size: 2rem;
+  bottom: 0;
+  right: 0;
+}
+
+#user-profile .picture-btn i {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
 .signUp {
   width: 500px;
   margin: 50px auto 50px auto;

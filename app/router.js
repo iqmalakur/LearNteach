@@ -11,6 +11,22 @@ const community = require("./controllers/community");
 
 const { checkToken } = require("./middlewares/authMiddleware");
 
+const multer = require("multer");
+const path = require("path");
+const { verifyToken } = require("./utils/jwt");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../public/img/profiles/"));
+  },
+  filename: async (req, file, cb) => {
+    const username = (await verifyToken(req.cookies.token)).username;
+    cb(null, username + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({ storage: storage });
+
 // Authentication
 router.get("/login", checkToken, auth.login.show); // login page
 router.post("/login", auth.login.submit);
@@ -28,6 +44,7 @@ router.get("/faq", checkToken, home.faq); // FAQ page
 router.get("/my", checkToken, user.index); // user dashboard
 router.get("/my/profile", checkToken, user.profile); // user profile page
 router.put("/my/profile", user.update);
+router.put("/my/profile/picture", upload.single("picture"), user.upload);
 router.get("/my/course", checkToken, user.course); // user course page
 router.get("/my/quiz", checkToken, user.quiz); // user quiz page
 router.get("/wishlist", checkToken, user.wishlist.show); // user wishlist page
@@ -68,6 +85,7 @@ router.post(
 router.get("/course", checkToken, course.index); // list of classes page
 router.get("/course/:courseId", checkToken, course.detail); // class info page
 router.get("/course/:courseId/instructor", checkToken, course.instructor); // instructor info page
+router.get("/learn/:courseId", checkToken, course.learn); // learning page
 
 // Community
 router.get("/my/community", checkToken, community.index); // community page

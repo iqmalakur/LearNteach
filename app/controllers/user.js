@@ -9,6 +9,7 @@ const {
   Cart,
 } = require("../models/Database");
 const { priceFormat } = require("../utils/format");
+const path = require("path");
 
 module.exports = {
   /**
@@ -62,6 +63,7 @@ module.exports = {
       title: "My Course",
       user,
       courses,
+      priceFormat,
       url: req.originalUrl,
     });
   },
@@ -112,11 +114,11 @@ module.exports = {
 
     // Request body validation
     const schema = Joi.object({
-      name: Joi.string().required(),
+      name: Joi.string().optional(),
       username: Joi.string().required(),
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(8),
-      picture: Joi.string().required(),
+      email: Joi.string().optional().email(),
+      password: Joi.string().optional().min(0),
+      confirmPassword: Joi.string().optional().min(0),
     });
 
     const valid = schema.validate(req.body);
@@ -124,12 +126,12 @@ module.exports = {
       return res.status(400).json({
         success: false,
         message: valid.error.details[0].message,
-        redirect: null,
+        data: null,
       });
     }
 
     // Destructuring request body
-    const { name, username, email, password, picture } = req.body;
+    const { name, username, email, password, confirmPassword } = req.body;
 
     // Check if the user does not exists
     const user = await User.findByPk(username);
@@ -137,20 +139,40 @@ module.exports = {
       return res.status(400).json({
         success: false,
         message: "username does not exists",
-        redirect: null,
+        data: null,
       });
     }
 
-    // Encrypt the password
-    if (!bcrypt.compareSync(password, user.password)) {
-      const hashedPassword = bcrypt.hashSync(password, 10);
-      user.password = hashedPassword;
+    // If password is changed
+    if (password.length !== 0) {
+      // Check if password not equals to confirm password
+      if (password !== confirmPassword) {
+        return res.status(400).json({
+          success: false,
+          message: "password is not equals to confirm password",
+          data: null,
+        });
+      }
+
+      // Check if password length is less then 8 characters
+      if (password.length < 8) {
+        return res.status(400).json({
+          success: false,
+          message: '"password" length must be at least 8 characters long',
+          data: null,
+        });
+      }
+
+      // Encrypt the password
+      if (!bcrypt.compareSync(password, user.password)) {
+        const hashedPassword = bcrypt.hashSync(password, 10);
+        user.password = hashedPassword;
+      }
     }
 
     // Set all data to new data
     user.name = name;
     user.email = email;
-    user.picture = picture;
 
     // Store new user to database
     if (await user.save()) {
@@ -160,15 +182,41 @@ module.exports = {
       return res.status(200).json({
         success: true,
         message,
-        redirect: "/my/profile",
+        data: { name: user.name, email: user.email },
       });
     } else {
       return res.status(500).json({
         success: false,
         message: "unexpected errors occurred",
-        redirect: null,
+        data: null,
       });
     }
+  },
+
+  /**
+   * Handle upload user picture.
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   * @return {ServerResponse}
+   */
+  upload: async (req, res) => {
+    const file = req.file;
+
+    const filename = file.filename;
+    const splittedFilename = filename.split(".");
+    splittedFilename.pop();
+    const username = splittedFilename.join(".");
+
+    const user = await User.findByPk(username);
+    user.picture = filename;
+    user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "success change profile picture",
+      data: { filename },
+    });
   },
   wishlist: {
     /**

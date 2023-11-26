@@ -1,0 +1,102 @@
+<section id="user-profile" class="px-5">
+  <div
+    class="row"
+    style="background-image: url(/img/background/user-profile.png)"
+  >
+    <div class="col p-4 text-center">
+      <form action="/my/profile/picture" method="put" id="picture-form">
+        <div class="position-relative mx-auto" style="width: fit-content">
+          <img
+            src="/img/profiles/<%- user.picture %>"
+            alt="<%- user.name %>"
+            class="rounded-circle img-thumbnail"
+            style="width: 15rem; height: 15rem"
+            id="user-picture"
+          />
+          <input
+            type="file"
+            name="picture"
+            accept="image/png, image/jpeg"
+            id="picture"
+            class="d-none"
+          />
+          <label for="picture" class="picture-btn position-absolute p-3">
+            <i
+              class="bi bi-camera-fill rounded-circle px-2 border border-dark"
+            ></i>
+          </label>
+        </div>
+      </form>
+      <h1 style="mix-blend-mode: darken" id="title-name"><%- user.name %></h1>
+    </div>
+  </div>
+  <div class="row mt-5 p-4 rounded" style="background-color: #d9d9d9">
+    <form action="/my/profile" method="put">
+      <h2>User Details</h2>
+
+      <input
+        type="hidden"
+        name="username"
+        id="username"
+        value="<%- user.username %>"
+      />
+
+      <h3 class="mt-4 mb-2">Name</h3>
+      <h4 class="fw-normal" id="label-name"><%- user.name %></h4>
+      <input
+        type="text"
+        name="name"
+        id="input-name"
+        class="form-control d-none"
+        value="<%- user.name %>"
+        placeholder="Change Name"
+      />
+
+      <h3 class="mt-3 mb-2">Email</h3>
+      <h4 class="fw-normal" id="label-email"><%- user.email %></h4>
+      <input
+        type="email"
+        name="email"
+        id="input-email"
+        class="form-control d-none"
+        value="<%- user.email %>"
+        placeholder="Change Email"
+      />
+
+      <h3 class="mt-3 mb-2">Password</h3>
+      <h4 class="fw-normal" id="label-password">********</h4>
+      <input
+        type="password"
+        name="password"
+        id="input-password"
+        class="form-control d-none"
+        value=""
+        placeholder="Change Password"
+      />
+      <input
+        type="password"
+        name="confirmPassword"
+        id="input-confirm-password"
+        class="form-control mt-3 d-none"
+        value=""
+        placeholder="Confirm Password"
+      />
+
+      <div class="text-end mt-5">
+        <button
+          type="button"
+          class="btn btn-secondary me-3 d-none"
+          id="cancel-btn"
+        >
+          Cancel
+        </button>
+        <button type="button" class="btn btn-secondary" id="edit-btn">
+          Edit Profile
+        </button>
+        <button type="submit" class="btn btn-secondary d-none" id="save-btn">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</section>
