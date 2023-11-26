@@ -138,4 +138,17 @@ module.exports = {
       totalStudent: totalStudent.dataValues.total_student,
     });
   },
+
+  /**
+   * Render learning page
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   */
+  learn: async (req, res) => {
+    res.render("course/learning", {
+      layout: "layouts/main-layout",
+      title: "",
+    });
+  },
 };

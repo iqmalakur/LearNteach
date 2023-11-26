@@ -62,6 +62,7 @@ module.exports = {
       title: "My Course",
       user,
       courses,
+      priceFormat,
       url: req.originalUrl,
     });
   },
