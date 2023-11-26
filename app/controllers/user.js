@@ -9,6 +9,7 @@ const {
   Cart,
 } = require("../models/Database");
 const { priceFormat } = require("../utils/format");
+const path = require("path");
 
 module.exports = {
   /**
@@ -190,6 +191,32 @@ module.exports = {
         data: null,
       });
     }
+  },
+
+  /**
+   * Handle upload user picture.
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   * @return {ServerResponse}
+   */
+  upload: async (req, res) => {
+    const file = req.file;
+
+    const filename = file.filename;
+    const splittedFilename = filename.split(".");
+    splittedFilename.pop();
+    const username = splittedFilename.join(".");
+
+    const user = await User.findByPk(username);
+    user.picture = filename;
+    user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "success change profile picture",
+      data: { filename },
+    });
   },
   wishlist: {
     /**

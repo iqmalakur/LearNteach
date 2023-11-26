@@ -95,6 +95,30 @@ if (accordionButtons) {
   });
 }
 
+const pictureForm = document.getElementById("picture-form");
+if (pictureForm) {
+  const pictureInput = document.getElementById("picture");
+
+  pictureInput.addEventListener("input", async () => {
+    const file = pictureInput.files[0];
+    const formData = new FormData();
+
+    formData.append("picture", file);
+
+    const send = await fetch(pictureForm.getAttribute("action"), {
+      method: "PUT",
+      body: formData,
+    });
+    const result = await send.json();
+
+    alert(result.message);
+
+    if (result.success) {
+      location.reload();
+    }
+  });
+}
+
 const userForm = document.querySelector("#user-profile form");
 if (userForm) {
   const username = document.getElementById("username").value;
