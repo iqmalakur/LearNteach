@@ -94,3 +94,95 @@ if (accordionButtons) {
     });
   });
 }
+
+const userForm = document.querySelector("#user-profile form");
+if (userForm) {
+  const username = document.getElementById("username").value;
+  const titleName = document.getElementById("title-name");
+
+  const labelName = document.getElementById("label-name");
+  const labelEmail = document.getElementById("label-email");
+  const labelPassword = document.getElementById("label-password");
+
+  const inputName = document.getElementById("input-name");
+  const inputEmail = document.getElementById("input-email");
+  const inputPassword = document.getElementById("input-password");
+  const inputConfirmPassword = document.getElementById(
+    "input-confirm-password"
+  );
+
+  const editBtn = document.getElementById("edit-btn");
+  const cancelBtn = document.getElementById("cancel-btn");
+  const submitBtn = document.getElementById("save-btn");
+
+  const editMode = () => {
+    labelName.classList.add("d-none");
+    labelEmail.classList.add("d-none");
+    labelPassword.classList.add("d-none");
+
+    inputName.classList.remove("d-none");
+    inputEmail.classList.remove("d-none");
+    inputPassword.classList.remove("d-none");
+
+    cancelBtn.classList.remove("d-none");
+    submitBtn.classList.remove("d-none");
+    editBtn.classList.add("d-none");
+  };
+
+  const readMode = () => {
+    labelName.classList.remove("d-none");
+    labelEmail.classList.remove("d-none");
+    labelPassword.classList.remove("d-none");
+
+    inputName.classList.add("d-none");
+    inputEmail.classList.add("d-none");
+    inputPassword.classList.add("d-none");
+    inputConfirmPassword.classList.add("d-none");
+
+    cancelBtn.classList.add("d-none");
+    submitBtn.classList.add("d-none");
+    editBtn.classList.remove("d-none");
+  };
+
+  editBtn.addEventListener("click", editMode);
+  cancelBtn.addEventListener("click", readMode);
+
+  userForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const body = {
+      username,
+      name: inputName.value,
+      email: inputEmail.value,
+      password: inputPassword.value,
+      confirmPassword: inputConfirmPassword.value,
+    };
+
+    const send = await fetch(userForm.getAttribute("action"), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+    const result = await send.json();
+
+    alert(result.message);
+
+    if (result.success) {
+      titleName.innerText = result.data.name;
+      labelName.innerText = result.data.name;
+      labelEmail.innerText = result.data.email;
+
+      readMode();
+    }
+  });
+
+  inputPassword.addEventListener("keyup", () => {
+    if (inputPassword.value.length > 0) {
+      inputConfirmPassword.classList.remove("d-none");
+    } else {
+      inputConfirmPassword.classList.add("d-none");
+    }
+  });
+}

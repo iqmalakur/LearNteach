@@ -73,9 +73,13 @@ module.exports = {
       }
 
       // Create JWT token
-      const token = jwt.sign({ username }, "LearNteach-Sekodlah23", {
-        expiresIn: "7d",
-      });
+      const token = jwt.sign(
+        { username: user.username },
+        "LearNteach-Sekodlah23",
+        {
+          expiresIn: "7d",
+        }
+      );
 
       // Set browser cookie
       if (remember) {
