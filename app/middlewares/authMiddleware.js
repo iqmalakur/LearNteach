@@ -1,3 +1,4 @@
+const { Instructor } = require("../models/Database");
 const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
@@ -45,6 +46,14 @@ module.exports = {
         return res.redirect("/");
       }
 
+      const isInstructor = (await Instructor.findOne({
+        where: { username: user.username },
+        attributes: ["username"],
+      }))
+        ? true
+        : false;
+
+      user.isInstructor = isInstructor;
       res.locals.user = user;
 
       return next();
