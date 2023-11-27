@@ -64,6 +64,7 @@ router.post(
   uploadDocument.single("document"),
   instructor.register.submit
 );
+router.get("/instructor/courses", checkInstructor, instructor.course.index); // instructor course page
 router.get(
   "/instructor/courses/:courseId",
   checkInstructor,

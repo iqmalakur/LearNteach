@@ -1,11 +1,13 @@
 const Joi = require("joi");
 const {
+  User,
   Instructor,
   Course,
   Content,
   Video,
   Article,
 } = require("../models/Database");
+const { priceFormat } = require("../utils/format");
 
 module.exports = {
   /**
@@ -18,9 +20,10 @@ module.exports = {
     const user = res.locals.user;
 
     res.render("instructor/index", {
-      layout: "layouts/raw-layout",
+      layout: "layouts/instructor-layout",
       title: "Instructor - Dashboard",
       user,
+      url: req.originalUrl,
     });
   },
 
@@ -33,6 +36,7 @@ module.exports = {
      */
     show: (req, res) => {
       const user = res.locals.user;
+
       res.render("instructor/register", {
         layout: "layouts/main-layout",
         title: "Register",
@@ -89,6 +93,34 @@ module.exports = {
   },
   course: {
     /**
+     * Render instructor course page
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     */
+    index: async (req, res) => {
+      const user = res.locals.user;
+      const courses = await Course.findAll({
+        where: { instructor: user.username },
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+        ],
+      });
+
+      res.render("instructor/course", {
+        layout: "layouts/instructor-layout",
+        title: "Course",
+        courses,
+        user,
+        priceFormat,
+        url: req.originalUrl,
+      });
+    },
+
+    /**
      * Render instructor course dashboard page
      *
      * @param {Request} req The Request object.
@@ -98,7 +130,7 @@ module.exports = {
       const user = res.locals.user;
       const courses = await Course.getAll();
 
-      res.render("instructor/course", {
+      res.render("instructor/course-dashboard", {
         layout: "layouts/main-layout",
         title: "Course",
         courses,
