@@ -70,6 +70,7 @@ router.get(
   checkInstructor,
   instructor.course.detail
 ); // class dashboard
+router.put("/instructor/courses/:courseId", instructor.course.update);
 router.get("/instructor/courses/add", checkInstructor, instructor.course.show); // add course page
 router.post("/instructor/courses/add", instructor.course.add);
 router.get(

@@ -128,13 +128,23 @@ module.exports = {
      */
     detail: async (req, res) => {
       const user = res.locals.user;
-      const courses = await Course.getAll();
+      const course = await Course.findOne({
+        where: { instructor: user.username, id: req.params.courseId },
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+        ],
+      });
 
       res.render("instructor/course-dashboard", {
-        layout: "layouts/main-layout",
+        layout: "layouts/instructor-layout",
         title: "Course",
-        courses,
+        course,
         user,
+        priceFormat,
+        url: req.originalUrl,
       });
     },
 
@@ -151,6 +161,21 @@ module.exports = {
         layout: "layouts/main-layout",
         title: "Course",
         user,
+      });
+    },
+
+    /**
+     * Handle update course process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
+    update: async (req, res) => {
+      return res.status(500).json({
+        success: false,
+        message: "unexpected errors occurred",
+        redirect: null,
       });
     },
 
