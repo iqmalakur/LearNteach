@@ -210,3 +210,29 @@ if (userForm) {
     }
   });
 }
+
+const instructorRegisterForm = document.getElementById("instructor-register");
+if (instructorRegisterForm) {
+  const documentInput = document.getElementById("document");
+
+  instructorRegisterForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const file = documentInput.files[0];
+    const formData = new FormData();
+
+    formData.append("document", file);
+
+    const send = await fetch(instructorRegisterForm.getAttribute("action"), {
+      method: "POST",
+      body: formData,
+    });
+    const result = await send.json();
+
+    if (result.success) {
+      location.href = result.redirect;
+    }
+
+    alert(result.message);
+  });
+}
