@@ -19,27 +19,29 @@
   transform: scale(1.02);
 }
 
-#wishlist .user-menu {
+:is(#wishlist, #dashboard, #course) .user-menu {
   background-color: #fff;
 }
 
-#wishlist .user-menu .menu {
+:is(#wishlist, #dashboard, #course) .user-menu .menu {
   text-decoration: none;
   color: #1d2026;
   width: 30%;
 }
 
-#wishlist .user-menu .menu:hover,
-#wishlist .user-menu .menu.active {
+:is(#wishlist, #dashboard, #course) .user-menu .menu:hover,
+:is(#wishlist, #dashboard, #course) .user-menu .menu.active {
   border-bottom: 3px solid #545454;
 }
 
-#wishlist > .row {
+#wishlist > .row,
+#course a > .row {
   background-color: #fff;
   margin: 25px 0;
 }
 
-#wishlist > .row .course-preview {
+#wishlist > .row .course-preview,
+#course a > .row .course-preview {
   width: 20rem;
   background-position: center;
   background-size: cover;
@@ -57,4 +59,13 @@
 
 #wishlist .wishlist-menu button:hover {
   text-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+}
+
+#course a > .row {
+  transition: 0.3s;
+}
+
+#course a > .row:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
 }

@@ -1,30 +1,35 @@
 <aside class="sidebar">
-  <div class="profile">
-    <img src="/img/profiles/<%= user.picture %>" alt="Profile" />
-    <h6 class="fw-bold d-inline-block"><%= user.name %></h6>
-  </div>
+  <a href="/my/profile" class="text-decoration-none text-dark">
+    <div class="profile">
+      <img src="/img/profiles/<%= user.picture %>" alt="Profile" />
+      <h6 class="fw-bold d-inline-block"><%= user.name %></h6>
+    </div>
+  </a>
   <ul class="list-group menu mt-4">
-    <a href="/my" class="list-group-item list-group-item-action border-0 p-2">
+    <a
+      href="/my"
+      class="list-group-item list-group-item-action border-0 p-2 <%- url === '/my' || url === '/wishlist' ? 'active' : '' %>"
+    >
       <img src="/img/icons/dashboard.png" />
       <h6 class="d-inline-block text-secondary">Dashboard</h6>
     </a>
     <a
       href="/my/course"
-      class="list-group-item list-group-item-action border-0 p-2"
+      class="list-group-item list-group-item-action border-0 p-2 <%- url === '/my/course' ? 'active' : '' %>"
     >
       <img src="/img/icons/course.png" />
       <h6 class="d-inline-block text-secondary">Course</h6>
     </a>
     <a
       href="/my/quiz"
-      class="list-group-item list-group-item-action border-0 p-2"
+      class="list-group-item list-group-item-action border-0 p-2 <%- url === '/my/quiz' ? 'active' : '' %>"
     >
       <img src="/img/icons/quiz.png" />
       <h6 class="d-inline-block text-secondary">Quiz</h6>
     </a>
     <a
       href="/my/community"
-      class="list-group-item list-group-item-action border-0 p-2 active"
+      class="list-group-item list-group-item-action border-0 p-2 <%- url.startsWith('/community') || url === '/my/community' ? 'active' : '' %>"
     >
       <img src="/img/icons/community.png" />
       <h6 class="d-inline-block text-secondary">Community</h6>

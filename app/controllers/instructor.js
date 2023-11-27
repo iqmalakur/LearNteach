@@ -48,54 +48,34 @@ module.exports = {
      * @return {ServerResponse}
      */
     submit: async (req, res) => {
-      // Set http header
-      res.set("Content-Type", "application/json; charset=utf-8");
+      const file = req.file;
 
-      // Request body validation
-      const schema = Joi.object({
-        username: Joi.string().required(),
-        document: Joi.string().required().uri(),
-      });
-
-      const valid = schema.validate(req.body);
-      if (valid.error) {
+      if (!file) {
         return res.status(400).json({
           success: false,
-          message: valid.error.details[0].message,
+          message: "document is not allowed to be empty",
           redirect: null,
         });
       }
 
-      // Destructuring request body
-      const { username, document } = req.body;
+      const filename = file.filename;
+      const splittedFilename = filename.split(".");
+      splittedFilename.pop();
+      const username = splittedFilename.join(".");
 
-      // Check if instructor already registered
-      const instructor = await Instructor.findOne({ where: { username } });
+      const instructor = await Instructor.create({
+        username,
+        document: filename,
+        balance: 0,
+        approved: "yes",
+        bio: "",
+        rating: 0,
+      });
+
       if (instructor) {
-        return res.status(409).json({
-          success: false,
-          message: "instructor already registered",
-          redirect: null,
-        });
-      }
-
-      // Store new user to database
-      if (
-        await instructor.create({
-          username,
-          document,
-          balance: 0,
-          rating: 0,
-          bio: "",
-          approved: "yes",
-        })
-      ) {
-        const message = "instructor registration is successful";
-        res.cookie("successMessage", message);
-
         return res.status(201).json({
           success: true,
-          message,
+          message: "instructor registration is successful",
           redirect: "/instructor",
         });
       } else {

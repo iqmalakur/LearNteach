@@ -1,0 +1,127 @@
+<section id="course-detail" class="pb-5">
+  <div class="row justify-content-center">
+    <div class="col-4">
+      <img
+        src="/img/courses/<%- course.preview %>"
+        alt="<%- course.title %>"
+        class="img-fluid"
+      />
+    </div>
+    <div class="col-6">
+      <h1 class="mb-4"><%- course.title %></h1>
+      <p class="my-2"><%- course.description %></p>
+      <p class="my-2">
+        Created by
+        <a href="/course/<%- course.id %>/instructor">
+          <%- course.User.name %>
+        </a>
+      </p>
+      <h4 class="my-3">
+        <i class="bi bi-star-fill"></i> <%- course.rating %>
+        <i class="bi bi-person-fill"></i> <%- course.members %>
+      </h4>
+      <h3><%- priceFormat(course.price) %></h3>
+
+      <div class="row mt-5">
+        <% if (enrolled) { %>
+        <div class="col text-center">
+          <a href="/learn/<%- course.id %>" class="btn btn-secondary w-50"
+            >Continue Learn</a
+          >
+        </div>
+        <% } else { %>
+        <div class="col-6">
+          <form action="/wishlist" method="post" class="wishlist">
+            <button type="submit" class="btn btn-secondary w-100">
+              Add to Wishlist
+            </button>
+            <input type="hidden" name="user" value="<%- user.username %>" />
+            <input type="hidden" name="course" value="<%- course.id %>" />
+          </form>
+        </div>
+        <div class="col-6">
+          <form action="/cart" method="post" class="cart">
+            <button type="submit" class="btn btn-secondary w-100">
+              Add to Cart
+            </button>
+            <input type="hidden" name="user" value="<%- user.username %>" />
+            <input type="hidden" name="course" value="<%- course.id %>" />
+          </form>
+        </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <hr class="m-5" />
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <h2>Instructor</h2>
+      <h3 class="mt-4 mb-3">
+        <a href="/course/<%- course.id %>/instructor">
+          <%- course.User.name %>
+        </a>
+      </h3>
+      <div class="row">
+        <div class="col-2">
+          <img
+            src="/img/profiles/<%- course.User.picture %>"
+            alt="<%- course.User.name %>"
+            class="img-thumbnail w-100 rounded-circle"
+          />
+        </div>
+        <div class="col-4 d-flex justify-content-start align-items-center">
+          <div class="instructor-info">
+            <h5 class="my-3">
+              <i class="bi bi-star-fill"></i> <%- course.User.Instructor.rating
+              %> Instructor Rating
+            </h5>
+            <h5 class="my-3">
+              <i class="bi bi-play-circle"></i> <%- totalCourse %> Courses
+            </h5>
+            <h5 class="my-3">
+              <i class="bi bi-person-fill"></i> <%- totalStudent %> Students
+            </h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if (instructorCourses.length !== 0) { %>
+  <div class="row mt-5 justify-content-center">
+    <div class="col-10">
+      <h3>More Courses by <%- course.User.name %></h3>
+      <div class="row mt-4">
+        <% instructorCourses.forEach(instructorCourse => { %>
+        <div class="col-4">
+          <a
+            href="/course/<%- instructorCourse.id %>"
+            class="text-decoration-none text-dark"
+          >
+            <div class="bg-light instructor-course position-relative">
+              <div
+                class="course-preview"
+                style="
+                  background-image: url(/img/courses/<%- instructorCourse.preview %>);
+                "
+              ></div>
+              <div class="p-4">
+                <h4><%- instructorCourse.title %></h4>
+                <h5 class="fw-normal text-secondary mb-4">
+                  <%- course.User.name %>
+                </h5>
+                <h5><%- priceFormat(instructorCourse.price) %></h5>
+              </div>
+              <div class="position-absolute course-rating">
+                <h5>
+                  <i class="bi bi-star-fill"></i> <%- instructorCourse.rating %>
+                </h5>
+              </div>
+            </div>
+          </a>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</section>

@@ -75,6 +75,7 @@ module.exports = {
       title: "My Communities",
       user,
       communities,
+      url: req.originalUrl,
     });
   },
 
@@ -214,6 +215,7 @@ module.exports = {
       communityUsers,
       next,
       isInstructor,
+      url: req.originalUrl,
     });
   },
 };
