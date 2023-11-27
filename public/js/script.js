@@ -119,7 +119,7 @@ if (pictureForm) {
   });
 }
 
-const userForm = document.querySelector("#user-profile form");
+const userForm = document.getElementById("update-form");
 if (userForm) {
   const username = document.getElementById("username").value;
   const titleName = document.getElementById("title-name");

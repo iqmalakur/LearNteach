@@ -176,12 +176,9 @@ module.exports = {
 
     // Store new user to database
     if (await user.save()) {
-      const message = "success update profile";
-      res.cookie("successMessage", message);
-
       return res.status(200).json({
         success: true,
-        message,
+        message: "success update profile",
         data: { name: user.name, email: user.email },
       });
     } else {
