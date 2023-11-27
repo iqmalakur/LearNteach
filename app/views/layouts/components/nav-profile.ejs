@@ -21,6 +21,15 @@
     <hr class="my-1" />
     <ul class="list-group">
       <a class="list-group-item border-0" href="/my/profile">Edit Profile</a>
+      <% if (user.isInstructor) { %>
+      <a class="list-group-item border-0" href="/instructor">
+        Instructor Dashboard
+      </a>
+      <% } else { %>
+      <a class="list-group-item border-0" href="/instructor/register">
+        Become an instructor
+      </a>
+      <% } %>
       <a class="list-group-item border-0" href="#">Setting</a>
       <a class="list-group-item border-0" href="#">Help</a>
       <button

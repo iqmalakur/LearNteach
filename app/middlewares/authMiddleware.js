@@ -1,3 +1,4 @@
+const { Instructor } = require("../models/Database");
 const { verifyToken } = require("../utils/jwt");
 
 module.exports = {
@@ -43,6 +44,65 @@ module.exports = {
       // Redirect to landing page if the url destination is auth pages
       if (auth) {
         return res.redirect("/");
+      }
+
+      const isInstructor = (await Instructor.findOne({
+        where: { username: user.username },
+        attributes: ["username"],
+      }))
+        ? true
+        : false;
+
+      user.isInstructor = isInstructor;
+      res.locals.user = user;
+
+      return next();
+    }
+
+    // Redirect to login page if token is invalid
+    res.clearCookie("token");
+    return res.redirect("/login");
+  },
+
+  /**
+   * Validate Instructor User
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   * @param {NextFunction} next The NextFunction function.
+   * @return {ServerResponse}
+   */
+  checkInstructor: async (req, res, next) => {
+    const token = req.cookies.token;
+    let auth = false;
+
+    res.locals.user = null;
+
+    // Check if the url destination is auth pages
+    if (req.originalUrl === "/instructor/register") {
+      auth = true;
+    }
+
+    // Check if there is no cookie named token
+    if (!token) {
+      return res.redirect("/login");
+    }
+
+    // If token is valid
+    let user = null;
+    if ((user = await verifyToken(token))) {
+      const instructor = await Instructor.findByPk(user.username);
+
+      if (auth && instructor) {
+        return res.redirect("/instructor");
+      }
+
+      if (!auth && !instructor) {
+        return res.redirect("/instructor/register");
+      }
+
+      if (!auth && instructor) {
+        user.Instructor = instructor;
       }
 
       res.locals.user = user;
