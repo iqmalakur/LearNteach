@@ -65,14 +65,14 @@ router.post(
   instructor.register.submit
 );
 router.get("/instructor/courses", checkInstructor, instructor.course.index); // instructor course page
+router.get("/instructor/courses/add", checkInstructor, instructor.course.show); // add course page
+router.post("/instructor/courses/add", instructor.course.add);
 router.get(
   "/instructor/courses/:courseId",
   checkInstructor,
   instructor.course.detail
 ); // class dashboard
 router.put("/instructor/courses/:courseId", instructor.course.update);
-router.get("/instructor/courses/add", checkInstructor, instructor.course.show); // add course page
-router.post("/instructor/courses/add", instructor.course.add);
 router.get(
   "/instructor/courses/:courseId/content",
   checkInstructor,

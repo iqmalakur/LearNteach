@@ -155,12 +155,15 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     show: (req, res) => {
+      console.log("masuk sini");
       const user = res.locals.user;
+      console.log("masuk juga");
 
       res.render("instructor/add-course", {
-        layout: "layouts/main-layout",
+        layout: "layouts/instructor-layout",
         title: "Course",
         user,
+        url: req.originalUrl,
       });
     },
 

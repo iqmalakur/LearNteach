@@ -1,0 +1,129 @@
+<div id="add-course">
+  <div class="bg-white p-4">
+    <h1>Create a new course</h1>
+    <hr />
+    <form action="">
+      <div class="mb-3 row">
+        <div class="col-2 d-flex align-items-center">
+          <label for="title" class="form-label"> Title </label>
+        </div>
+        <div class="col">
+          <input
+            type="text"
+            class="form-control border-secondary"
+            id="title"
+            placeholder="Your course title"
+          />
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label"> Description </label>
+        <textarea
+          class="form-control border-secondary"
+          id="description"
+          rows="5"
+        ></textarea>
+      </div>
+      <div class="mb-4">
+        <label for="preview" class="form-label d-block"> Preview </label>
+        <div class="row">
+          <div class="col-3">
+            <img src="/img/courses/no-preview.png" alt="Course Preview" />
+          </div>
+          <div class="col-5 px-4 d-flex align-items-center">
+            <div class="w-full">
+              <p class="text-secondary">
+                Upload your course preview here. Important guidelines: 1200x800
+                pixels or 12:8 Ratio. Supported format: .jpg, .jpeg, or .png
+              </p>
+              <label for="preview" class="btn btn-secondary">
+                Upload Image <i class="bi bi-upload"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+        <input
+          type="file"
+          id="preview"
+          accept=".jpg, .jpeg, .png"
+          class="d-none"
+        />
+      </div>
+      <!-- <div class="mb-3 row">
+        <div class="col-2 d-flex align-items-center">
+          <label for="tag" class="form-label"> Tag </label>
+        </div>
+        <div class="col-6">
+          <input
+            type="text"
+            class="form-control border-secondary"
+            id="tag"
+            placeholder="Your course tag"
+          />
+        </div>
+      </div> -->
+      <div class="mb-3 row">
+        <div class="col-2 d-flex align-items-center">
+          <label for="price" class="form-label"> Price </label>
+        </div>
+        <div class="col-6">
+          <input
+            type="text"
+            class="form-control border-secondary"
+            id="price"
+            placeholder="Your course price"
+          />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <div class="col-2 d-flex align-items-center">
+          <label for="meetLink" class="form-label"> Meet link </label>
+        </div>
+        <div class="col-6">
+          <input
+            type="url"
+            class="form-control border-secondary"
+            id="meetLink"
+            placeholder="Meet link"
+          />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <div class="col-2 d-flex align-items-center">
+          <label for="meetDay" class="form-label"> Meet day </label>
+        </div>
+        <div class="col-4">
+          <select class="form-select border-secondary" id="meetDay">
+            <option value="monday">Monday</option>
+            <option value="tuesday">Tuesday</option>
+            <option value="wednesday">Wednesday</option>
+            <option value="thursday">Thursday</option>
+            <option value="friday">Friday</option>
+            <option value="saturday">Saturday</option>
+            <option value="sunday">Sunday</option>
+          </select>
+        </div>
+      </div>
+      <div class="mb-4 row">
+        <div class="col-2 d-flex align-items-center">
+          <label for="meetTime" class="form-label"> Meet time </label>
+        </div>
+        <div class="col-4">
+          <input
+            type="time"
+            class="form-control border-secondary"
+            id="meetTime"
+          />
+        </div>
+      </div>
+      <div class="row mb-5">
+        <div class="col text-start">
+          <a href="/instructor/courses" class="btn btn-light">Cancel</a>
+        </div>
+        <div class="col text-end">
+          <button type="submit" class="btn btn-secondary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
