@@ -24,19 +24,28 @@ const createStorage = (folderLocation, course = false) => {
     },
     filename: async (req, file, cb) => {
       if (course) {
-        const courseCount = await Course.findOne({
-          where: { instructor: req.body.instructor },
-          attributes: [
-            [sequelize.fn("COUNT", sequelize.col("*")), "total_course"],
-          ],
-        });
+        let filename = req.body.prevName ?? "";
 
-        cb(
-          null,
-          `${req.body.instructor}-course${
-            courseCount.dataValues.total_course
-          }${path.extname(file.originalname)}`
-        );
+        if (req.body.instructor) {
+          const courseCount = await Course.findOne({
+            where: { instructor: req.body.instructor },
+            attributes: [
+              [sequelize.fn("COUNT", sequelize.col("*")), "total_course"],
+            ],
+          });
+
+          filename =
+            req.body.prevName ??
+            `${req.body.instructor}-course${
+              courseCount.dataValues.total_course
+            }${path.extname(file.originalname)}`;
+        }
+
+        console.log(req);
+        console.log(req.body);
+        console.log(filename);
+
+        cb(null, filename);
       } else {
         const username = (await verifyToken(req.cookies.token)).username;
         cb(null, username + path.extname(file.originalname));
@@ -96,6 +105,11 @@ router.get(
   instructor.course.detail
 ); // class dashboard
 router.put("/instructor/courses/:courseId", instructor.course.update);
+router.put(
+  "/instructor/courses/:courseId/preview",
+  uploadCoursePreview.fields([{ name: "preview", maxCount: 1 }]),
+  instructor.course.upload
+);
 router.get(
   "/instructor/courses/:courseId/content",
   checkInstructor,

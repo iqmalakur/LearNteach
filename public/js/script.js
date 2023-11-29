@@ -276,3 +276,36 @@ if (instructorCourseForm) {
     alert(result.message);
   });
 }
+
+const instructorCourseUploadForm = document.getElementById(
+  "instructor-course-upload"
+);
+if (instructorCourseUploadForm) {
+  const fields = instructorCourseUploadForm.querySelectorAll("input");
+
+  document.getElementById("preview").addEventListener("input", async (e) => {
+    const formData = new FormData();
+
+    fields.forEach((field) => {
+      formData.append(
+        field.getAttribute("name"),
+        field.getAttribute("type") === "file" ? field.files[0] : field.value
+      );
+    });
+
+    const send = await fetch(
+      instructorCourseUploadForm.getAttribute("action"),
+      {
+        method: "PUT",
+        body: formData,
+      }
+    );
+    const result = await send.json();
+
+    if (result.success) {
+      location.reload();
+    }
+
+    alert(result.message);
+  });
+}

@@ -6,14 +6,21 @@
         alt="<%- course.title %>"
         class="img-fluid rounded"
       />
-      <input
-        type="file"
-        name="picture"
-        accept="image/png, image/jpeg"
-        id="picture"
-        class="d-none"
-      />
-      <label for="picture" class="picture-btn position-absolute p-3">
+      <form
+        action="/instructor/courses/<%- course.id %>/preview"
+        method="put"
+        id="instructor-course-upload"
+      >
+        <input type="hidden" name="prevName" value="<%- course.preview %>" />
+        <input
+          type="file"
+          name="preview"
+          accept="image/png, image/jpeg"
+          id="preview"
+          class="d-none"
+        />
+      </form>
+      <label for="preview" class="picture-btn position-absolute p-3">
         <i class="bi bi-camera-fill rounded-circle px-2 border border-dark"></i>
       </label>
     </div>

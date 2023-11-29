@@ -242,6 +242,26 @@ module.exports = {
         });
       }
     },
+
+    /**
+     * Handle upload course preview.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
+    upload: async (req, res) => {
+      const filename = req.files.preview[0].filename;
+
+      const course = await Course.findByPk(req.params.courseId);
+      course.picture = filename;
+      course.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "success change course preview",
+      });
+    },
     content: {
       /**
        * Render add course content page
