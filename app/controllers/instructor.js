@@ -155,9 +155,7 @@ module.exports = {
      * @param {Response} res The Response object.
      */
     show: (req, res) => {
-      console.log("masuk sini");
       const user = res.locals.user;
-      console.log("masuk juga");
 
       res.render("instructor/add-course", {
         layout: "layouts/instructor-layout",
@@ -199,7 +197,7 @@ module.exports = {
         title: Joi.string().required().max(80),
         description: Joi.string().optional(),
         price: Joi.number().required(),
-        tags: Joi.string().required(),
+        // tags: Joi.string().required(),
         meet_link: Joi.string().required(),
         meet_day: Joi.string().required(),
         meet_time: Joi.string().required(),
@@ -215,9 +213,11 @@ module.exports = {
       }
 
       // Create new Course
+      const preview = req.files.preview[0].filename;
       const course = await Course.create({
         ...req.body,
-        preview: "https://source.unsplash.com/random",
+        preview,
+        tags: "",
         description: req.body.description ?? "",
         rating: 0,
         members: 0,
@@ -232,7 +232,7 @@ module.exports = {
         return res.status(201).json({
           success: true,
           message,
-          redirect: "/instructor",
+          redirect: "/instructor/courses",
         });
       } else {
         return res.status(500).json({

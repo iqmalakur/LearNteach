@@ -13,10 +13,16 @@
   margin: 25px 0;
 }
 
-#course a > .row .course-preview {
+#course a > .row .course-preview,
+#image-preview {
   width: 20rem;
   background-position: center;
   background-size: cover;
+}
+
+#image-preview {
+  width: 228px;
+  height: 160px;
 }
 
 #course a > .row {
