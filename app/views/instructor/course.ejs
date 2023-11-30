@@ -1,0 +1,54 @@
+<div id="course">
+  <div class="text-end">
+    <a href="/instructor/courses/add" class="btn btn-secondary">Add Course</a>
+  </div>
+  <div class="course-list">
+    <% if (courses.length === 0) { %>
+    <h3 class="text-center text-secondary mt-5">You do not have any course</h3>
+    <% } courses.forEach(course => { %>
+    <a
+      href="/instructor/courses/<%- course.id %>"
+      class="text-decoration-none text-dark"
+    >
+      <div class="row shadow">
+        <div
+          class="col-4 course-preview"
+          style="background-image: url(/img/courses/<%- course.preview %>)"
+        ></div>
+        <div class="col-8 p-3">
+          <h4><%- course.title %></h4>
+          <h6 class="text-secondary fw-normal"><%- course.User.name %></h6>
+          <p><%- course.description %></p>
+          <div class="row justify-content-between">
+            <div class="col-4 text-secondary d-flex">
+              <div
+                class="d-flex justify-content-center align-items-center me-5"
+              >
+                <img
+                  src="/img/icons/rating.png"
+                  alt="rating"
+                  style="width: 20px"
+                  class="me-2"
+                /><%- course.rating %>
+              </div>
+              <div class="d-flex justify-content-center align-items-center">
+                <img
+                  src="/img/icons/members.png"
+                  alt="members"
+                  style="width: 20px"
+                  class="me-2"
+                /><%- course.members %>
+              </div>
+            </div>
+            <div class="col-2">
+              <span class="text-secondary"
+                ><%- priceFormat(course.price) %></span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+    <% }) %>
+  </div>
+</div>

@@ -19,7 +19,7 @@ module.exports = {
       },
       course: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: "Courses",
           key: "id",

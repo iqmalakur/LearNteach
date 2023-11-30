@@ -37,14 +37,14 @@
             <% if (user) { %>
             <div class="d-flex justify-content-end">
               <form action="/wishlist" method="post" class="wishlist mx-1">
-                <button type="submit" class="btn btn-outline-secondary">
+                <button type="submit" class="btn btn-outline-secondary" <%- course.instructor === user.username ? 'disabled' : '' %>>
                   <i class="bi bi-heart fs-5"></i>
                 </button>
                 <input type="hidden" name="user" value="<%- user.username %>" />
                 <input type="hidden" name="course" value="<%- course.id %>" />
               </form>
               <form action="/cart" method="post" class="cart mx-1">
-                <button type="submit" class="btn btn-outline-secondary">
+                <button type="submit" class="btn btn-outline-secondary" <%- course.instructor === user.username ? 'disabled' : '' %>>
                   <i class="bi bi-cart fs-5"></i>
                 </button>
                 <input type="hidden" name="user" value="<%- user.username %>" />

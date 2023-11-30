@@ -1,0 +1,46 @@
+.content {
+  background-color: #e0e0e0;
+  width: 80%;
+}
+
+:is(#course, #course-dashboard, #add-course) {
+  min-height: 100vh;
+  padding: 7rem 3rem 3rem 3rem;
+}
+
+#course a > .row {
+  background-color: #fff;
+  margin: 25px 0;
+}
+
+#course a > .row .course-preview,
+#image-preview {
+  width: 20rem;
+  background-position: center;
+  background-size: cover;
+}
+
+#image-preview {
+  width: 228px;
+  height: 160px;
+}
+
+#course a > .row {
+  transition: 0.3s;
+}
+
+#course a > .row:hover {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  transform: scale(1.02);
+}
+
+#course-dashboard .picture-btn {
+  cursor: pointer;
+  font-size: 2rem;
+  bottom: -25px;
+  right: -15px;
+}
+
+#course-dashboard .picture-btn i {
+  background-color: rgba(255, 255, 255, 0.8);
+}
