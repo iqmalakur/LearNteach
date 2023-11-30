@@ -103,6 +103,7 @@ module.exports = {
 
       if (!auth && instructor) {
         user.Instructor = instructor;
+        user.isInstructor = true;
       }
 
       res.locals.user = user;

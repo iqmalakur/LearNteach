@@ -14,10 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   Community.init(
     {
       id: { primaryKey: true, type: DataTypes.INTEGER },
-      course: DataTypes.INTEGER,
-      name: DataTypes.STRING(50),
-      description: DataTypes.STRING,
-      picture: DataTypes.STRING,
+      course: DataTypes.UUID,
+      name: DataTypes.STRING,
       type: DataTypes.ENUM(["local", "global"]),
     },
     {

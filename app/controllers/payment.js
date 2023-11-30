@@ -242,6 +242,15 @@ module.exports = {
         });
       }
 
+      // Check if user is instructor
+      if (await Course.findOne({ where: { id: course, instructor: user } })) {
+        return res.status(409).json({
+          success: false,
+          message: "you can't add your course to cart",
+          redirect: null,
+        });
+      }
+
       // Check if the course is on the wishlist
       const t = await Connection.getConnection().transaction();
       if (await Wishlist.findOne({ where: { user, course } })) {

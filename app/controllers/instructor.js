@@ -1,11 +1,15 @@
 const Joi = require("joi");
 const {
+  Connection,
+  User,
   Instructor,
   Course,
+  Community,
   Content,
   Video,
   Article,
 } = require("../models/Database");
+const { priceFormat } = require("../utils/format");
 
 module.exports = {
   /**
@@ -18,9 +22,10 @@ module.exports = {
     const user = res.locals.user;
 
     res.render("instructor/index", {
-      layout: "layouts/raw-layout",
+      layout: "layouts/instructor-layout",
       title: "Instructor - Dashboard",
       user,
+      url: req.originalUrl,
     });
   },
 
@@ -33,6 +38,7 @@ module.exports = {
      */
     show: (req, res) => {
       const user = res.locals.user;
+
       res.render("instructor/register", {
         layout: "layouts/main-layout",
         title: "Register",
@@ -89,6 +95,34 @@ module.exports = {
   },
   course: {
     /**
+     * Render instructor course page
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     */
+    index: async (req, res) => {
+      const user = res.locals.user;
+      const courses = await Course.findAll({
+        where: { instructor: user.username },
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+        ],
+      });
+
+      res.render("instructor/course", {
+        layout: "layouts/instructor-layout",
+        title: "Course",
+        courses,
+        user,
+        priceFormat,
+        url: req.originalUrl,
+      });
+    },
+
+    /**
      * Render instructor course dashboard page
      *
      * @param {Request} req The Request object.
@@ -96,13 +130,23 @@ module.exports = {
      */
     detail: async (req, res) => {
       const user = res.locals.user;
-      const courses = await Course.getAll();
+      const course = await Course.findOne({
+        where: { instructor: user.username, id: req.params.courseId },
+        include: [
+          {
+            model: User,
+            attributes: ["name"],
+          },
+        ],
+      });
 
-      res.render("instructor/course", {
-        layout: "layouts/main-layout",
+      res.render("instructor/course-dashboard", {
+        layout: "layouts/instructor-layout",
         title: "Course",
-        courses,
+        course,
         user,
+        priceFormat,
+        url: req.originalUrl,
       });
     },
 
@@ -116,9 +160,69 @@ module.exports = {
       const user = res.locals.user;
 
       res.render("instructor/add-course", {
-        layout: "layouts/main-layout",
+        layout: "layouts/instructor-layout",
         title: "Course",
         user,
+        url: req.originalUrl,
+      });
+    },
+
+    /**
+     * Handle update course process.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
+    update: async (req, res) => {
+      // Set http header
+      res.set("Content-Type", "application/json; charset=utf-8");
+
+      // Request body validation
+      const schema = Joi.object({
+        id: Joi.string().required(),
+        title: Joi.string().required().max(80),
+        description: Joi.string().optional(),
+        price: Joi.number().required(),
+        // tags: Joi.string().required(),
+        meet_link: Joi.string().required(),
+        meet_day: Joi.string().required(),
+        meet_time: Joi.string().required(),
+      });
+
+      const valid = schema.validate(req.body);
+      if (valid.error) {
+        return res.status(400).json({
+          success: false,
+          message: valid.error.details[0].message,
+          redirect: null,
+        });
+      }
+
+      const { id, title, description, price, meet_link, meet_day, meet_time } =
+        req.body;
+
+      const course = await Course.findByPk(id);
+
+      course.title = title;
+      course.description = description;
+      course.price = price;
+      course.meet_link = meet_link;
+      course.meet_day = meet_day;
+      course.meet_time = meet_time;
+
+      if (course.save()) {
+        return res.status(200).json({
+          success: true,
+          message: "success update course",
+          redirect: "/instructor/courses/" + id,
+        });
+      }
+
+      return res.status(500).json({
+        success: false,
+        message: "unexpected errors occurred",
+        redirect: null,
       });
     },
 
@@ -139,7 +243,7 @@ module.exports = {
         title: Joi.string().required().max(80),
         description: Joi.string().optional(),
         price: Joi.number().required(),
-        tags: Joi.string().required(),
+        // tags: Joi.string().required(),
         meet_link: Joi.string().required(),
         meet_day: Joi.string().required(),
         meet_time: Joi.string().required(),
@@ -155,32 +259,80 @@ module.exports = {
       }
 
       // Create new Course
-      const course = await Course.create({
-        ...req.body,
-        preview: "https://source.unsplash.com/random",
-        description: req.body.description ?? "",
-        rating: 0,
-        members: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+      const t = await Connection.getConnection().transaction();
+      let success = false;
 
-      if (course) {
-        const message = "success create new course";
-        res.cookie("successMessage", message);
+      try {
+        const preview = req.files.preview[0].filename;
+        const course = await Course.create(
+          {
+            ...req.body,
+            preview,
+            tags: "",
+            description: req.body.description ?? "",
+            rating: 0,
+            members: 0,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          { transaction: t }
+        );
 
-        return res.status(201).json({
-          success: true,
-          message,
-          redirect: "/instructor",
-        });
-      } else {
+        await Community.create(
+          {
+            course: course.id,
+            name: course.title + " Community",
+            type: "local",
+          },
+          { transaction: t }
+        );
+
+        success = true;
+
+        await t.commit();
+      } catch (error) {
+        await t.rollback();
+
         return res.status(500).json({
           success: false,
           message: "unexpected errors occurred",
           redirect: null,
         });
       }
+
+      if (success) {
+        return res.status(201).json({
+          success: true,
+          message: "success create new course",
+          redirect: "/instructor/courses",
+        });
+      }
+
+      return res.status(500).json({
+        success: false,
+        message: "unexpected errors occurred",
+        redirect: null,
+      });
+    },
+
+    /**
+     * Handle upload course preview.
+     *
+     * @param {Request} req The Request object.
+     * @param {Response} res The Response object.
+     * @return {ServerResponse}
+     */
+    upload: async (req, res) => {
+      const filename = req.files.preview[0].filename;
+
+      const course = await Course.findByPk(req.params.courseId);
+      course.picture = filename;
+      course.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "success change course preview",
+      });
     },
     content: {
       /**

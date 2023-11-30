@@ -13,16 +13,39 @@ const { checkToken, checkInstructor } = require("./middlewares/authMiddleware");
 
 const multer = require("multer");
 const path = require("path");
+const { Course } = require("./models/Database");
+const sequelize = require("sequelize");
 const { verifyToken } = require("./utils/jwt");
 
-const createStorage = (folderLocation) => {
+const createStorage = (folderLocation, course = false) => {
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, path.join(__dirname, "../public" + folderLocation));
     },
     filename: async (req, file, cb) => {
-      const username = (await verifyToken(req.cookies.token)).username;
-      cb(null, username + path.extname(file.originalname));
+      if (course) {
+        let filename = req.body.prevName ?? "";
+
+        if (req.body.instructor) {
+          const courseCount = await Course.findOne({
+            where: { instructor: req.body.instructor },
+            attributes: [
+              [sequelize.fn("COUNT", sequelize.col("*")), "total_course"],
+            ],
+          });
+
+          filename =
+            req.body.prevName ??
+            `${req.body.instructor}-course${
+              courseCount.dataValues.total_course
+            }${path.extname(file.originalname)}`;
+        }
+
+        cb(null, filename);
+      } else {
+        const username = (await verifyToken(req.cookies.token)).username;
+        cb(null, username + path.extname(file.originalname));
+      }
     },
   });
 
@@ -31,6 +54,7 @@ const createStorage = (folderLocation) => {
 
 const uploadPicture = createStorage("/img/profiles/");
 const uploadDocument = createStorage("/documents/");
+const uploadCoursePreview = createStorage("/img/courses/", true);
 
 // Authentication
 router.get("/login", checkToken, auth.login.show); // login page
@@ -64,13 +88,24 @@ router.post(
   uploadDocument.single("document"),
   instructor.register.submit
 );
+router.get("/instructor/courses", checkInstructor, instructor.course.index); // instructor course page
+router.get("/instructor/courses/add", checkInstructor, instructor.course.show); // add course page
+router.post(
+  "/instructor/courses/add",
+  uploadCoursePreview.fields([{ name: "preview", maxCount: 1 }]),
+  instructor.course.add
+);
 router.get(
   "/instructor/courses/:courseId",
   checkInstructor,
   instructor.course.detail
 ); // class dashboard
-router.get("/instructor/courses/add", checkInstructor, instructor.course.show); // add course page
-router.post("/instructor/courses/add", instructor.course.add);
+router.put("/instructor/courses/:courseId", instructor.course.update);
+router.put(
+  "/instructor/courses/:courseId/preview",
+  uploadCoursePreview.fields([{ name: "preview", maxCount: 1 }]),
+  instructor.course.upload
+);
 router.get(
   "/instructor/courses/:courseId/content",
   checkInstructor,
