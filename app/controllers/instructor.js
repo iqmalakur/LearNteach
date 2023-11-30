@@ -175,6 +175,50 @@ module.exports = {
      * @return {ServerResponse}
      */
     update: async (req, res) => {
+      // Set http header
+      res.set("Content-Type", "application/json; charset=utf-8");
+
+      // Request body validation
+      const schema = Joi.object({
+        id: Joi.string().required(),
+        title: Joi.string().required().max(80),
+        description: Joi.string().optional(),
+        price: Joi.number().required(),
+        // tags: Joi.string().required(),
+        meet_link: Joi.string().required(),
+        meet_day: Joi.string().required(),
+        meet_time: Joi.string().required(),
+      });
+
+      const valid = schema.validate(req.body);
+      if (valid.error) {
+        return res.status(400).json({
+          success: false,
+          message: valid.error.details[0].message,
+          redirect: null,
+        });
+      }
+
+      const { id, title, description, price, meet_link, meet_day, meet_time } =
+        req.body;
+
+      const course = await Course.findByPk(id);
+
+      course.title = title;
+      course.description = description;
+      course.price = price;
+      course.meet_link = meet_link;
+      course.meet_day = meet_day;
+      course.meet_time = meet_time;
+
+      if (course.save()) {
+        return res.status(200).json({
+          success: true,
+          message: "success update course",
+          redirect: "/instructor/courses/" + id,
+        });
+      }
+
       return res.status(500).json({
         success: false,
         message: "unexpected errors occurred",
@@ -233,8 +277,6 @@ module.exports = {
           },
           { transaction: t }
         );
-
-        console.log(course.id);
 
         await Community.create(
           {

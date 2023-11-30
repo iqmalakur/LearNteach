@@ -309,3 +309,33 @@ if (instructorCourseUploadForm) {
     alert(result.message);
   });
 }
+
+const formSend = document.querySelectorAll(".form-send");
+formSend.forEach((form) => {
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const fields = form.querySelectorAll("input, textarea, select");
+    const formData = {};
+
+    fields.forEach((field) => {
+      formData[field.getAttribute("name")] =
+        field.getAttribute("type") === "file" ? field.files[0] : field.value;
+    });
+
+    const send = await fetch(form.getAttribute("action"), {
+      method: form.getAttribute("method"),
+      body: JSON.stringify(formData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await send.json();
+
+    if (result.success) {
+      location.reload();
+    }
+
+    alert(result.message);
+  });
+});

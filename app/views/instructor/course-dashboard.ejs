@@ -39,15 +39,16 @@
           <i class="bi bi-person-fill"></i> <%- course.members %>
         </h4>
         <h3><%- priceFormat(course.price) %></h3>
-        <form
-          action="/instructor/courses/<%- course.id %>"
-          method="put"
-          class="mt-3"
+
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          class="btn btn-secondary w-100"
+          data-bs-toggle="modal"
+          data-bs-target="#updateCourseModal"
         >
-          <button type="submit" class="btn btn-secondary w-100">
-            Edit course
-          </button>
-        </form>
+          Edit course
+        </button>
       </div>
     </div>
   </div>
@@ -72,6 +73,153 @@
 
       <h3 class="mt-4 mb-2">Meet Time</h3>
       <h4 class="fw-normal"><%- course.meet_day %>, <%- course.meet_time %></h4>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="updateCourseModal"
+  tabindex="-1"
+  aria-labelledby="updateCourseModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateCourseModalLabel">
+          Update Course
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        action="/instructor/courses/<%- course.id %>"
+        method="put"
+        class="mt-3 form-send"
+      >
+      <input type="hidden" name="id" value="<%- course.id %>">
+        <div class="modal-body">
+          <div class="mb-3 row">
+            <div class="col-2 d-flex align-items-center">
+              <label for="title" class="form-label"> Title </label>
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                class="form-control border-secondary"
+                id="title"
+                name="title"
+                placeholder="Your course title"
+                value="<%- course.title %>"
+              />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label"> Description </label>
+            <textarea
+              class="form-control border-secondary"
+              id="description"
+              rows="5"
+              name="description"
+            >
+<%- course.description %></textarea
+            >
+          </div>
+          <!-- <div class="mb-3 row">
+        <div class="col-2 d-flex align-items-center">
+          <label for="tag" class="form-label"> Tag </label>
+        </div>
+        <div class="col-6">
+          <input
+            type="text"
+            class="form-control border-secondary"
+            id="tag"
+            placeholder="Your course tag"
+          />
+        </div>
+      </div> -->
+          <div class="mb-3 row">
+            <div class="col-2 d-flex align-items-center">
+              <label for="price" class="form-label"> Price </label>
+            </div>
+            <div class="col-6">
+              <input
+                type="text"
+                class="form-control border-secondary"
+                id="price"
+                placeholder="Your course price"
+                name="price"
+                value="<%- course.price %>"
+              />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <div class="col-2 d-flex align-items-center">
+              <label for="meetLink" class="form-label"> Meet link </label>
+            </div>
+            <div class="col-6">
+              <input
+                type="url"
+                class="form-control border-secondary"
+                id="meetLink"
+                placeholder="Meet link"
+                name="meet_link"
+                value="<%- course.meet_link %>"
+              />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <div class="col-2 d-flex align-items-center">
+              <label for="meetDay" class="form-label"> Meet day </label>
+            </div>
+            <div class="col-4">
+              <select
+                class="form-select border-secondary"
+                id="meetDay"
+                name="meet_day"
+              >
+                <option value="monday" <%- course.meet_day === 'Monday' ? 'selected' : '' %>>Monday</option>
+                <option value="tuesday" <%- course.meet_day === 'Tuesday' ? 'selected' : '' %>>Tuesday</option>
+                <option value="wednesday" <%- course.meet_day === 'Wednesday' ? 'selected' : '' %>>Wednesday</option>
+                <option value="thursday" <%- course.meet_day === 'Thursday' ? 'selected' : '' %>>Thursday</option>
+                <option value="friday" <%- course.meet_day === 'Friday' ? 'selected' : '' %>>Friday</option>
+                <option value="saturday" <%- course.meet_day === 'Saturday' ? 'selected' : '' %>>Saturday</option>
+                <option value="sunday" <%- course.meet_day === 'Sunday' ? 'selected' : '' %>>Sunday</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-4 row">
+            <div class="col-2 d-flex align-items-center">
+              <label for="meetTime" class="form-label"> Meet time </label>
+            </div>
+            <div class="col-4">
+              <input
+                type="time"
+                class="form-control border-secondary"
+                id="meetTime"
+                name="meet_time"
+                value="<%- course.meet_time %>"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
