@@ -32,7 +32,7 @@
         <% } else { %>
         <div class="col-6">
           <form action="/wishlist" method="post" class="wishlist">
-            <button type="submit" class="btn btn-secondary w-100">
+            <button type="submit" class="btn btn-secondary w-100" <%- course.instructor === user.username ? 'disabled' : '' %>>
               Add to Wishlist
             </button>
             <input type="hidden" name="user" value="<%- user.username %>" />
@@ -41,7 +41,7 @@
         </div>
         <div class="col-6">
           <form action="/cart" method="post" class="cart">
-            <button type="submit" class="btn btn-secondary w-100">
+            <button type="submit" class="btn btn-secondary w-100" <%- course.instructor === user.username ? 'disabled' : '' %>>
               Add to Cart
             </button>
             <input type="hidden" name="user" value="<%- user.username %>" />
