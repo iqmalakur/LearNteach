@@ -1,8 +1,10 @@
 const Joi = require("joi");
 const {
+  Connection,
   User,
   Instructor,
   Course,
+  Community,
   Content,
   Video,
   Article,
@@ -213,34 +215,62 @@ module.exports = {
       }
 
       // Create new Course
-      const preview = req.files.preview[0].filename;
-      const course = await Course.create({
-        ...req.body,
-        preview,
-        tags: "",
-        description: req.body.description ?? "",
-        rating: 0,
-        members: 0,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+      const t = await Connection.getConnection().transaction();
+      let success = false;
 
-      if (course) {
-        const message = "success create new course";
-        res.cookie("successMessage", message);
+      try {
+        const preview = req.files.preview[0].filename;
+        const course = await Course.create(
+          {
+            ...req.body,
+            preview,
+            tags: "",
+            description: req.body.description ?? "",
+            rating: 0,
+            members: 0,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+          },
+          { transaction: t }
+        );
 
-        return res.status(201).json({
-          success: true,
-          message,
-          redirect: "/instructor/courses",
-        });
-      } else {
+        console.log(course.id);
+
+        await Community.create(
+          {
+            course: course.id,
+            name: course.title + " Community",
+            type: "local",
+          },
+          { transaction: t }
+        );
+
+        success = true;
+
+        await t.commit();
+      } catch (error) {
+        await t.rollback();
+
         return res.status(500).json({
           success: false,
           message: "unexpected errors occurred",
           redirect: null,
         });
       }
+
+      if (success) {
+        return res.status(201).json({
+          success: true,
+          message: "success create new course",
+          redirect: "/instructor/courses",
+        });
+      }
+
+      return res.status(500).json({
+        success: false,
+        message: "unexpected errors occurred",
+        redirect: null,
+      });
     },
 
     /**

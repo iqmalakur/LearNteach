@@ -41,10 +41,6 @@ const createStorage = (folderLocation, course = false) => {
             }${path.extname(file.originalname)}`;
         }
 
-        console.log(req);
-        console.log(req.body);
-        console.log(filename);
-
         cb(null, filename);
       } else {
         const username = (await verifyToken(req.cookies.token)).username;

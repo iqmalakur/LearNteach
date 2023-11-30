@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   PromotionCode.init(
     {
       id: { primaryKey: true, type: DataTypes.INTEGER },
-      course: DataTypes.INTEGER,
+      course: DataTypes.UUID,
       code: DataTypes.STRING(10),
       discount: DataTypes.INTEGER,
       expired: DataTypes.DATE,
