@@ -139,12 +139,21 @@ module.exports = {
           },
         ],
       });
+      const contents = await Content.findAll({
+        include: [
+          {
+            model: Video,
+          },
+        ],
+        where: { course: course.id },
+      });
 
       res.render("instructor/course-dashboard", {
         layout: "layouts/instructor-layout",
         title: "Course",
         course,
         user,
+        contents,
         priceFormat,
         url: req.originalUrl,
       });
@@ -341,12 +350,18 @@ module.exports = {
        * @param {Request} req The Request object.
        * @param {Response} res The Response object.
        */
-      show: (req, res) => {
+      show: async (req, res) => {
         const user = res.locals.user;
+        const course = await Course.findOne({
+          where: { instructor: user.username },
+        });
+
         res.render("instructor/content", {
-          layout: "layouts/main-layout",
+          layout: "layouts/instructor-layout",
           title: "Add Content",
           user,
+          course,
+          url: req.originalUrl,
         });
       },
 
@@ -374,8 +389,12 @@ module.exports = {
         }
 
         // Create content
+        console.log(req.files);
+        console.log(req.file);
+        const filename = req.files.file[0].filename;
         const content = await Content.create({
           ...req.body,
+          type: "video",
           approved: "no",
           course: courseId,
         });
@@ -390,7 +409,7 @@ module.exports = {
         } else {
           result = await Video.create({
             id: content.id,
-            body: req.body.file,
+            file: filename,
           });
         }
 

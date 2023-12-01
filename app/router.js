@@ -13,35 +13,18 @@ const { checkToken, checkInstructor } = require("./middlewares/authMiddleware");
 
 const multer = require("multer");
 const path = require("path");
-const { Course } = require("./models/Database");
+const { Course, Content } = require("./models/Database");
 const sequelize = require("sequelize");
 const { verifyToken } = require("./utils/jwt");
 
-const createStorage = (folderLocation, course = false) => {
+const createStorage = (folderLocation, filename) => {
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, path.join(__dirname, "../public" + folderLocation));
     },
     filename: async (req, file, cb) => {
-      if (course) {
-        let filename = req.body.prevName ?? "";
-
-        if (req.body.instructor) {
-          const courseCount = await Course.findOne({
-            where: { instructor: req.body.instructor },
-            attributes: [
-              [sequelize.fn("COUNT", sequelize.col("*")), "total_course"],
-            ],
-          });
-
-          filename =
-            req.body.prevName ??
-            `${req.body.instructor}-course${
-              courseCount.dataValues.total_course
-            }${path.extname(file.originalname)}`;
-        }
-
-        cb(null, filename);
+      if (filename) {
+        cb(null, await filename(req, file));
       } else {
         const username = (await verifyToken(req.cookies.token)).username;
         cb(null, username + path.extname(file.originalname));
@@ -54,7 +37,51 @@ const createStorage = (folderLocation, course = false) => {
 
 const uploadPicture = createStorage("/img/profiles/");
 const uploadDocument = createStorage("/documents/");
-const uploadCoursePreview = createStorage("/img/courses/", true);
+
+const uploadCoursePreview = createStorage(
+  "/img/courses/",
+  async (req, file) => {
+    let filename = req.body.prevName ?? "";
+
+    if (req.body.instructor) {
+      const courseCount = await Course.findOne({
+        where: { instructor: req.body.instructor },
+        attributes: [
+          [sequelize.fn("COUNT", sequelize.col("*")), "total_course"],
+        ],
+      });
+
+      filename =
+        req.body.prevName ??
+        `${req.body.instructor}-course${
+          courseCount.dataValues.total_course
+        }${path.extname(file.originalname)}`;
+    }
+
+    return filename;
+  }
+);
+
+const uploadVideo = createStorage("/videos/", async (req, file) => {
+  let filename = req.body.prevName ?? "coba";
+
+  if (req.body.course) {
+    const contentCount = await Content.findOne({
+      where: { course: req.body.course },
+      attributes: [
+        [sequelize.fn("COUNT", sequelize.col("*")), "total_content"],
+      ],
+    });
+
+    filename =
+      req.body.prevName ??
+      `${req.body.course}-content${
+        contentCount.dataValues.total_content
+      }${path.extname(file.originalname)}`;
+  }
+
+  return filename;
+});
 
 // Authentication
 router.get("/login", checkToken, auth.login.show); // login page
@@ -113,6 +140,7 @@ router.get(
 ); // add content page
 router.post(
   "/instructor/courses/:courseId/content",
+  uploadVideo.fields([{ name: "file", maxCount: 1 }]),
   instructor.course.content.submit
 );
 router.get(
