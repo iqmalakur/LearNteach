@@ -1,0 +1,32 @@
+<main id="learning" class="d-flex">
+  <section class="content">
+    <video controls class="w-100">
+      <source src="/videos/<%- content.Video.file %>" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+    <div class="container p-5">
+      <h3><%- course.title %></h3>
+      <p><%- course.description %></p>
+      <p>Meet Time : <%- course.meet_day %> (<%- course.meet_time %>)</p>
+      <p>
+        Meet Link :
+        <a href="<%- course.meet_link %>"><%- course.meet_link %></a>
+      </p>
+    </div>
+  </section>
+  <aside class="border-start border-secondary">
+    <div class="list-group rounded-0">
+      <input type="hidden" id="courseId" value="<%- enrolledCourse.course %>" />
+      <% contents.forEach((cnt, idx) => { %>
+      <a
+        href="/learn/<%- enrolledCourse.course %>/<%- cnt.id %>"
+        class="list-group-item list-group-item-action <%- cnt.id === content.id ? 'bg-secondary text-light' : '' %>"
+      >
+        <input type="checkbox" class="content-check" data-index="<%- idx %>" <%-
+        completed_contents[idx] == 'true' ? 'checked' : '' %> /> <%- cnt.label
+        %>
+      </a>
+      <% }) %>
+    </div>
+  </aside>
+</main>

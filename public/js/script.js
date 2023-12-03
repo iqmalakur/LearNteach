@@ -90,7 +90,9 @@ if (accordionButtons) {
   accordionButtons.forEach((accordionButton) => {
     accordionButton.addEventListener("click", () => {
       const radio = accordionButton.querySelector("input[type=radio]");
-      radio.checked = true;
+      if (radio) {
+        radio.checked = true;
+      }
     });
   });
 }
@@ -316,21 +318,40 @@ formSend.forEach((form) => {
     e.preventDefault();
 
     const fields = form.querySelectorAll("input, textarea, select");
-    const formData = {};
+    const button = form.querySelector("button[type=submit]");
+    const withFile = form.classList.contains("form-file") ? true : false;
+    const formData = withFile ? new FormData() : {};
 
     fields.forEach((field) => {
-      formData[field.getAttribute("name")] =
-        field.getAttribute("type") === "file" ? field.files[0] : field.value;
+      if (withFile) {
+        formData.append(
+          field.getAttribute("name"),
+          field.getAttribute("type") === "file" ? field.files[0] : field.value
+        );
+      } else {
+        formData[field.getAttribute("name")] = field.value;
+      }
     });
 
-    const send = await fetch(form.getAttribute("action"), {
-      method: form.getAttribute("method"),
-      body: JSON.stringify(formData),
-      headers: {
+    const fetchOption = { method: form.getAttribute("method") };
+
+    if (withFile) {
+      fetchOption.body = formData;
+    } else {
+      fetchOption.body = JSON.stringify(formData);
+      fetchOption.headers = {
         "Content-Type": "application/json",
-      },
-    });
+      };
+    }
+
+    button.setAttribute("disabled", true);
+    form.style.cursor = "progress";
+
+    const send = await fetch(form.getAttribute("action"), fetchOption);
     const result = await send.json();
+
+    form.style.cursor = "default";
+    button.setAttribute("disabled", false);
 
     if (result.success) {
       location.reload();
@@ -339,3 +360,28 @@ formSend.forEach((form) => {
     alert(result.message);
   });
 });
+
+const contentCheckboxes = document.querySelectorAll(".content-check");
+if (contentCheckboxes) {
+  const courseId = document.getElementById("courseId").value;
+
+  contentCheckboxes.forEach((contentCheckbox) => {
+    contentCheckbox.addEventListener("click", async (e) => {
+      const state = contentCheckbox.checked;
+
+      const send = await fetch(`/learn/complete/${courseId}`, {
+        method: "put",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          index: contentCheckbox.dataset.index,
+          state,
+        }),
+      });
+
+      const result = await send.json();
+      if (!result.success) {
+        e.preventDefault();
+      }
+    });
+  });
+}

@@ -3,6 +3,8 @@ const {
   User,
   Instructor,
   Course,
+  Content,
+  Video,
   EnrolledCourse,
 } = require("../models/Database");
 const { priceFormat } = require("../utils/format");
@@ -146,9 +148,113 @@ module.exports = {
    * @param {Response} res The Response object.
    */
   learn: async (req, res) => {
+    const user = res.locals.user;
+    const courseId = req.params.courseId;
+    const contentId = req.params.contentId;
+
+    const enrolledCourse = await EnrolledCourse.findOne({
+      where: {
+        user: user.username,
+        course: courseId,
+      },
+    });
+
+    if (!enrolledCourse) {
+      return res.redirect("/my/course");
+    }
+
+    const completed_contents = enrolledCourse.completed_contents.split(",");
+
+    if (!contentId) {
+      const contents = await Content.findAll({
+        attributes: ["id"],
+        where: { course: courseId },
+      });
+
+      let uncompleted_content = completed_contents.indexOf("false");
+
+      if (uncompleted_content >= 0) {
+        return res.redirect(
+          `/learn/${courseId}/${contents[uncompleted_content].id}`
+        );
+      }
+
+      return res.redirect(`/learn/${courseId}/${contents[0].id}`);
+    }
+
+    const course = await Course.findOne({
+      attributes: [
+        "title",
+        "meet_link",
+        "meet_time",
+        "meet_day",
+        "description",
+      ],
+      where: { id: courseId },
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+    });
+
+    const contents = await Content.findAll({
+      attributes: ["id", "label"],
+      where: { course: courseId },
+    });
+
+    const content = await Content.findOne({
+      include: [
+        {
+          model: Video,
+        },
+      ],
+      where: { id: contentId },
+    });
+
     res.render("course/learning", {
-      layout: "layouts/main-layout",
-      title: "",
+      layout: "layouts/raw-layout",
+      title: "Learn",
+      user,
+      course,
+      enrolledCourse,
+      content,
+      contents,
+      completed_contents,
+    });
+  },
+
+  /**
+   * Handle completed content proccess
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   */
+  complete: async (req, res) => {
+    const courseId = req.params.courseId;
+    const index = req.body.index;
+    const state = req.body.state;
+
+    const enrolledCourse = await EnrolledCourse.findOne({
+      where: { course: courseId },
+    });
+
+    const completed_contents = enrolledCourse.completed_contents.split(",");
+    completed_contents[index] = state;
+    enrolledCourse.completed_contents = completed_contents.join(",");
+
+    if (enrolledCourse.save()) {
+      return res.status(200).json({
+        success: true,
+        state,
+      });
+    }
+
+    return res.status(500).json({
+      success: false,
+      message: "unexpected errors occurred",
+      redirect: null,
     });
   },
 };

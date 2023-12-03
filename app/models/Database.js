@@ -93,3 +93,7 @@ module.exports.Course.belongsTo(module.exports.User, {
 module.exports.User.belongsTo(module.exports.Instructor, {
   foreignKey: "username",
 });
+
+module.exports.Content.belongsTo(module.exports.Video, {
+  foreignKey: "id",
+});

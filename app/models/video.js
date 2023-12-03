@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Video.init(
     {
-      id: { primaryKey: true, type: DataTypes.INTEGER },
+      id: { primaryKey: true, type: DataTypes.UUID },
       file: DataTypes.STRING,
     },
     {

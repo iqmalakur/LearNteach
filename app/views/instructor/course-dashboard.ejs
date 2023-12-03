@@ -75,9 +75,44 @@
       <h4 class="fw-normal"><%- course.meet_day %>, <%- course.meet_time %></h4>
     </div>
   </div>
+  
+  <div class="row mt-5 justify-content-center">
+    <div class="col p-5 rounded" style="background-color: #d9d9d9">
+      <h2>Contents</h2>
+      
+      <div class="text-end">
+        <!-- Button trigger modal -->
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-toggle="modal"
+          data-bs-target="#addContentModal"
+        >
+        Add Content
+        </button>
+      </div>
+
+      <div class="accordion mt-3" id="contentList">
+        <% contents.forEach((content, index) => { %>
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#<%- `content-${index}` %>" aria-controls="<%- `content-${index}` %>">
+                <%- content.label %>
+              </button>
+            </h2>
+            <div id="<%- `content-${index}` %>" class="accordion-collapse collapse" data-bs-parent="#contentList">
+              <div class="accordion-body">
+                <video src="/videos/<%- content.Video.file %>" class="w-100" controls></video>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
 </div>
 
-<!-- Modal -->
+<!-- Modal Update Course -->
 <div
   class="modal fade"
   id="updateCourseModal"
@@ -218,6 +253,72 @@
             Close
           </button>
           <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Add Content -->
+<div
+  class="modal fade"
+  id="addContentModal"
+  tabindex="-1"
+  aria-labelledby="addContentModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addContentModalLabel">
+          Add Content
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form
+        action="/instructor/courses/<%- course.id %>/content"
+        method="post"
+        class="mt-3 form-send form-file"
+      >
+      <input type="hidden" name="course" value="<%- course.id %>">
+        <div class="modal-body">
+          <div class="mb-3 row">
+            <div class="col-2 d-flex align-items-center">
+              <label for="label" class="form-label"> Label </label>
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                class="form-control border-secondary"
+                id="label"
+                name="label"
+                placeholder="Your course label"
+              />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <div class="col-2 d-flex align-items-center">
+              <label for="formFile" class="form-label"> Video </label>
+            </div>
+            <div class="col">
+              <input class="form-control border-secondary" name="file" type="file" id="formFile" accept=".mp4">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button type="submit" class="btn btn-primary">Add</button>
         </div>
       </form>
     </div>
