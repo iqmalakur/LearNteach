@@ -2,11 +2,13 @@ const {
   Connection,
   User,
   Course,
+  Content,
   Wishlist,
   Cart,
   Transaction,
   EnrolledCourse,
 } = require("../models/Database");
+const sequelize = require("sequelize");
 const { verifyToken } = require("../utils/jwt");
 const { priceFormat } = require("../utils/format");
 
@@ -119,10 +121,23 @@ module.exports = {
           transaction.course_price - transaction.tax - transaction.discount;
         transaction.total = transaction.price + transaction.tax;
 
+        const countContent = await Content.findOne({
+          where: { course: course.id },
+          attributes: [
+            [sequelize.fn("COUNT", sequelize.col("*")), "total_content"],
+          ],
+          transaction: t,
+        });
+
+        const countContentArr = [];
+        for (let i = 0; i < countContent.dataValues.total_content; i++) {
+          countContentArr.push(false);
+        }
+
         const enrolledcourse = {
           user: user.username,
           course: course.id,
-          completed_contents: "",
+          completed_contents: countContentArr.join(","),
           quiz_grades: "",
         };
 

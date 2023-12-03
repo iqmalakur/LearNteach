@@ -360,3 +360,28 @@ formSend.forEach((form) => {
     alert(result.message);
   });
 });
+
+const contentCheckboxes = document.querySelectorAll(".content-check");
+if (contentCheckboxes) {
+  const courseId = document.getElementById("courseId").value;
+
+  contentCheckboxes.forEach((contentCheckbox) => {
+    contentCheckbox.addEventListener("click", async (e) => {
+      const state = contentCheckbox.checked;
+
+      const send = await fetch(`/learn/complete/${courseId}`, {
+        method: "put",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          index: contentCheckbox.dataset.index,
+          state,
+        }),
+      });
+
+      const result = await send.json();
+      if (!result.success) {
+        e.preventDefault();
+      }
+    });
+  });
+}

@@ -134,3 +134,16 @@
   background-position: center;
   background-size: cover;
 }
+
+#learning {
+  padding-top: 5rem;
+  min-height: 100vh;
+}
+
+#learning .content {
+  width: 70%;
+}
+
+#learning aside {
+  width: 30%;
+}
