@@ -1,3 +1,90 @@
+const getQuery = () => {
+  const href = location.href;
+
+  if (href.indexOf("?") < 0) {
+    return [];
+  }
+
+  const query = href
+    .substring(href.indexOf("?") + 1)
+    .split("&")
+    .map((h) => h.split("="));
+
+  return query;
+};
+
+getQuery().forEach((query) => {
+  if (query[0] === "sort") {
+    if (query[1] !== "") {
+      document
+        .getElementById("sort-by")
+        .querySelector(`[value=${query[1]}]`).selected = true;
+    }
+  }
+
+  if (query[0] === "keyword") {
+    const search = document.querySelector("nav input[type=search]");
+    search.value = query[1];
+    search.focus();
+  }
+
+  if (query[0] === "direction") {
+    document
+      .getElementById("direction")
+      .querySelector(`[value=${query[1]}]`).selected = true;
+  }
+});
+
+const createQuery = (newQuery) => {
+  const query = getQuery();
+
+  query.forEach((q) => {
+    if (newQuery.hasOwnProperty(q[0])) {
+      q[1] = newQuery[q[0]];
+      delete newQuery[q[0]];
+    }
+  });
+
+  Object.keys(newQuery).forEach((key) => {
+    query.push([key, newQuery[key]]);
+  });
+
+  return "?" + query.map((q) => q.join("=")).join("&");
+};
+
+const searchBar = document.querySelector("nav input[type=search]");
+if (searchBar) {
+  let delay = null;
+
+  searchBar.addEventListener("input", () => {
+    clearTimeout(delay);
+
+    delay = setTimeout(() => {
+      location.href = "/course" + createQuery({ keyword: searchBar.value });
+    }, 1000);
+  });
+
+  searchBar.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      location.href = "/course" + createQuery({ keyword: searchBar.value });
+    }
+  });
+}
+
+const sortBy = document.getElementById("sort-by");
+if (sortBy) {
+  sortBy.addEventListener("input", () => {
+    location.href = "/course" + createQuery({ sort: sortBy.value });
+  });
+}
+
+const direction = document.getElementById("direction");
+if (direction) {
+  direction.addEventListener("input", () => {
+    location.href = "/course" + createQuery({ direction: direction.value });
+  });
+}
+
 const form = document.querySelector(".form-post");
 
 if (form) {
@@ -362,7 +449,7 @@ formSend.forEach((form) => {
 });
 
 const contentCheckboxes = document.querySelectorAll(".content-check");
-if (contentCheckboxes) {
+if (contentCheckboxes && contentCheckboxes.length > 0) {
   const courseId = document.getElementById("courseId").value;
 
   contentCheckboxes.forEach((contentCheckbox) => {

@@ -1,4 +1,5 @@
 const sequelize = require("sequelize");
+const { Op } = require("sequelize");
 const {
   User,
   Instructor,
@@ -18,21 +19,67 @@ module.exports = {
    */
   index: async (req, res) => {
     const user = res.locals.user;
+    const keyword = req.query.keyword ?? "";
+    const sort = req.query.sort ?? "id";
+    const direction = req.query.direction ?? "ASC";
 
-    const courses = await Course.findAll({
+    let courses = null;
+    let order = [
+      [sort !== "" ? sort : "id", direction !== "" ? direction : "ASC"],
+    ];
+
+    if (sort === "instructor") {
+      order = [[User, "name", direction !== "" ? direction : "ASC"]];
+    }
+
+    courses = await Course.findAll({
       include: [
         {
           model: User,
           attributes: ["name"],
         },
       ],
+      where: {
+        [Op.or]: [
+          {
+            title: {
+              [Op.like]: `%${keyword}%`,
+            },
+          },
+          {
+            "$User.name$": {
+              [Op.like]: `%${keyword}%`,
+            },
+          },
+        ],
+      },
+      order,
     });
+
+    if (keyword) {
+      courses = courses.map((course) => {
+        const regex = new RegExp(keyword, "gim");
+
+        course.title = course.title.replace(
+          regex,
+          (val) => `<mark class="match">${val}</mark>`
+        );
+
+        course.User.name = course.User.name.replace(
+          regex,
+          (val) => `<mark class="match">${val}</mark>`
+        );
+
+        return course;
+      });
+    }
 
     res.render("course/index", {
       layout: "layouts/main-layout",
       title: "Course List",
       user,
       courses,
+      keyword,
       priceFormat,
     });
   },
