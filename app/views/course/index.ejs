@@ -1,24 +1,19 @@
 <section id="course">
-  <div class="row justify-content-between">
-    <div class="col-3">
-      <a href="/course?filter=all" class="btn btn-outline-secondary">All</a>
-      <a href="/course?filter=my" class="btn btn-outline-secondary"
-        >My Course</a
-      >
-      <a href="/course?filter=wishlist" class="btn btn-outline-secondary"
-        >Wishlist</a
-      >
+  <div class="row justify-content-end">
+    <div class="col-2">
+      <select class="form-select bg-transparent border-secondary" name="sort" id="sort-by">
+        <option value="">Sort by</option>
+        <option value="title">Title</option>
+        <option value="instructor">Instructor</option>
+        <option value="price">Price</option>
+        <option value="rating">Rating</option>
+      </select>
     </div>
-    <div class="col-3">
-      <form>
-        <select class="form-select bg-transparent" id="sort-by">
-          <option selected>Sort by</option>
-          <option value="title">Title</option>
-          <option value="instructor">Instructor</option>
-          <option value="price">Price</option>
-          <option value="rating">Rating</option>
-        </select>
-      </form>
+    <div class="col-2">
+      <select class="form-select bg-transparent border-secondary" name="sort" id="direction">
+        <option value="ASC">Ascending</option>
+        <option value="DESC">Descending</option>
+      </select>
     </div>
   </div>
   <div class="row mt-4">
