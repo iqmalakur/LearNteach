@@ -120,9 +120,6 @@ if (form) {
           <strong>${result.message}</strong>
           `;
       }
-      document.querySelectorAll("input[type=password]")?.forEach((password) => {
-        password.value = "";
-      });
     } else {
       if (alert) {
         alert.setAttribute("class", "form-error");

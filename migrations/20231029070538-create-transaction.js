@@ -25,10 +25,6 @@ module.exports = {
           key: "id",
         },
       },
-      promotion_code: {
-        allowNull: true,
-        type: Sequelize.STRING(10),
-      },
       course_title: {
         allowNull: false,
         type: Sequelize.STRING(50),

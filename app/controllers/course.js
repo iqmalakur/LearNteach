@@ -5,7 +5,6 @@ const {
   Instructor,
   Course,
   Content,
-  Video,
   EnrolledCourse,
 } = require("../models/Database");
 const { priceFormat } = require("../utils/format");
@@ -252,11 +251,6 @@ module.exports = {
     });
 
     const content = await Content.findOne({
-      include: [
-        {
-          model: Video,
-        },
-      ],
       where: { id: contentId },
     });
 

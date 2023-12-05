@@ -15,7 +15,6 @@ entity Communities {
     name : varchar
     description : varchar
     picture : varchar
-    type : enum('local', 'global')
 }
 
 object Chats {
@@ -67,15 +66,6 @@ object Carts {
     course : int <FK>
 }
 
-entity PromotionCodes {
-    id : int <PK>
-    course : int <FK>
-    --
-    code : varchar
-    discount : int
-    expired : date
-}
-
 object Transactions {
     id : int <PK>
     user : varchar <FK>
@@ -100,7 +90,6 @@ object EnrolledCourses {
     course : int <FK>
     --
     completed_contents : varchar
-    quiz_grades : varchar
 }
 
 entity Contents {
@@ -109,39 +98,7 @@ entity Contents {
     --
     label : varchar
     approved : enum('yes', 'no')
-    type: enum('video', 'article', 'quiz')
-}
-
-entity Videos {
-    id : uuid <PK>
-    --
-    file : varchar
-}
-
-entity Articles {
-    id : uuid <PK>
-    --
-    body : text
-}
-
-entity Quizzes {
-    id : uuid <PK>
-    --
-    answer_time : time
-}
-
-entity Questions {
-    id : int <PK>
-    quiz : uuid <FK>
-    --
-    question_text : varchar
-    answer : varchar
-}
-
-entity MultipleChoises {
-    id : int <PK>
-    --
-    choises : varchar
+    video : varchar
 }
 
 Users }o-- Wishlists
@@ -161,11 +118,6 @@ note on link
     has
 end note
 
-Courses }o--|| PromotionCodes
-note on link
-    use
-end note
-
 Users -- Instructors
 note on link
     ISA
@@ -174,29 +126,6 @@ end note
 Instructors }o--|| Courses
 note on link
     has
-end note
-
-Contents -- Videos
-note on link
-    ISA
-end note
-Contents -- Quizzes
-note on link
-    ISA
-end note
-Contents -- Articles
-note on link
-    ISA
-end note
-
-Quizzes }o--|| Questions
-note on link
-    has
-end note
-
-Questions -- MultipleChoises
-note on link
-    ISA
 end note
 
 Courses ||--|| Communities

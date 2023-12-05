@@ -6,8 +6,6 @@ const {
   Course,
   Community,
   Content,
-  Video,
-  Article,
 } = require("../models/Database");
 const { priceFormat } = require("../utils/format");
 
@@ -140,11 +138,6 @@ module.exports = {
         ],
       });
       const contents = await Content.findAll({
-        include: [
-          {
-            model: Video,
-          },
-        ],
         where: { course: course.id },
       });
 
@@ -394,27 +387,13 @@ module.exports = {
         const filename = req.files.file[0].filename;
         const content = await Content.create({
           ...req.body,
-          type: "video",
           approved: "no",
           course: courseId,
+          video: filename,
         });
 
-        // Check and create content type
-        let result = null;
-        if (content.type === "article") {
-          result = await Article.create({
-            id: content.id,
-            body: req.body.body,
-          });
-        } else {
-          result = await Video.create({
-            id: content.id,
-            file: filename,
-          });
-        }
-
         // Send response
-        if (result) {
+        if (content) {
           const message = "success create new content";
           res.cookie("successMessage", message);
 
@@ -430,34 +409,6 @@ module.exports = {
             redirect: null,
           });
         }
-      },
-    },
-    quiz: {
-      /**
-       * Render add course quiz page
-       *
-       * @param {Request} req The Request object.
-       * @param {Response} res The Response object.
-       */
-      show: (req, res) => {
-        const user = res.locals.user;
-
-        res.render("instructor/quiz", {
-          layout: "layouts/raw-layout",
-          title: "Add Quiz",
-          user,
-        });
-      },
-
-      /**
-       * Handle add course quiz process.
-       *
-       * @param {Request} req The Request object.
-       * @param {Response} res The Response object.
-       * @return {ServerResponse}
-       */
-      submit: (req, res) => {
-        res.send("ok");
       },
     },
   },

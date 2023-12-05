@@ -69,23 +69,6 @@ module.exports = {
   },
 
   /**
-   * Render user quiz page
-   *
-   * @param {Request} req The Request object.
-   * @param {Response} res The Response object.
-   */
-  quiz: (req, res) => {
-    const user = res.locals.user;
-
-    res.render("user/quiz", {
-      layout: "layouts/sidebar-layout",
-      title: "My Quiz",
-      user,
-      url: req.originalUrl,
-    });
-  },
-
-  /**
    * Render user profile page
    *
    * @param {Request} req The Request object.

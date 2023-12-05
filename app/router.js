@@ -102,7 +102,6 @@ router.get("/my/profile", checkToken, user.profile); // user profile page
 router.put("/my/profile", user.update);
 router.put("/my/profile/picture", uploadPicture.single("picture"), user.upload);
 router.get("/my/course", checkToken, user.course); // user course page
-router.get("/my/quiz", checkToken, user.quiz); // user quiz page
 router.get("/wishlist", checkToken, user.wishlist.show); // user wishlist page
 router.post("/wishlist", user.wishlist.add);
 router.delete("/wishlist", user.wishlist.remove);
@@ -142,15 +141,6 @@ router.post(
   "/instructor/courses/:courseId/content",
   uploadVideo.fields([{ name: "file", maxCount: 1 }]),
   instructor.course.content.submit
-);
-router.get(
-  "/instructor/courses/:courseId/quiz",
-  checkInstructor,
-  instructor.course.quiz.show
-); // add quiz page
-router.post(
-  "/instructor/courses/:courseId/quiz",
-  instructor.course.quiz.submit
 );
 
 // Course

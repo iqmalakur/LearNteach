@@ -17,7 +17,6 @@ module.exports = (sequelize, DataTypes) => {
       user: DataTypes.STRING(50),
       course: DataTypes.UUID,
       completed_contents: DataTypes.STRING,
-      quiz_grades: DataTypes.STRING,
     },
     {
       sequelize,
