@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       course: DataTypes.INTEGER,
       label: DataTypes.STRING,
       approved: DataTypes.ENUM("yes", "no"),
-      type: DataTypes.ENUM("video", "article", "quiz"),
+      video: DataTypes.STRING,
     },
     {
       sequelize,

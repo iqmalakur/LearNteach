@@ -25,9 +25,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.ENUM("yes", "no"),
       },
-      type: {
+      video: {
         allowNull: false,
-        type: Sequelize.ENUM("video", "article", "quiz"),
+        type: Sequelize.STRING,
       },
     });
   },

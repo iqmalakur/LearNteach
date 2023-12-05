@@ -29,10 +29,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
-      quiz_grades: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
     });
   },
   async down(queryInterface, Sequelize) {

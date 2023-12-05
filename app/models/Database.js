@@ -42,7 +42,6 @@ module.exports = { Connection: Database };
 
 // Export all models
 const models = [
-  "Article",
   "Cart",
   "Chat",
   "Community",
@@ -50,13 +49,8 @@ const models = [
   "Course",
   "EnrolledCourse",
   "Instructor",
-  "MultipleChoise",
-  "PromotionCode",
-  "Question",
-  "Quiz",
   "Transaction",
   "User",
-  "Video",
   "Wishlist",
 ];
 
@@ -92,8 +86,4 @@ module.exports.Course.belongsTo(module.exports.User, {
 
 module.exports.User.belongsTo(module.exports.Instructor, {
   foreignKey: "username",
-});
-
-module.exports.Content.belongsTo(module.exports.Video, {
-  foreignKey: "id",
 });

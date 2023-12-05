@@ -92,16 +92,6 @@ module.exports = {
           throw new Error(`enrolled;${course.title}`);
         }
 
-        // if (promotion_codes.length != 0) {
-        //   const promo =
-        //     promotion_codes[
-        //       Math.floor(Math.random() * promotion_codes.length)
-        //     ];
-
-        //   promotion_code = promo.code;
-        //   discount_percentage = promo.discount;
-        // }
-
         const transaction = {
           user: user.username,
           course: course.id,
@@ -110,7 +100,6 @@ module.exports = {
           instructor_name: course.User.name,
           transaction_date: new Date(),
           discount_percentage: 0,
-          promotion_code: null,
         };
 
         transaction.course_price = course.price;
@@ -138,7 +127,6 @@ module.exports = {
           user: user.username,
           course: course.id,
           completed_contents: countContentArr.join(","),
-          quiz_grades: "",
         };
 
         await Transaction.create(transaction, { transaction: t });
