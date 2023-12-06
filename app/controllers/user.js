@@ -9,7 +9,6 @@ const {
   Cart,
 } = require("../models/Database");
 const { priceFormat } = require("../utils/format");
-const path = require("path");
 
 module.exports = {
   /**
@@ -50,13 +49,22 @@ module.exports = {
           ],
         },
       ],
-      attributes: [],
+      attributes: ["completed_contents"],
     });
     const courses = [];
 
-    enrolledCourses.forEach((enrolledCourse) =>
-      courses.push(enrolledCourse.Course)
-    );
+    enrolledCourses.forEach((enrolledCourse) => {
+      const completed_contents = enrolledCourse.completed_contents.split(",");
+      const completed_count = completed_contents.filter(
+        (c) => c === "true"
+      ).length;
+
+      const course = enrolledCourse.Course;
+      const progress = (completed_count / completed_contents.length) * 100;
+      course.progress = progress.toFixed();
+
+      courses.push(course);
+    });
 
     res.render("user/course", {
       layout: "layouts/sidebar-layout",

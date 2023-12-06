@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       label: DataTypes.STRING,
       approved: DataTypes.ENUM("yes", "no"),
       video: DataTypes.STRING,
+      created_at: DataTypes.DATE,
     },
     {
       sequelize,

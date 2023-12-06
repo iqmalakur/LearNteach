@@ -16,7 +16,19 @@
   </section>
   <aside class="border-start border-secondary">
     <div class="list-group rounded-0">
+      <li class="list-group-item">
+        <div class="d-flex justify-content-between">
+          <h3 class="text-end py-1">Contents</h3>
+          <a
+            href="/my/course"
+            class="text-dark text-decoration-none fw-bold fs-3"
+          >
+            <i class="bi bi-arrow-left"> </i>
+          </a>
+        </div>
+      </li>
       <input type="hidden" id="courseId" value="<%- enrolledCourse.course %>" />
+      <input type="hidden" id="username" value="<%- enrolledCourse.user %>" />
       <% contents.forEach((cnt, idx) => { %>
       <a
         href="/learn/<%- enrolledCourse.course %>/<%- cnt.id %>"

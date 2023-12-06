@@ -98,6 +98,7 @@ entity Contents {
     --
     label : varchar
     approved : enum('yes', 'no')
+    created_at : date
     video : varchar
 }
 

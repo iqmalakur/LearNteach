@@ -448,6 +448,7 @@ formSend.forEach((form) => {
 const contentCheckboxes = document.querySelectorAll(".content-check");
 if (contentCheckboxes && contentCheckboxes.length > 0) {
   const courseId = document.getElementById("courseId").value;
+  const username = document.getElementById("username").value;
 
   contentCheckboxes.forEach((contentCheckbox) => {
     contentCheckbox.addEventListener("click", async (e) => {
@@ -459,6 +460,7 @@ if (contentCheckboxes && contentCheckboxes.length > 0) {
         body: JSON.stringify({
           index: contentCheckbox.dataset.index,
           state,
+          username,
         }),
       });
 

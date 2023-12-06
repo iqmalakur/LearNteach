@@ -139,6 +139,7 @@ module.exports = {
       });
       const contents = await Content.findAll({
         where: { course: course.id },
+        order: [["created_at", "ASC"]],
       });
 
       res.render("instructor/course-dashboard", {
@@ -368,32 +369,47 @@ module.exports = {
       submit: async (req, res) => {
         // Get course with spesific id
         const { courseId } = req.params;
-        const course = await Course.findOne({
-          where: { id: courseId },
-        });
 
-        // Check if course is not found
-        if (!course) {
-          return res.status(404).json({
-            success: false,
-            message: `course with id ${courseId} is not found!`,
-            redirect: null,
-          });
-        }
+        const t = await Connection.getConnection().transaction();
 
-        // Create content
-        console.log(req.files);
-        console.log(req.file);
-        const filename = req.files.file[0].filename;
-        const content = await Content.create({
-          ...req.body,
-          approved: "no",
-          course: courseId,
-          video: filename,
-        });
+        try {
+          const course = await Course.findOne(
+            {
+              where: { id: courseId },
+            },
+            { transaction: t }
+          );
 
-        // Send response
-        if (content) {
+          // Check if course is not found
+          if (!course) {
+            return res.status(404).json({
+              success: false,
+              message: `course with id ${courseId} is not found!`,
+              redirect: null,
+            });
+          }
+
+          // Create content
+          const filename = req.files.file[0].filename;
+          await Content.create(
+            {
+              ...req.body,
+              approved: "no",
+              course: courseId,
+              video: filename,
+              created_at: new Date(),
+            },
+            { transaction: t }
+          );
+
+          await Connection.getConnection().query(
+            `UPDATE enrolledcourses SET completed_contents=CONCAT(completed_contents, ',false') WHERE course='${courseId}';`,
+            { transaction: t }
+          );
+
+          await t.commit();
+
+          // Send response
           const message = "success create new content";
           res.cookie("successMessage", message);
 
@@ -402,13 +418,21 @@ module.exports = {
             message,
             redirect: "/instructor/courses/" + courseId,
           });
-        } else {
+        } catch (err) {
+          await t.rollback();
+
           return res.status(500).json({
             success: false,
             message: "unexpected errors occurred",
             redirect: null,
           });
         }
+
+        return res.status(500).json({
+          success: false,
+          message: "unexpected errors occurred",
+          redirect: null,
+        });
       },
     },
   },

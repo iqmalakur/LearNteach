@@ -215,6 +215,7 @@ module.exports = {
       const contents = await Content.findAll({
         attributes: ["id"],
         where: { course: courseId },
+        order: [["created_at", "ASC"]],
       });
 
       let uncompleted_content = completed_contents.indexOf("false");
@@ -225,7 +226,11 @@ module.exports = {
         );
       }
 
-      return res.redirect(`/learn/${courseId}/${contents[0].id}`);
+      if (contents.length > 0) {
+        return res.redirect(`/learn/${courseId}/${contents[0].id}`);
+      }
+
+      return res.redirect(`/my/course`);
     }
 
     const course = await Course.findOne({
@@ -248,6 +253,7 @@ module.exports = {
     const contents = await Content.findAll({
       attributes: ["id", "label"],
       where: { course: courseId },
+      order: [["created_at", "ASC"]],
     });
 
     const content = await Content.findOne({
@@ -274,11 +280,12 @@ module.exports = {
    */
   complete: async (req, res) => {
     const courseId = req.params.courseId;
+    const username = req.body.username;
     const index = req.body.index;
     const state = req.body.state;
 
     const enrolledCourse = await EnrolledCourse.findOne({
-      where: { course: courseId },
+      where: { course: courseId, user: username },
     });
 
     const completed_contents = enrolledCourse.completed_contents.split(",");
