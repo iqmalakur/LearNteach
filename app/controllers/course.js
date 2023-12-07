@@ -1,6 +1,7 @@
 const sequelize = require("sequelize");
 const { Op } = require("sequelize");
 const {
+  Connection,
   User,
   Instructor,
   Course,
@@ -235,7 +236,10 @@ module.exports = {
 
     const course = await Course.findOne({
       attributes: [
+        "id",
         "title",
+        "rating",
+        "members",
         "meet_link",
         "meet_time",
         "meet_day",
@@ -304,5 +308,89 @@ module.exports = {
       message: "unexpected errors occurred",
       redirect: null,
     });
+  },
+
+  /**
+   * Handle user rating proccess
+   *
+   * @param {Request} req The Request object.
+   * @param {Response} res The Response object.
+   */
+  rating: async (req, res) => {
+    const courseId = req.params.courseId;
+    const username = req.body.username;
+    const rating = req.body.rating;
+
+    const enrolledCourse = await EnrolledCourse.findOne({
+      where: { course: courseId, user: username },
+    });
+
+    const course = await Course.findOne({
+      where: { id: courseId },
+      attributes: ["id", "instructor", "rating"],
+    });
+
+    const t = await Connection.getConnection().transaction();
+    const prevRating = enrolledCourse.rating;
+    const prevCourseRating = course.rating;
+
+    try {
+      enrolledCourse.rating = rating;
+      await enrolledCourse.save();
+
+      const avgRating = await EnrolledCourse.findOne(
+        {
+          where: { course: courseId, rating: { [Op.ne]: 0 } },
+          attributes: [
+            [sequelize.fn("AVG", sequelize.col("rating")), "avg_rating"],
+          ],
+        },
+        { transaction: t }
+      );
+
+      course.rating = Number(avgRating.dataValues.avg_rating).toFixed();
+      await course.save();
+
+      const instructor = await Instructor.findOne({
+        where: { username: course.instructor },
+        attributes: ["username", "rating"],
+      });
+
+      const avgCourseRating = await Course.findOne(
+        {
+          where: { instructor: instructor.username, rating: { [Op.ne]: 0 } },
+          attributes: [
+            [sequelize.fn("AVG", sequelize.col("rating")), "avg_rating"],
+          ],
+        },
+        { transaction: t }
+      );
+
+      instructor.rating = Number(
+        avgCourseRating.dataValues.avg_rating
+      ).toFixed();
+      await instructor.save({ transaction: t });
+
+      await t.commit();
+
+      return res.status(200).json({
+        success: true,
+        rating: enrolledCourse.rating,
+      });
+    } catch (err) {
+      await t.rollback();
+
+      enrolledCourse.rating = prevRating;
+      await enrolledCourse.save();
+
+      course.rating = prevCourseRating;
+      await course.save();
+
+      return res.status(500).json({
+        success: false,
+        message: "unexpected errors occurred",
+        redirect: null,
+      });
+    }
   },
 };

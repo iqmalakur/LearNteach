@@ -7,6 +7,7 @@ const {
   Community,
   Content,
 } = require("../models/Database");
+const sequelize = require("sequelize");
 const { priceFormat } = require("../utils/format");
 
 module.exports = {
@@ -187,7 +188,6 @@ module.exports = {
         title: Joi.string().required().max(80),
         description: Joi.string().optional(),
         price: Joi.number().required(),
-        // tags: Joi.string().required(),
         meet_link: Joi.string().required(),
         meet_day: Joi.string().required(),
         meet_time: Joi.string().required(),
@@ -246,7 +246,6 @@ module.exports = {
         title: Joi.string().required().max(80),
         description: Joi.string().optional(),
         price: Joi.number().required(),
-        // tags: Joi.string().required(),
         meet_link: Joi.string().required(),
         meet_day: Joi.string().required(),
         meet_time: Joi.string().required(),
@@ -271,7 +270,6 @@ module.exports = {
           {
             ...req.body,
             preview,
-            tags: "",
             description: req.body.description ?? "",
             rating: 0,
             members: 0,
@@ -402,8 +400,20 @@ module.exports = {
             { transaction: t }
           );
 
+          let contentStatus = ",false";
+          const contentCount = await Content.findOne({
+            where: { course: course.id },
+            attributes: [
+              [sequelize.fn("COUNT", sequelize.col("*")), "total_content"],
+            ],
+          });
+
+          if (contentCount.dataValues.total_content === 0) {
+            contentStatus = "false";
+          }
+
           await Connection.getConnection().query(
-            `UPDATE enrolledcourses SET completed_contents=CONCAT(completed_contents, ',false') WHERE course='${courseId}';`,
+            `UPDATE enrolledcourses SET completed_contents=CONCAT(completed_contents, '${contentStatus}') WHERE course='${courseId}';`,
             { transaction: t }
           );
 
@@ -427,12 +437,6 @@ module.exports = {
             redirect: null,
           });
         }
-
-        return res.status(500).json({
-          success: false,
-          message: "unexpected errors occurred",
-          redirect: null,
-        });
       },
     },
   },

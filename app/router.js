@@ -145,8 +145,9 @@ router.post(
 
 // Course
 router.get("/course", checkToken, course.index); // list of classes page
-router.get("/course/:courseId", checkToken, course.detail); // class info page
+router.put("/course/:courseId/rating", course.rating);
 router.get("/course/:courseId/instructor", checkToken, course.instructor); // instructor info page
+router.get("/course/:courseId", checkToken, course.detail); // class info page
 router.get("/learn/:courseId", checkToken, course.learn); // learning page
 router.get("/learn/:courseId/:contentId", checkToken, course.learn); // learning page
 router.put("/learn/complete/:courseId", course.complete);

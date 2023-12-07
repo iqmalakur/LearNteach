@@ -471,3 +471,26 @@ if (contentCheckboxes && contentCheckboxes.length > 0) {
     });
   });
 }
+
+const ratingSelect = document.querySelector("select#rating");
+if (ratingSelect) {
+  ratingSelect.addEventListener("change", async () => {
+    const courseId = document.getElementById("courseId").value;
+    const username = document.getElementById("username").value;
+    const rating = ratingSelect.value;
+
+    const send = await fetch(`/course/${courseId}/rating`, {
+      method: "put",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        rating,
+        username,
+      }),
+    });
+
+    const result = await send.json();
+    if (!result.success) {
+      e.preventDefault();
+    }
+  });
+}
