@@ -10,11 +10,10 @@ entity Users {
 
 entity Communities {
     id : int <PK>
-    course : int <FK>
+    course : uuid <FK>
     --
     name : varchar
-    description : varchar
-    picture : varchar
+    type : enum('local', 'global')
 }
 
 object Chats {
@@ -37,18 +36,17 @@ entity Instructors {
 }
 
 entity Courses {
-    id : int <PK>
+    id : uuid <PK>
     instructor : varchar <FK>
     --
     title : varchar
     description : varchar
     rating : int
     members : int
-    tags : varchar
     preview : varchar
     price : int
-    created_at : datetime
-    updated_at : datetime
+    createdAt : datetime
+    updatedAt : datetime
     meet_link : varchar
     meet_time : time
     meet_day : varchar
@@ -57,21 +55,20 @@ entity Courses {
 object Wishlists {
     id : int <PK>
     user : varchar <FK>
-    course : int <FK>
+    course : uuid <FK>
 }
 
 object Carts {
     id : int <PK>
     user : varchar <FK>
-    course : int <FK>
+    course : uuid <FK>
 }
 
 object Transactions {
     id : int <PK>
     user : varchar <FK>
-    course : int <FK>
+    course : uuid <FK>
     --
-    promotion_code : varchar
     course_title : varchar
     user_name : varchar
     instructor_name : varchar
@@ -87,17 +84,19 @@ object Transactions {
 object EnrolledCourses {
     id : int <PK>
     user : varchar <FK>
-    course : int <FK>
+    course : uuid <FK>
     --
     completed_contents : varchar
+    rating : int
 }
 
 entity Contents {
     id : uuid <PK>
-    course : int <FK>
+    course : uuid <FK>
     --
     label : varchar
     approved : enum('yes', 'no')
+    created_at : date
     video : varchar
 }
 

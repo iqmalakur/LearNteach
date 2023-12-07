@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
       description: DataTypes.STRING,
       rating: DataTypes.INTEGER,
       members: DataTypes.INTEGER,
-      tags: DataTypes.STRING,
       preview: DataTypes.STRING,
       price: DataTypes.INTEGER,
       createdAt: DataTypes.DATE,

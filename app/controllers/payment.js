@@ -127,6 +127,7 @@ module.exports = {
           user: user.username,
           course: course.id,
           completed_contents: countContentArr.join(","),
+          rating: 0,
         };
 
         await Transaction.create(transaction, { transaction: t });

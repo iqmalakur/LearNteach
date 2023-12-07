@@ -5,18 +5,50 @@
       Your browser does not support the video tag.
     </video>
     <div class="container p-5">
-      <h3><%- course.title %></h3>
+      <h3 class="mb-3"><%- course.title %></h3>
       <p><%- course.description %></p>
-      <p>Meet Time : <%- course.meet_day %> (<%- course.meet_time %>)</p>
-      <p>
-        Meet Link :
-        <a href="<%- course.meet_link %>"><%- course.meet_link %></a>
-      </p>
+
+      <ul class="list-group w-50">
+        <li class="list-group-item">
+          Meet Time : <%- course.meet_day %> (<%- course.meet_time %>)
+        </li>
+        <li class="list-group-item">
+          Meet Link :
+          <a href="<%- course.meet_link %>"><%- course.meet_link %></a>
+        </li>
+        <li class="list-group-item">
+          Instructor : <a href="/course/<%- course.id %>/instructor"><%- course.User.name %></a>
+        </li>
+        <li class="list-group-item">Members : <%- course.members %></li>
+        <li class="list-group-item">Rating : <%- course.rating %></li>
+      </ul>
+
+      <label for="rating" class="mt-4">Your Rating for this Course : </label>
+      <select id="rating" class="form-select d-inline border-secondary" style="width: 8rem;">
+        <option value="0" <%- enrolledCourse.rating === 0 ? 'selected' : '' %>>Not Set</option>
+        <option value="1" <%- enrolledCourse.rating === 1 ? 'selected' : '' %>>1</option>
+        <option value="2" <%- enrolledCourse.rating === 2 ? 'selected' : '' %>>2</option>
+        <option value="3" <%- enrolledCourse.rating === 3 ? 'selected' : '' %>>3</option>
+        <option value="4" <%- enrolledCourse.rating === 4 ? 'selected' : '' %>>4</option>
+        <option value="5" <%- enrolledCourse.rating === 5 ? 'selected' : '' %>>5</option>
+      </select>
     </div>
   </section>
   <aside class="border-start border-secondary">
     <div class="list-group rounded-0">
+      <li class="list-group-item">
+        <div class="d-flex justify-content-between">
+          <h3 class="text-end py-1">Contents</h3>
+          <a
+            href="/my/course"
+            class="text-dark text-decoration-none fw-bold fs-3"
+          >
+            <i class="bi bi-arrow-left"> </i>
+          </a>
+        </div>
+      </li>
       <input type="hidden" id="courseId" value="<%- enrolledCourse.course %>" />
+      <input type="hidden" id="username" value="<%- enrolledCourse.user %>" />
       <% contents.forEach((cnt, idx) => { %>
       <a
         href="/learn/<%- enrolledCourse.course %>/<%- cnt.id %>"

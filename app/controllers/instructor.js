@@ -7,6 +7,7 @@ const {
   Community,
   Content,
 } = require("../models/Database");
+const sequelize = require("sequelize");
 const { priceFormat } = require("../utils/format");
 
 module.exports = {
@@ -139,6 +140,7 @@ module.exports = {
       });
       const contents = await Content.findAll({
         where: { course: course.id },
+        order: [["created_at", "ASC"]],
       });
 
       res.render("instructor/course-dashboard", {
@@ -186,7 +188,6 @@ module.exports = {
         title: Joi.string().required().max(80),
         description: Joi.string().optional(),
         price: Joi.number().required(),
-        // tags: Joi.string().required(),
         meet_link: Joi.string().required(),
         meet_day: Joi.string().required(),
         meet_time: Joi.string().required(),
@@ -245,7 +246,6 @@ module.exports = {
         title: Joi.string().required().max(80),
         description: Joi.string().optional(),
         price: Joi.number().required(),
-        // tags: Joi.string().required(),
         meet_link: Joi.string().required(),
         meet_day: Joi.string().required(),
         meet_time: Joi.string().required(),
@@ -270,7 +270,6 @@ module.exports = {
           {
             ...req.body,
             preview,
-            tags: "",
             description: req.body.description ?? "",
             rating: 0,
             members: 0,
@@ -368,32 +367,59 @@ module.exports = {
       submit: async (req, res) => {
         // Get course with spesific id
         const { courseId } = req.params;
-        const course = await Course.findOne({
-          where: { id: courseId },
-        });
 
-        // Check if course is not found
-        if (!course) {
-          return res.status(404).json({
-            success: false,
-            message: `course with id ${courseId} is not found!`,
-            redirect: null,
+        const t = await Connection.getConnection().transaction();
+
+        try {
+          const course = await Course.findOne(
+            {
+              where: { id: courseId },
+            },
+            { transaction: t }
+          );
+
+          // Check if course is not found
+          if (!course) {
+            return res.status(404).json({
+              success: false,
+              message: `course with id ${courseId} is not found!`,
+              redirect: null,
+            });
+          }
+
+          // Create content
+          const filename = req.files.file[0].filename;
+          await Content.create(
+            {
+              ...req.body,
+              approved: "no",
+              course: courseId,
+              video: filename,
+              created_at: new Date(),
+            },
+            { transaction: t }
+          );
+
+          let contentStatus = ",false";
+          const contentCount = await Content.findOne({
+            where: { course: course.id },
+            attributes: [
+              [sequelize.fn("COUNT", sequelize.col("*")), "total_content"],
+            ],
           });
-        }
 
-        // Create content
-        console.log(req.files);
-        console.log(req.file);
-        const filename = req.files.file[0].filename;
-        const content = await Content.create({
-          ...req.body,
-          approved: "no",
-          course: courseId,
-          video: filename,
-        });
+          if (contentCount.dataValues.total_content === 0) {
+            contentStatus = "false";
+          }
 
-        // Send response
-        if (content) {
+          await Connection.getConnection().query(
+            `UPDATE enrolledcourses SET completed_contents=CONCAT(completed_contents, '${contentStatus}') WHERE course='${courseId}';`,
+            { transaction: t }
+          );
+
+          await t.commit();
+
+          // Send response
           const message = "success create new content";
           res.cookie("successMessage", message);
 
@@ -402,7 +428,9 @@ module.exports = {
             message,
             redirect: "/instructor/courses/" + courseId,
           });
-        } else {
+        } catch (err) {
+          await t.rollback();
+
           return res.status(500).json({
             success: false,
             message: "unexpected errors occurred",

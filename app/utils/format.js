@@ -1,15 +1,15 @@
 module.exports = {
   priceFormat: (price) => {
-    price = "" + price;
-    let result = "Rp";
+    price = ("" + price).split("").reverse();
+    let result = [];
 
     for (let i = 0; i < price.length; i++) {
-      result += price[i];
+      result.push(price[i]);
       if ((i + 1) % 3 === 0 && i + 1 !== price.length) {
-        result += ".";
+        result.push(".");
       }
     }
 
-    return result;
+    return "Rp" + result.reverse().join("");
   },
 };

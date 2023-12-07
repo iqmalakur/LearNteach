@@ -35,10 +35,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 0,
       },
-      tags: {
-        allowNull: false,
-        type: Sequelize.STRING,
-      },
       preview: {
         allowNull: false,
         type: Sequelize.STRING,
