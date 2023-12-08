@@ -1,0 +1,163 @@
+<div id="dashboard">
+  <div class="mx-0 mt-4">
+    <div class="row m-0">
+      <div class="col-3 py-3 px-2 me-4 bg-light rounded shadow-sm">
+        <div class="row justify-content-between m-0">
+          <div class="col-4 p-0 text-center">
+            <img
+              src="/img/icons/dashboard-instructor-course.png"
+              alt="enrolled course"
+            />
+          </div>
+          <div class="col-8">
+            <h4 class="mb-0"><%- countCourse %></h4>
+            <p class="mb-0 text-secondary" style="font-size: 14px">Courses</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 py-3 px-2 me-4 bg-light rounded shadow-sm">
+        <div class="row justify-content-between m-0">
+          <div class="col-4 p-0 text-center">
+            <img
+              src="/img/icons/dashboard-instructor-student.png"
+              alt="active course"
+            />
+          </div>
+          <div class="col-8">
+            <h4 class="mb-0"><%- sumStudent %></h4>
+            <p class="mb-0 text-secondary" style="font-size: 14px">Students</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-4 py-3 px-2 me-4 bg-light rounded shadow-sm">
+        <div class="row justify-content-between m-0">
+          <div class="col-4 p-0 text-center">
+            <img
+              src="/img/icons/dashboard-instructor-balance.png"
+              alt="completed course"
+            />
+          </div>
+          <div class="col-8">
+            <h4 class="mb-0"><%- priceFormat(instructor.balance) %></h4>
+            <p class="mb-0 text-secondary" style="font-size: 14px">
+              Total Earning
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-0 mt-5 p-4 bg-light rounded shadow-sm">
+    <h3 class="ms-1 mb-4">Overall Course Rating</h3>
+    <hr />
+    <div class="row justify-content-center">
+      <div class="col-3 p-5 text-center" style="background-color: #d0ebd6">
+        <h3 class="fs-1"><%- avgRating %></h3>
+        <h6>Overall Rating</h6>
+      </div>
+      <div class="col-8">
+        <div class="row align-items-center">
+          <div class="col-4 my-1 text-end">
+            <img src="/img/icons/star5.png" alt="5 Star" />
+            <span class="mx-2">5 Star</span>
+          </div>
+          <div class="col">
+            <div
+              class="progress"
+              role="progressbar"
+              aria-label="Example with label"
+              aria-valuenow="<%- stars.five %>"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <div class="progress-bar" style="width: <%- stars.five %>%">
+                <%- stars.five %>%
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-4 my-1 text-end">
+            <img src="/img/icons/star4.png" alt="4 Star" />
+            <span class="mx-2">4 Star</span>
+          </div>
+          <div class="col">
+            <div
+              class="progress"
+              role="progressbar"
+              aria-label="Example with label"
+              aria-valuenow="<%- stars.four %>"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <div class="progress-bar" style="width: <%- stars.four %>%">
+                <%- stars.four %>%
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-4 my-1 text-end">
+            <img src="/img/icons/star3.png" alt="3 Star" />
+            <span class="mx-2">3 Star</span>
+          </div>
+          <div class="col">
+            <div
+              class="progress"
+              role="progressbar"
+              aria-label="Example with label"
+              aria-valuenow="<%- stars.three %>"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <div class="progress-bar" style="width: <%- stars.three %>%">
+                <%- stars.three %>%
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-4 my-1 text-end">
+            <img src="/img/icons/star2.png" alt="2 Star" />
+            <span class="mx-2">2 Star</span>
+          </div>
+          <div class="col">
+            <div
+              class="progress"
+              role="progressbar"
+              aria-label="Example with label"
+              aria-valuenow="<%- stars.two %>"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <div class="progress-bar" style="width: <%- stars.two %>%">
+                <%- stars.two %>%
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-4 my-1 text-end">
+            <img src="/img/icons/star1.png" alt="1 Star" />
+            <span class="mx-2">1 Star</span>
+          </div>
+          <div class="col">
+            <div
+              class="progress"
+              role="progressbar"
+              aria-label="Example with label"
+              aria-valuenow="<%- stars.one %>"
+              aria-valuemin="0"
+              aria-valuemax="100"
+            >
+              <div class="progress-bar" style="width: <%- stars.one %>%">
+                <%- stars.one %>%
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

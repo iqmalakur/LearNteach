@@ -4,4 +4,115 @@
     <a href="/my/course" class="menu py-3 text-center">Courses </a>
     <a href="/wishlist" class="menu py-3 text-center">Wishlist </a>
   </div>
+
+  <div class="bg-light mx-0 mt-4 p-4">
+    <h3 class="ms-1 mb-4">Course Summary</h3>
+    <div class="row m-0">
+      <div class="col-3 py-3 px-2 me-4" style="background-color: #ffeee8">
+        <div class="row justify-content-between m-0">
+          <div class="col-4 p-0 text-center">
+            <img
+              src="/img/icons/dashboard-enrolled-course.png"
+              alt="enrolled course"
+            />
+          </div>
+          <div class="col-8">
+            <h4 class="mb-0"><%- courses.length %></h4>
+            <p class="mb-0 text-secondary" style="font-size: 14px">
+              Enrolled Courses
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 py-3 px-2 me-4" style="background-color: #ebebff">
+        <div class="row justify-content-between m-0">
+          <div class="col-4 p-0 text-center">
+            <img
+              src="/img/icons/dashboard-active-course.png"
+              alt="active course"
+            />
+          </div>
+          <div class="col-8">
+            <h4 class="mb-0"><%- activeCourse %></h4>
+            <p class="mb-0 text-secondary" style="font-size: 14px">
+              Active Courses
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-3 py-3 px-2 me-4" style="background-color: #e1f7e3">
+        <div class="row justify-content-between m-0">
+          <div class="col-4 p-0 text-center">
+            <img
+              src="/img/icons/dashboard-completed-course.png"
+              alt="completed course"
+            />
+          </div>
+          <div class="col-8">
+            <h4 class="mb-0"><%- completedCourse %></h4>
+            <p class="mb-0 text-secondary" style="font-size: 14px">
+              Completed Courses
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-light mx-0 mt-4 p-4">
+    <h3 class="ms-1 mb-4">Your Courses</h3>
+
+    <div class="row px-3">
+      <div class="col-6 ps-4 text-secondary">Course</div>
+      <div class="col-4 ps-4 text-secondary">Progress</div>
+      <div class="col-2 ps-4 text-secondary">Status</div>
+    </div>
+
+    <div
+      class="border-bottom border-secondary mt-2 mb-4 mx-auto"
+      style="width: 98%; opacity: 0.3"
+    ></div>
+
+    <% courses.forEach(course => { %>
+    <div class="row align-items-center">
+      <div class="col-6 row m-0">
+        <div
+          class="col-4 course-preview rounded"
+          style="background-image: url(/img/courses/<%- course.preview %>)"
+        ></div>
+        <div class="col-8">
+          <h5><%- course.title %></h5>
+          <p class="text-secondary" style="font-size: 12px">
+            <%- course.description %>
+          </p>
+        </div>
+      </div>
+      <div class="col-4">
+        <div
+          class="progress"
+          role="progressbar"
+          aria-label="Example with label"
+          aria-valuenow="<%- course.progress %>"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          <div class="progress-bar" style="width: <%- course.progress %>%">
+            <%- course.progress %>%
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <span
+          class="badge text-bg-<%- course.status === 'Completed' ? 'success' : 'warning' %>"
+        >
+          <%- course.status %>
+        </span>
+        <br />
+        <a href="/learn/<%- course.id %>" class="badge text-bg-primary"
+          >Learn</a
+        >
+      </div>
+    </div>
+    <% }) %>
+  </div>
 </div>

@@ -69,3 +69,10 @@
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
   transform: scale(1.02);
 }
+
+#dashboard .course-preview {
+  width: 8rem;
+  height: 4rem;
+  background-position: center;
+  background-size: cover;
+}

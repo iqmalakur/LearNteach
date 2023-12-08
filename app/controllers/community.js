@@ -176,7 +176,7 @@ module.exports = {
         },
       ],
       where: {
-        "$Course.id$": communityId,
+        "$Course.id$": community.course,
         "$User.username$": {
           [Op.ne]: user.username,
         },

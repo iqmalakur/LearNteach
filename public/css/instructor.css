@@ -3,7 +3,7 @@
   width: 80%;
 }
 
-:is(#course, #course-dashboard, #add-course) {
+:is(#course, #course-dashboard, #add-course, #dashboard) {
   min-height: 100vh;
   padding: 7rem 3rem 3rem 3rem;
 }

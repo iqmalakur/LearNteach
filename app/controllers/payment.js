@@ -1,6 +1,7 @@
 const {
   Connection,
   User,
+  Instructor,
   Course,
   Content,
   Wishlist,
@@ -146,6 +147,17 @@ module.exports = {
             transaction: t,
           }
         );
+
+        const instructor = await Instructor.findOne(
+          {
+            where: { username: course.instructor },
+            attributes: ["username", "balance"],
+          },
+          { transaction: t }
+        );
+
+        instructor.balance += transaction.price;
+        await instructor.save({ transaction: t });
       }
 
       await t.commit();

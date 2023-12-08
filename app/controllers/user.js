@@ -17,13 +17,61 @@ module.exports = {
    * @param {Request} req The Request object.
    * @param {Response} res The Response object.
    */
-  index: (req, res) => {
+  index: async (req, res) => {
     const user = res.locals.user;
+
+    const enrolledCourses = await EnrolledCourse.findAll({
+      where: { user: user.username },
+      attributes: ["completed_contents"],
+      include: [
+        {
+          model: Course,
+          attributes: ["id", "title", "description", "preview"],
+        },
+      ],
+    });
+
+    let courses = [];
+    let activeCourse = 0;
+    let completedCourse = 0;
+
+    enrolledCourses.forEach((enrolledCourse) => {
+      const course = enrolledCourse.Course;
+      const completedContents = enrolledCourse.completed_contents.split(",");
+
+      const completedCount = completedContents.filter(
+        (status) => status === "true"
+      ).length;
+      const progress = (completedCount / completedContents.length) * 100;
+
+      course.progress = progress.toFixed();
+
+      if (completedContents.every((status) => status === "true")) {
+        completedCourse++;
+        course.status = "Completed";
+      } else {
+        activeCourse++;
+        course.status = "Uncompleted";
+      }
+
+      const description = course.description;
+      course.description =
+        description.length > 80
+          ? description.substring(0, 80) + "..."
+          : description;
+
+      courses.push(course);
+    });
+
+    courses = courses.sort((a, b) => b.progress - a.progress);
 
     res.render("user/index", {
       layout: "layouts/sidebar-layout",
       title: "Dashboard",
       user,
+      courses,
+      activeCourse,
+      completedCourse,
       url: req.originalUrl,
     });
   },

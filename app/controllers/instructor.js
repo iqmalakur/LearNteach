@@ -4,6 +4,7 @@ const {
   User,
   Instructor,
   Course,
+  EnrolledCourse,
   Community,
   Content,
 } = require("../models/Database");
@@ -17,13 +18,66 @@ module.exports = {
    * @param {Request} req The Request object.
    * @param {Response} res The Response object.
    */
-  index: (req, res) => {
+  index: async (req, res) => {
     const user = res.locals.user;
+
+    const instructor = await Instructor.findOne({
+      where: { username: user.username },
+    });
+
+    const course = await Course.findOne({
+      where: { instructor: user.username },
+      attributes: [
+        [sequelize.fn("COUNT", sequelize.col("*")), "total_course"],
+        [sequelize.fn("SUM", sequelize.col("members")), "total_student"],
+      ],
+    });
+
+    const countCourse = course.dataValues.total_course;
+    const sumStudent = course.dataValues.total_student;
+
+    const enrolledCourses = await EnrolledCourse.findAll({
+      include: [
+        {
+          model: Course,
+          attributes: [],
+        },
+      ],
+      where: {
+        "$Course.instructor$": user.username,
+        rating: { [sequelize.Op.ne]: 0 },
+      },
+      attributes: ["rating"],
+    });
+
+    const ratings = [];
+    enrolledCourses.forEach((enrolledCourse) => {
+      ratings.push(enrolledCourse.rating);
+    });
+
+    const getPercentageRating = (n) =>
+      (ratings.filter((rating) => rating === n).length / ratings.length) * 100;
+
+    const stars = {
+      one: getPercentageRating(1),
+      two: getPercentageRating(2),
+      three: getPercentageRating(3),
+      four: getPercentageRating(4),
+      five: getPercentageRating(5),
+    };
+
+    const avgRating = ratings.reduce((a, b) => a + b) / ratings.length;
 
     res.render("instructor/index", {
       layout: "layouts/instructor-layout",
       title: "Instructor - Dashboard",
       user,
+      instructor,
+      countCourse,
+      sumStudent,
+      priceFormat,
+      stars,
+      avgRating: avgRating.toFixed(1),
       url: req.originalUrl,
     });
   },
