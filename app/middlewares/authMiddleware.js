@@ -46,14 +46,13 @@ module.exports = {
         return res.redirect("/");
       }
 
-      const isInstructor = (await Instructor.findOne({
+      const instructor = await Instructor.findOne({
         where: { username: user.username },
-        attributes: ["username"],
-      }))
-        ? true
-        : false;
+        attributes: ["username", "bio"],
+      });
 
-      user.isInstructor = isInstructor;
+      user.isInstructor = instructor ? true : false;
+      user.bio = instructor ? instructor.bio : null;
       res.locals.user = user;
 
       return next();

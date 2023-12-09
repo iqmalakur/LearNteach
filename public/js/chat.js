@@ -108,9 +108,9 @@ const updateChat = (chat, userStatus) => {
   } chat rounded position-relative my-2 p-3 text-${align}">
     <span class="fw-bold">${chat.name}</span>
     <p class="mt-2">${chat.message}</p>
-    <span class="chat-date">${date.getDate()}-${
+    <span class="chat-date">${date.getDate()}/${
     date.getMonth() + 1
-  }-${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}</span>
+  }/${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}</span>
   </div>
   `;
 
@@ -230,9 +230,9 @@ if (loadChatBtn) {
       } chat rounded position-relative my-2 p-3 text-${align}">
         <span class="fw-bold">${chat.User.name}</span>
         <p class="mt-2">${chat.chat}</p>
-        <span class="chat-date">${date.getDate()}-${
+        <span class="chat-date">${date.getDate()}/${
         date.getMonth() + 1
-      }-${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}</span>
+      }/${date.getFullYear()} | ${date.getHours()}:${date.getMinutes()}</span>
         <input type="hidden" name="id" value="${chat.id}" />
       </div>
       `;

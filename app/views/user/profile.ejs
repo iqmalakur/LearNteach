@@ -52,6 +52,19 @@
         placeholder="Change Name"
       />
 
+      <h3 class="mt-4 mb-2">Bio</h3>
+      <h5 class="fw-normal" id="label-bio"><%- user.bio %></h5>
+      <textarea
+        name="bio"
+        id="input-bio"
+        class="form-control d-none"
+        placeholder="Change Bio"
+        rows="3"
+        style="resize: none"
+      >
+<%- user.bio %></textarea
+      >
+
       <h3 class="mt-3 mb-2">Email</h3>
       <h4 class="fw-normal" id="label-email"><%- user.email %></h4>
       <input
