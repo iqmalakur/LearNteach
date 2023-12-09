@@ -230,10 +230,12 @@ if (userForm) {
   const titleName = document.getElementById("title-name");
 
   const labelName = document.getElementById("label-name");
+  const labelBio = document.getElementById("label-bio");
   const labelEmail = document.getElementById("label-email");
   const labelPassword = document.getElementById("label-password");
 
   const inputName = document.getElementById("input-name");
+  const inputBio = document.getElementById("input-bio");
   const inputEmail = document.getElementById("input-email");
   const inputPassword = document.getElementById("input-password");
   const inputConfirmPassword = document.getElementById(
@@ -246,10 +248,12 @@ if (userForm) {
 
   const editMode = () => {
     labelName.classList.add("d-none");
+    labelBio.classList.add("d-none");
     labelEmail.classList.add("d-none");
     labelPassword.classList.add("d-none");
 
     inputName.classList.remove("d-none");
+    inputBio.classList.remove("d-none");
     inputEmail.classList.remove("d-none");
     inputPassword.classList.remove("d-none");
 
@@ -260,10 +264,12 @@ if (userForm) {
 
   const readMode = () => {
     labelName.classList.remove("d-none");
+    labelBio.classList.remove("d-none");
     labelEmail.classList.remove("d-none");
     labelPassword.classList.remove("d-none");
 
     inputName.classList.add("d-none");
+    inputBio.classList.add("d-none");
     inputEmail.classList.add("d-none");
     inputPassword.classList.add("d-none");
     inputConfirmPassword.classList.add("d-none");
@@ -282,6 +288,7 @@ if (userForm) {
     const body = {
       username,
       name: inputName.value,
+      bio: inputBio.value,
       email: inputEmail.value,
       password: inputPassword.value,
       confirmPassword: inputConfirmPassword.value,
@@ -305,6 +312,7 @@ if (userForm) {
     if (result.success) {
       titleName.innerText = result.data.name;
       labelName.innerText = result.data.name;
+      labelBio.innerText = result.data.bio;
       labelEmail.innerText = result.data.email;
 
       readMode();

@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const {
   Connection,
   User,
+  Instructor,
   Course,
   EnrolledCourse,
   Wishlist,
@@ -154,6 +155,7 @@ module.exports = {
     // Request body validation
     const schema = Joi.object({
       name: Joi.string().optional(),
+      bio: Joi.string().optional(),
       username: Joi.string().required(),
       email: Joi.string().optional().email(),
       password: Joi.string().optional().min(0),
@@ -170,7 +172,7 @@ module.exports = {
     }
 
     // Destructuring request body
-    const { name, username, email, password, confirmPassword } = req.body;
+    const { name, bio, username, email, password, confirmPassword } = req.body;
 
     // Check if the user does not exists
     const user = await User.findByPk(username);
@@ -215,10 +217,17 @@ module.exports = {
 
     // Store new user to database
     if (await user.save()) {
+      const instructor = await Instructor.findOne({
+        where: { username: user.username },
+        attributes: ["username", "bio"],
+      });
+      instructor.bio = bio;
+      await instructor.save();
+
       return res.status(200).json({
         success: true,
         message: "success update profile",
-        data: { name: user.name, email: user.email },
+        data: { name: user.name, email: user.email, bio: instructor.bio },
       });
     } else {
       return res.status(500).json({

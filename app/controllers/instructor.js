@@ -127,7 +127,7 @@ module.exports = {
         document: filename,
         balance: 0,
         approved: "yes",
-        bio: "",
+        bio: "-",
         rating: 0,
       });
 
