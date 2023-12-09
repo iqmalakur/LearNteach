@@ -52,6 +52,21 @@ const createQuery = (newQuery) => {
   return "?" + query.map((q) => q.join("=")).join("&");
 };
 
+const showToast = (message, icon, popupClass) => {
+  Swal.fire({
+    text: message,
+    icon: icon,
+    toast: true,
+    customClass: {
+      popup: popupClass,
+    },
+    position: "bottom-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+  });
+};
+
 const searchBar = document.querySelector("nav input[type=search]");
 if (searchBar) {
   let delay = null;
@@ -149,7 +164,11 @@ wishlistCart.forEach((wc) => {
       });
       const result = await send.json();
 
-      alert(result.message);
+      if (result.success) {
+        showToast(result.message, "success", "bg-success text-light");
+      } else {
+        showToast(result.message, "error", "bg-danger text-light");
+      }
     } else if (wc.getAttribute("method").toLowerCase() === "delete") {
       const id = wc.querySelector("input[name=id]").value;
 
@@ -277,7 +296,11 @@ if (userForm) {
     });
     const result = await send.json();
 
-    alert(result.message);
+    if (result.success) {
+      showToast(result.message, "success", "bg-success text-light");
+    } else {
+      showToast(result.message, "error", "bg-danger text-light");
+    }
 
     if (result.success) {
       titleName.innerText = result.data.name;
