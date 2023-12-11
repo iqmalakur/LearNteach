@@ -163,6 +163,7 @@ module.exports = {
       await t.commit();
     } catch (error) {
       await t.rollback();
+      console.log(error);
 
       if (error.message.startsWith("enrolled")) {
         return res.status(409).json({
@@ -283,6 +284,7 @@ module.exports = {
           });
         } catch (error) {
           await t.rollback();
+          console.log(error);
 
           return res.status(500).json({
             success: false,

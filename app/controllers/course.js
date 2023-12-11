@@ -380,6 +380,8 @@ module.exports = {
     } catch (err) {
       await t.rollback();
 
+      console.log(err);
+
       enrolledCourse.rating = prevRating;
       await enrolledCourse.save();
 
