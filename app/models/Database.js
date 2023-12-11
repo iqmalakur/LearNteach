@@ -21,6 +21,17 @@ class Database {
         define: {
           timestamps: false,
         },
+        dialectOptions: {
+          options: {
+            requestTimeout: 3000,
+          },
+        },
+        pool: {
+          max: 5,
+          min: 0,
+          acquire: 3000,
+          idle: 10000,
+        },
       });
     }
 
