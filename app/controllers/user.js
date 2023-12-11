@@ -357,6 +357,7 @@ module.exports = {
           });
         } catch (error) {
           await t.rollback();
+          console.log(error);
 
           return res.status(500).json({
             success: false,

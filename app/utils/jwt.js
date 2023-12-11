@@ -19,6 +19,7 @@ module.exports = {
 
       throw new Error();
     } catch (err) {
+      console.log(err);
       return null;
     }
   },

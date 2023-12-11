@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       instructor: DataTypes.STRING(50),
       title: DataTypes.STRING(80),
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       rating: DataTypes.INTEGER,
       members: DataTypes.INTEGER,
       preview: DataTypes.STRING,

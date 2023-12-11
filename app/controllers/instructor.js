@@ -55,8 +55,12 @@ module.exports = {
       ratings.push(enrolledCourse.rating);
     });
 
-    const getPercentageRating = (n) =>
-      (ratings.filter((rating) => rating === n).length / ratings.length) * 100;
+    const getPercentageRating = (n) => {
+      if (ratings.length === 0) return ratings.length;
+      return (
+        (ratings.filter((rating) => rating === n).length / ratings.length) * 100
+      );
+    };
 
     const stars = {
       one: getPercentageRating(1),
@@ -66,7 +70,10 @@ module.exports = {
       five: getPercentageRating(5),
     };
 
-    const avgRating = ratings.reduce((a, b) => a + b) / ratings.length;
+    const avgRating =
+      ratings.length === 0
+        ? ratings.length
+        : ratings.reduce((a, b) => a + b) / ratings.length;
 
     res.render("instructor/index", {
       layout: "layouts/instructor-layout",
@@ -348,6 +355,8 @@ module.exports = {
       } catch (error) {
         await t.rollback();
 
+        console.log(error);
+
         return res.status(500).json({
           success: false,
           message: "unexpected errors occurred",
@@ -484,6 +493,8 @@ module.exports = {
           });
         } catch (err) {
           await t.rollback();
+
+          console.log(err);
 
           return res.status(500).json({
             success: false,
