@@ -563,6 +563,10 @@ module.exports = {
     const carts = [
       {
         user: "budinugraha",
+        course: courses[0].id,
+      },
+      {
+        user: "budinugraha",
         course: courses[3].id,
       },
       {
