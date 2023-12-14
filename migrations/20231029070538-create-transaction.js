@@ -27,7 +27,7 @@ module.exports = {
       },
       course_title: {
         allowNull: false,
-        type: Sequelize.STRING(50),
+        type: Sequelize.STRING(80),
       },
       user_name: {
         allowNull: false,
