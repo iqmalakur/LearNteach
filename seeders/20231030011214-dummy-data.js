@@ -563,19 +563,124 @@ module.exports = {
     const carts = [
       {
         user: "budinugraha",
-        course: courses[0].id,
-      },
-      {
-        user: "budinugraha",
         course: courses[3].id,
-      },
-      {
-        user: "budinugraha",
-        course: courses[5].id,
       },
     ];
 
     await queryInterface.bulkInsert("carts", carts);
+
+    const chats = [
+      {
+        user: users[2].username,
+        community: 1,
+        chat: "Hi everyone, I'm new to this course. I'm looking forward to learning more about vocabulary and grammar.",
+        chat_date: new Date("2023-12-14T17:45:00+07:00"),
+      },
+      {
+        user: users[4].username,
+        community: 1,
+        chat: "Welcome, Joko! I'm sure you'll find this course very helpful.",
+        chat_date: new Date("2023-12-14T17:46:00+07:00"),
+      },
+      {
+        user: users[0].username,
+        community: 1,
+        chat: "I'm also new to this course. I'm looking forward to learning more about the English language.",
+        chat_date: new Date("2023-12-14T17:47:00+07:00"),
+      },
+      {
+        user: users[5].username,
+        community: 1,
+        chat: "I'm glad to hear that you're all excited about the course. I'm sure we'll all learn a lot from each other.",
+        chat_date: new Date("2023-12-14T17:48:00+07:00"),
+      },
+      {
+        user: users[2].username,
+        community: 1,
+        chat: "I have a question about the difference between 'is' and 'are'. Can anyone help me?",
+        chat_date: new Date("2023-12-14T17:49:00+07:00"),
+      },
+      {
+        user: users[4].username,
+        community: 1,
+        chat: "The difference between 'is' and 'are' is that 'is' is used for singular nouns and 'are' is used for plural nouns. For example, you would say 'the book is on the table', but you would say 'the books are on the table'.",
+        chat_date: new Date("2023-12-14T17:50:00+07:00"),
+      },
+      {
+        user: users[0].username,
+        community: 1,
+        chat: "Thanks, Sophia! That helps a lot. I also have a question about the difference between 'adjectives' and 'adverbs'. Can anyone help me with that?",
+        chat_date: new Date("2023-12-14T17:51:00+07:00"),
+      },
+      {
+        user: users[5].username,
+        community: 1,
+        chat: "An adjective is a word that describes a noun, and an adverb is a word that describes a verb, an adjective, or another adverb. For example, the word 'big' is an adjective because it describes the noun 'dog'. The word 'quickly' is an adverb because it describes the verb 'run'.",
+        chat_date: new Date("2023-12-14T17:52:00+07:00"),
+      },
+      {
+        user: users[2].username,
+        community: 1,
+        chat: "Thanks, Shannia! That helps a lot too. I'm really enjoying this course so far.",
+        chat_date: new Date("2023-12-14T17:53:00+07:00"),
+      },
+      {
+        user: users[2].username,
+        community: 2,
+        chat: "I'm really struggling with my speaking skills. I can't seem to get my words out without stumbling over them. Any tips?",
+        chat_date: new Date("2023-12-14T17:45:00+07:00"),
+      },
+      {
+        user: users[4].username,
+        community: 2,
+        chat: "I used to have the same problem. What helped me was practicing speaking in front of a mirror. I would also record myself speaking and then listen back to it. That way, I could hear where I was stumbling and work on improving it.",
+        chat_date: new Date("2023-12-14T17:46:00+07:00"),
+      },
+      {
+        user: users[0].username,
+        community: 2,
+        chat: "I also find it helpful to practice speaking with other people. That way, I can get feedback on my pronunciation and fluency.",
+        chat_date: new Date("2023-12-14T17:47:00+07:00"),
+      },
+      {
+        user: users[5].username,
+        community: 2,
+        chat: "Here are some other tips that might help:<br><br>* Try to relax and focus on your message, not on your pronunciation or fluency.<br>* Speak slowly and clearly.<br>* Use gestures and facial expressions to help you communicate.<br>* Practice speaking in different situations, such as giving presentations or answering questions.<br><br>I hope these tips help!",
+        chat_date: new Date("2023-12-14T17:48:00+07:00"),
+      },
+      {
+        user: users[2].username,
+        community: 2,
+        chat: "Thanks for the tips, everyone. I'll definitely try them out.",
+        chat_date: new Date("2023-12-14T17:49:00+07:00"),
+      },
+      {
+        user: users[4].username,
+        community: 2,
+        chat: "No problem. We're all here to help each other.",
+        chat_date: new Date("2023-12-14T17:50:00+07:00"),
+      },
+      {
+        user: users[0].username,
+        community: 2,
+        chat: "I'm also looking for advice on interview preparation. I have an interview coming up and I'm feeling nervous.",
+        chat_date: new Date("2023-12-14T17:51:00+07:00"),
+      },
+      {
+        user: users[5].username,
+        community: 2,
+        chat: "Here are some tips that might help:<br><br>* Research the company and the position you're interviewing for.<br>* Practice answering common interview questions.<br>* Dress professionally.<br>* Arrive early for your interview.<br>* Be confident and enthusiastic.<br><br>I hope these tips help!",
+        chat_date: new Date("2023-12-14T17:52:00+07:00"),
+      },
+      {
+        user: users[0].username,
+        community: 2,
+        chat: "Thanks, Shannia. I'll definitely keep these tips in mind.",
+        chat_date: new Date("2023-12-14T17:53:00+07:00"),
+      },
+    ];
+
+    await queryInterface.bulkInsert("chats", chats);
   },
 
   async down(queryInterface, Sequelize) {
@@ -586,6 +691,7 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
+    await queryInterface.bulkDelete("chats", null, {});
     await queryInterface.bulkDelete("carts", null, {});
     await queryInterface.bulkDelete("enrolledcourses", null, {});
     await queryInterface.bulkDelete("contents", null, {});
