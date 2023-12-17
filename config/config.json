@@ -1,23 +1,23 @@
 {
   "development": {
-    "username": "root",
-    "password": "root",
-    "database": "LearNteach",
-    "host": "127.0.0.1",
+    "username": "sql12670980",
+    "password": "CTRYGF2ZSL",
+    "database": "sql12670980",
+    "host": "sql12.freemysqlhosting.net",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": "root",
-    "database": "LearNteach",
-    "host": "127.0.0.1",
+    "username": "sql12670980",
+    "password": "CTRYGF2ZSL",
+    "database": "sql12670980",
+    "host": "sql12.freemysqlhosting.net",
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "root",
-    "database": "LearNteach",
-    "host": "127.0.0.1",
+    "username": "sql12670980",
+    "password": "CTRYGF2ZSL",
+    "database": "sql12670980",
+    "host": "sql12.freemysqlhosting.net",
     "dialect": "mysql"
   }
 }

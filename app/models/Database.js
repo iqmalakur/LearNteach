@@ -15,24 +15,29 @@ class Database {
    */
   static getConnection() {
     if (Database.conn == null) {
-      Database.conn = new Sequelize("LearNteach", "root", "root", {
-        host: "localhost",
-        dialect: "mysql",
-        define: {
-          timestamps: false,
-        },
-        dialectOptions: {
-          options: {
-            requestTimeout: 3000,
+      Database.conn = new Sequelize(
+        "sql12670980",
+        "sql12670980",
+        "CTRYGF2ZSL",
+        {
+          host: "sql12.freemysqlhosting.net",
+          dialect: "mysql",
+          define: {
+            timestamps: false,
           },
-        },
-        pool: {
-          max: 5,
-          min: 0,
-          acquire: 3000,
-          idle: 10000,
-        },
-      });
+          dialectOptions: {
+            options: {
+              requestTimeout: 3000,
+            },
+          },
+          pool: {
+            max: 5,
+            min: 0,
+            acquire: 3000,
+            idle: 10000,
+          },
+        }
+      );
     }
 
     return Database.conn;
