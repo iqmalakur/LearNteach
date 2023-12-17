@@ -77,7 +77,7 @@ module.exports = {
       },
     ];
 
-    await queryInterface.bulkInsert("users", users);
+    await queryInterface.bulkInsert("Users", users);
 
     const instructors = [
       {
@@ -130,7 +130,7 @@ module.exports = {
       },
     ];
 
-    await queryInterface.bulkInsert("instructors", instructors);
+    await queryInterface.bulkInsert("Instructors", instructors);
 
     const courses = [
       {
@@ -431,7 +431,7 @@ module.exports = {
       },
     ];
 
-    await queryInterface.bulkInsert("courses", courses);
+    await queryInterface.bulkInsert("Courses", courses);
 
     const communities = [];
 
@@ -443,7 +443,7 @@ module.exports = {
       });
     });
 
-    await queryInterface.bulkInsert("communities", communities);
+    await queryInterface.bulkInsert("Communities", communities);
 
     const contents = [
       {
@@ -528,7 +528,7 @@ module.exports = {
       },
     ];
 
-    await queryInterface.bulkInsert("contents", contents);
+    await queryInterface.bulkInsert("Contents", contents);
 
     const enrolledCourses = [];
 
@@ -558,7 +558,7 @@ module.exports = {
       }
     });
 
-    await queryInterface.bulkInsert("enrolledcourses", enrolledCourses);
+    await queryInterface.bulkInsert("EnrolledCourses", enrolledCourses);
 
     const carts = [
       {
@@ -567,7 +567,7 @@ module.exports = {
       },
     ];
 
-    await queryInterface.bulkInsert("carts", carts);
+    await queryInterface.bulkInsert("Carts", carts);
 
     const chats = [
       {
@@ -680,7 +680,7 @@ module.exports = {
       },
     ];
 
-    await queryInterface.bulkInsert("chats", chats);
+    await queryInterface.bulkInsert("Chats", chats);
   },
 
   async down(queryInterface, Sequelize) {
@@ -691,13 +691,13 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
 
-    await queryInterface.bulkDelete("chats", null, {});
-    await queryInterface.bulkDelete("carts", null, {});
-    await queryInterface.bulkDelete("enrolledcourses", null, {});
-    await queryInterface.bulkDelete("contents", null, {});
-    await queryInterface.bulkDelete("communities", null, {});
-    await queryInterface.bulkDelete("courses", null, {});
-    await queryInterface.bulkDelete("instructors", null, {});
-    await queryInterface.bulkDelete("users", null, {});
+    await queryInterface.bulkDelete("Chats", null, {});
+    await queryInterface.bulkDelete("Carts", null, {});
+    await queryInterface.bulkDelete("EnrolledCourses", null, {});
+    await queryInterface.bulkDelete("Contents", null, {});
+    await queryInterface.bulkDelete("Communities", null, {});
+    await queryInterface.bulkDelete("Courses", null, {});
+    await queryInterface.bulkDelete("Instructors", null, {});
+    await queryInterface.bulkDelete("Users", null, {});
   },
 };
