@@ -1,17 +1,16 @@
 # LearNteach
 
-LearNteach ialah sebuah situs website belajar mandiri yang inovatif berbasis e-lerning english.
-Aplikasi ini dirancang untuk memberikan pengalaman belajar yang interaktif dan beragam fitur yang diberikan untuk pengguna.
+LearNteach is an interactive English learning website. With the Community feature, users can improve their English skills by interacting directly with other users who are studying in the same class and accompanied by experienced instructors.
 
-## Cara mengakses (secara lokal)
+## Local installation
 
-Untuk dapat menjalankan website LearNteach ini ada beberapa langkah, namun sebelum itu pastikan Anda telah menginstall [NodeJS](https://nodejs.org) dan [Git](https://git-scm.com) pada perangkat Anda.
+To be able to run this LearNteach website there are several steps, but before that make sure you have installed [NodeJS](https://nodejs.org) and [Git](https://git-scm.com) on your device.
 
-Langkah untuk menjalankan website LearNteach adalah sebagai berikut :
+The steps to run the LearNteach website are as follows:
 
-1. Masuk ke terminal / cmd, lalu masuk ke folder dimana Anda akan menyimpan project ini (misalnya desktop).
-2. Kemudian ketikan perintah `git clone https://github.com/iqmalakur/LearNteach.git` pada terminal.
-3. Masuk kedalam folder project dengan menggunakan perintah `cd LearNteach`.
-4. Ketikan perintah `npm install` untuk menginstall seluruh package / dependency yang dibutuhkan oleh project.
-5. Ketikan perintah `npm start` atau `npm run start` untuk menjalankan Project.
-6. Masuk ke browser dan ketikan `http://localhost:3000` pada kolom url browser.
+1. Enter the terminal / cmd, then enter the folder where you will save this project (eg desktop).
+2. Then type the command `git clone https://github.com/iqmalakur/LearNteach.git` in the terminal.
+3. Enter the project folder using the `cd LearNteach` command.
+4. Type the command `npm install` to install all packages / dependencies needed by the project.
+5. Type the command `npm start` or `npm run start` to run the Project.
+6. Enter the browser and type `http://localhost:3000` in the browser url field.
